@@ -1,5 +1,6 @@
 import firebase from '../../server/firebase'
 import React, { Component } from 'react'
+import { Form } from 'semantic-ui-react'
 
 
 export default class MakeQuiz extends Component {
@@ -29,7 +30,7 @@ export default class MakeQuiz extends Component {
     let cleanText = text.toLowerCase().replace(/\W/g, ' ').replace(/\s+/g, ' ').trim().split(' ')
     return unique(cleanText)
   }
-  async Submit(e) {
+  async submit(e) {
     e.preventDefault();
     const text = this.state.text
     try {
@@ -43,11 +44,13 @@ export default class MakeQuiz extends Component {
     }
   }
 
-}
+  render() {
+    return (
+      <div>
+        <Form.Field control={TextArea} />
+        <button onClick={this.handleMyClick}> Click Me!</button>
+      </div>
+    )
+  }
 
-render() {
-  return (
-    <button onClick={this.handleMyClick}> Click Me!</button>
-  )
-}
 }
