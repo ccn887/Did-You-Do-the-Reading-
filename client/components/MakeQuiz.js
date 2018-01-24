@@ -1,6 +1,7 @@
 import firebase from '../../server/firebase'
 import React, { Component } from 'react'
-import { Form } from 'semantic-ui-react'
+import axios from 'axios'
+import { Form, TextArea, Button} from 'semantic-ui-react'
 
 
 export default class MakeQuiz extends Component {
@@ -14,7 +15,7 @@ export default class MakeQuiz extends Component {
   }
   handleChange(event) {
     this.setState({
-      text: event.target.text.value
+      text: event.target.value
     })
   }
   unique(arr) {
@@ -28,15 +29,16 @@ export default class MakeQuiz extends Component {
   }
   tokenize(text) {
     let cleanText = text.toLowerCase().replace(/\W/g, ' ').replace(/\s+/g, ' ').trim().split(' ')
-    return unique(cleanText)
+    return this.unique(cleanText)
   }
   async submit(e) {
     e.preventDefault();
     const text = this.state.text
     try {
-      const wordsToSearch = tokenize(text)
-      const res = await axios.post('api/vocab/text', wordsToSearch)
-      console.log(res.data)
+      const wordsToSearch = this.tokenize(text)
+      console.log('Logging: ', wordsToSearch)
+      // const res = await axios.post('api/vocab/text', wordsToSearch)
+      // console.log(res.data)
       //do something with questions -- firebase and allq component
     }
     catch (err) {
@@ -47,8 +49,9 @@ export default class MakeQuiz extends Component {
   render() {
     return (
       <div>
-        <Form.Field control={TextArea} />
-        <button onClick={this.handleMyClick}> Click Me!</button>
+        <h1>Enter Your Text!</h1>
+        <Form.Field onChange={this.handleChange} control={TextArea} />
+        <Button type="submit" onClick={this.submit}> Generate Quiz </Button>
       </div>
     )
   }
