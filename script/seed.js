@@ -24,7 +24,7 @@ async function seed () {
     User.create({email: 'cody@email.com', password: '123'}),
     User.create({email: 'murphy@email.com', password: '123'})
   ])
-  const wordArray = (longlist)
+
   const wordList = await Promise.all([
     User.bulkCreate(wordArray),
     User.create({email: 'murphy@email.com', password: '123'})
