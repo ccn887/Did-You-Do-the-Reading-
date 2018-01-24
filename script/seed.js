@@ -11,7 +11,21 @@
  */
 const db = require('../server/db')
 const {User} = require('../server/db/models')
-const {WordList} = require('../server/db/wordList')
+const {WordList} = require('../server/db/models')
+const {wordString} = require('./wordString')
+
+const dictArray = wordString.split('\n');
+
+
+const wordArray = dictArray.map(line => {
+  var splitLine = line.split(' ');
+  return splitLine[0];
+})
+
+const wordObjArray = wordArray.map( element => {
+  return {word: element}
+})
+
 
 
 async function seed () {
@@ -26,8 +40,7 @@ async function seed () {
   ])
 
   const wordList = await Promise.all([
-    User.bulkCreate(wordArray),
-    User.create({email: 'murphy@email.com', password: '123'})
+    WordList.bulkCreate(wordObjArray)
   ])
   // Wowzers! We can even `await` on the right-hand side of the assignment operator
   // and store the result that the promise resolves to in a variable! This is nice!
