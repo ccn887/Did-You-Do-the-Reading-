@@ -4,7 +4,6 @@ const db = require('../db')
 const WordList = db.define('wordList', {
   word: {
     type: Sequelize.STRING,
-    unique: true,
     allowNull: false
   }
 })
