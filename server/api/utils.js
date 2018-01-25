@@ -10,19 +10,24 @@ const lookup = async(word) => {
   return thesaurus.data;
 }
 
+const getRandomIndex = (arr) => {
+  const end = arr.length
+  return Math.floor(Math.random() * Math.floor(end));
+}
+
+const getRandomWords = async(word, num) => {
+  const response = await axios.get(`http://api.datamuse.com/words?rel_trg=${word}`);
+  const objArray = response.data;
+  const firstIndex = getRandomIndex(objArray.slice(0));
+  const secondIndex = getRandomIndex(objArray.slice(0));
+  const firstWord = objArray[firstIndex].word;
+  const secondWord = objArray[secondIndex].word;
+  const thirdIndex = getRandomIndex(objArray.slice(0));
+  const thirdWord = objArray[thirdIndex].word;
+  return [firstWord, secondWord, thirdWord];
+}
 
 
-// const synonymFinder = (data) => {
-//   let city;
-//   data.results.forEach(addressComponentList => {
-//     addressComponentList.address_components.forEach(component => {
-//       if (component.types.includes('locality')){
-//         city = component.long_name;
-//       }
-//     })
-//   })
-//   return city;
-// }
 
 
-module.exports = {lookup}
+module.exports = {lookup, getRandomIndex, getRandomWords}
