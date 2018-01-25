@@ -8,9 +8,12 @@ import { Form, TextArea, Button} from 'semantic-ui-react'
 export default class AllQuestions extends Component {
   constructor() {
     super()
+    this.state = {
+      currentQuiz: []
+    }
     // this.saveQuiz = this.saveQuiz.bind(this)
     // this.deleteQuestion = this.deleteQuestion.bind(this)
-    this.getQuiz = this.getQuiz.bind(this)
+    // this.getQuiz = this.getQuiz.bind(this)
 
 
     //addQuestion, updatequestion
@@ -28,23 +31,22 @@ export default class AllQuestions extends Component {
 //       console.log(err)
 //     }
 //   }
-async getQuiz(){
+async componentDidMount(){
   let currentQuiz
   try{
   const questionSetId = this.props.match.params.questionSetId
   const questionSetRef = await firebase.database().ref(`questionSets/${questionSetId}`)
-  .on('value', async (snapshot) => {
+  .once('value', async (snapshot) => {
     try{
     currentQuiz  = await snapshot.val()
-    console.log('currentQuiz', currentQuiz)
-    return currentQuiz
+    this.setState({currentQuiz: currentQuiz})
     }
     catch(err){
       console.log(err)
     }
   })
-  const answer = questionSetRef
-  console.log('questionsetref', answer)
+  // const answer = questionSetRef
+  // console.log('questionsetref', answer)
 }
 catch(err){
   console.log(err)
@@ -52,10 +54,26 @@ catch(err){
 
 }
   render() {
-    return (
+const quiz = this.state.currentQuiz
+console.log('QUIZ:', quiz)
+return (
       <div>
         <h1>Edit Your Current Quiz Below</h1>
-        <button onClick={this.getQuiz}> Click Me!</button>
+    {
+      quiz.length && quiz.map(question => {
+        return(
+          <div key={question.rightAnswer}>
+          <div>{question.question}</div>
+          <div>{question.rightAnswer}</div>
+          <div>{question.wrongAnswers[0]}</div>
+          <div>{question.wrongAnswers[1]}</div>
+          <div>{question.wrongAnswers[2]}</div>
+          <div>hi</div>
+          </div>
+        )
+
+    })}
+    <button>Click here for next thing</button>
       </div>
     )
   }
