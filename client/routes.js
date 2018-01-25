@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {Route, Switch, Router} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import history from './history'
-import {Main, Login, Signup, UserHome, MakeQuiz} from './components'
+import {Main, Login, Signup, UserHome, MakeQuiz, AllQuestions} from './components'
 import {me} from './store'
 
 
@@ -33,8 +33,13 @@ class Routes extends Component {
                   />
                   <Route
                   exact
-                  path="/teacher/make-quiz"
+                  path="/make-quiz"
                   component={MakeQuiz}
+                  />
+                  <Route
+                  exact
+                  path="/:questionSetId/all-questions"
+                  component={AllQuestions}
                   />
                 </Switch>
             }

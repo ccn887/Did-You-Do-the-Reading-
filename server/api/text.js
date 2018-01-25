@@ -20,6 +20,8 @@ router.post('/vocab', async (req, res, next)=> {
     });
 
     const vocabWords = response.map(entry => {
+      console.log('backend first', entry.word);
+
       return entry.word
     })
 
@@ -27,6 +29,8 @@ router.post('/vocab', async (req, res, next)=> {
 
       const questionObject = {};
       const thesaurusInfo = await lookup(word);
+
+
 
       // this is currently hard-coding to the first part of speech
       const partOfSpeech = Object.keys(thesaurusInfo)[0];
@@ -44,6 +48,7 @@ router.post('/vocab', async (req, res, next)=> {
       const randomWords = await getRandomWords(word);
 
 
+
       questionObject.question = `What word means ${word}?`;
       questionObject.rightAnswer = synonym;
 
@@ -58,6 +63,8 @@ router.post('/vocab', async (req, res, next)=> {
       - OR add part of speech to consideration
       - do some matching on the word and answer
       */
+      console.log('backend last', questionObject);
+
       return questionObject;
     }))
 
