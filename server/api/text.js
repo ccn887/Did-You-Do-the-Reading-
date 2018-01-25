@@ -21,6 +21,8 @@ router.post('/vocab', async (req, res, next)=> {
     });
 
     const vocabWords = response.map(entry => {
+      console.log('backend first', entry.word);
+
       return entry.word
     })
 
@@ -29,7 +31,6 @@ router.post('/vocab', async (req, res, next)=> {
       // get one synonym and two antonyms
       const questionObject = {};
       const thesaurusInfo = await lookup(word);
-      console.log(questionObject.info);
       // this is currently hard-coding to the first part of speech
       const partOfSpeech = Object.keys(thesaurusInfo)[0];
       const synonym = thesaurusInfo[partOfSpeech].syn
@@ -40,6 +41,8 @@ router.post('/vocab', async (req, res, next)=> {
         : '';
       const randomOne = '';
       const randomTwo = '';
+      console.log('backend 2nd', questionObject);
+
       questionObject.info = thesaurusInfo;
       questionObject.question = `What word means ${word}?`;
       questionObject.rightAnswer = synonym;
@@ -50,6 +53,8 @@ router.post('/vocab', async (req, res, next)=> {
       - generate a third random word if no antonyms
       - randomize which part of speech it uses
       */
+      console.log('backend last', questionObject);
+
       return questionObject;
     }))
 
