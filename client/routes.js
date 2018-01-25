@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {Route, Switch, Router} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import history from './history'
-import {Main, Login, Signup, UserHome, MakeQuiz, AllQuestions} from './components'
+import {Main, Login, Signup, UserHome, MakeQuiz, AllQuestions, TeacherWaitingRoom, StudentJoinGame, StudentWaitingRoom} from './components'
 import {me} from './store'
 
 
@@ -25,6 +25,12 @@ class Routes extends Component {
             {/* Routes placed here are available to all visitors */}
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
+            <Route path="/join" component={StudentJoinGame} />
+            <Route
+            exact
+            path="/student-waiting-room/:pin"
+            component={StudentWaitingRoom}
+            />
             {
               isLoggedIn &&
                 <Switch>
@@ -40,6 +46,11 @@ class Routes extends Component {
                   exact
                   path="/:questionSetId/all-questions"
                   component={AllQuestions}
+                  />
+                  <Route
+                  exact
+                  path="/teacher-waiting-room/:pin"
+                  component={TeacherWaitingRoom}
                   />
                 </Switch>
             }

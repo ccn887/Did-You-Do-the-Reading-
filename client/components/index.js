@@ -8,3 +8,6 @@ export {default as UserHome} from './user-home'
 export {Login, Signup} from './auth-form'
 export {default as MakeQuiz} from './MakeQuiz';
 export {default as AllQuestions} from './AllQuestions';
+export {default as TeacherWaitingRoom} from './gameplay/teacher/Teacher_WaitingRoom';
+export {default as StudentJoinGame} from './gameplay/student/Student_JoinGame';
+export {default as StudentWaitingRoom} from './gameplay/student/Student_WaitingRoom';

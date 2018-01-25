@@ -1,17 +1,22 @@
 import firebase from '../../server/firebase'
 import React, { Component } from 'react'
 import axios from 'axios'
-import { Form, TextArea, Button} from 'semantic-ui-react'
-// import { currentId } from 'async_hooks';
+import { Form, TextArea, Button } from 'semantic-ui-react'
+import { me } from '../store';
+import { connect } from 'react-redux'
+import history from '../history'
 
 
-export default class AllQuestions extends Component {
+
+export class AllQuestions extends Component {
   constructor() {
     super()
     this.state = {
-      currentQuiz: []
+      currentQuiz: [],
+      teacherId: null,
+      pin: ''
     }
-    // this.saveQuiz = this.saveQuiz.bind(this)
+    this.saveQuiz = this.saveQuiz.bind(this)
     // this.deleteQuestion = this.deleteQuestion.bind(this)
     // this.getQuiz = this.getQuiz.bind(this)
 
@@ -19,63 +24,79 @@ export default class AllQuestions extends Component {
     //addQuestion, updatequestion
     //edit answer
   }
-//  async deleteQuestion(e){
-//    //deleteQuestionFromFB
-//  }
-//   async saveQuiz(e) {
-//     e.preventDefault();
-//     //make gameroom
-//     try {
-//     }
-//     catch (err) {
-//       console.log(err)
-//     }
-//   }
-async componentDidMount(){
-  let currentQuiz
-  try{
-  const questionSetId = this.props.match.params.questionSetId
-  const questionSetRef = await firebase.database().ref(`questionSets/${questionSetId}`)
-  .once('value', async (snapshot) => {
-    try{
-    currentQuiz  = await snapshot.val()
-    this.setState({currentQuiz: currentQuiz})
+  async deleteQuestion(e) {
+    e.preventDefault()
+    //deleteQuestionFromFB
+  }
+  async saveQuiz(e) {
+    e.preventDefault();
+    const pin = Math.floor(Math.random() * 90000) + 10000;
+    const quiz = this.state.currentQuiz
+    const teacherId = this.props.user.id
+    try {
+      const gameRoomRef = firebase.database().ref('gameRooms');
+      let newGameRoomRef = gameRoomRef.child(pin).set({
+        quiz: quiz,
+        teacherId: teacherId,
+        pin: pin
+      })
+      history.push(`/teacher-waiting-room/${pin}`)
+
+
     }
-    catch(err){
+    catch (err) {
       console.log(err)
     }
-  })
-  // const answer = questionSetRef
-  // console.log('questionsetref', answer)
-}
-catch(err){
-  console.log(err)
-}
+  }
+  async componentDidMount() {
+    let currentQuiz
+    try {
+      const questionSetId = this.props.match.params.questionSetId
+      const questionSetRef = await firebase.database().ref(`questionSets/${questionSetId}`)
+        .once('value', async (snapshot) => {
+          try {
+            currentQuiz = await snapshot.val()
+            this.setState({ currentQuiz: currentQuiz })
+          }
+          catch (err) {
+            console.log(err)
+          }
+        })
+    }
+    catch (err) {
+      console.log(err)
+    }
 
-}
+  }
   render() {
-const quiz = this.state.currentQuiz
-console.log('QUIZ:', quiz)
-return (
+    const quiz = this.state.currentQuiz
+    return (
       <div>
         <h1>Edit Your Current Quiz Below</h1>
-    {
-      quiz.length && quiz.map(question => {
-        return(
-          <div key={question.rightAnswer}>
-          <div>{question.question}</div>
-          <div>{question.rightAnswer}</div>
-          <div>{question.wrongAnswers[0]}</div>
-          <div>{question.wrongAnswers[1]}</div>
-          <div>{question.wrongAnswers[2]}</div>
-          <div>hi</div>
-          </div>
-        )
+        {
+          quiz.length && quiz.map(question => {
+            return (
+              <div key={question.rightAnswer}>
+                <div>{question.question}</div>
+                <div>{question.rightAnswer}</div>
+                <div>{question.wrongAnswers[0]}</div>
+                <div>{question.wrongAnswers[1]}</div>
+                <div>{question.wrongAnswers[2]}</div>
 
-    })}
-    <button>Click here for next thing</button>
+              </div>
+            )
+
+          })}
+        <button onClick={this.saveQuiz}>Click here for next thing</button>
       </div>
     )
   }
 }
 
+const mapState = state => {
+  return { user: state.user }
+}
+
+const mapDispatch = { me }
+
+export default connect(mapState, mapDispatch)(AllQuestions)

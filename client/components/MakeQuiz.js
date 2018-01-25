@@ -1,7 +1,7 @@
 import firebase from '../../server/firebase'
 import React, { Component } from 'react'
 import axios from 'axios'
-import { Form, TextArea, Button} from 'semantic-ui-react'
+import { Form, TextArea, Button } from 'semantic-ui-react'
 import history from '../history'
 
 
@@ -37,20 +37,10 @@ export default class MakeQuiz extends Component {
     const text = this.state.text
     try {
       const wordsToSearch = this.tokenize(text)
-      console.log('Logging: ', wordsToSearch)
       const res = await axios.post('/api/text/vocab', wordsToSearch)
       const questionSetRef = firebase.database().ref('questionSets');
-      console.log('got past axios',res.data )
-      let count = 0
       let newQuestionSetRef = questionSetRef.push(res.data)
       history.push(`/${newQuestionSetRef.key}/all-questions`)
-      // const userId = 2
-      //push questionset object to firebase
-      //does the teacher have a game room?
-      // const gameRoomRef = firebase.database().ref('gameRooms');
-      // gameRoomRef.push({questionSets: [...newQuestionSetRef.key]})
-      //push gameroom obj to firebase
-      //redirect to all questions with link to gameroom lobby
     }
     catch (err) {
       console.log(err)
