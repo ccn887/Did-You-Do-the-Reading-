@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 import { Card } from 'semantic-ui-react'
 import { shuffle } from '../../../utils'
 import { history} from '../../../history'
+import { Redirect } from 'react-router-dom'
+
 
 
 export default class TeacherSingleQuestion extends Component {
@@ -11,16 +13,20 @@ export default class TeacherSingleQuestion extends Component {
     this.state = {
       currentQuestion: {},
       timer: null,
-      counter: 120,
-      answerArray: []
+      counter: 20,
+      answerArray: [],
+      nextQuestionId: null
     }
     this.tick = this.tick.bind(this);
+    // this.timesUp = this.timesUp.bind(this);
+
   }
 
   async componentDidMount(){
 
     const gameRoomId = this.props.match.params.pin;
     const questionId = this.props.match.params.questionId;
+    const nextQuestionId = +this.props.match.params.questionId + 1
 
     try {
       await firebase.database().ref(`gameRooms/${gameRoomId}/quiz/${questionId}`)
@@ -36,7 +42,7 @@ export default class TeacherSingleQuestion extends Component {
         const finalArray = shuffle(answerArray);
 
         let timer = setInterval(this.tick, 1000);
-        this.setState({currentQuestion, answerArray: finalArray, timer});
+        this.setState({currentQuestion, answerArray: finalArray, timer, nextQuestionId});
 
       })
     } catch (err) {
@@ -46,33 +52,35 @@ export default class TeacherSingleQuestion extends Component {
 
   }
 
-  componentWillUnmount() {
-    this.clearInterval(this.state.timer);
-  }
+  // componentWillUnmount() {
+  //   this.setState({timer: null, counter: 20, nextQuestionId: null})
+
+  // }
 
 
   tick(){
+    if(this.state.counter === 0){
+      this.setState({counter: 20})
+    } else {
     this.setState({counter: this.state.counter - 1});
+    }
   }
 
-
   render() {
-
-    // console.log('from the render function: ', this.state)
     const question = this.state.currentQuestion;
-
     const answerArray = this.state.answerArray;
-
-    const nextQuestionId = +this.props.match.params.questionId + 1;
-
-    const timer = this.state.timer;
+    const gameRoomId = this.props.match.params.pin;
+    const nextQuestionId = this.state.nextQuestionId
+    console.log('nextq', nextQuestionId)
+    const timer = this.state.counter;
+    console.log('timer', timer)
 
 
     return (
       <div>
         {
           timer === 0
-          ? history.push(`/${nextQuestionId}`)
+          ? <Redirect to={`/teacher/${gameRoomId}/question/${nextQuestionId}`}/>
           :
          (
           <div>
