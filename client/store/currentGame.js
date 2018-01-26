@@ -5,8 +5,6 @@ import firebase from '../../server/firebase'
 const SET_GAME_ON_STATE = 'SET_GAME_ON_STATE'
 
 
-
-
 export const setGameOnState = game => ({type: SET_GAME_ON_STATE, game})
 
 
