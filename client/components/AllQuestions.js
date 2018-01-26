@@ -5,6 +5,7 @@ import { Form, TextArea, Button } from 'semantic-ui-react'
 import { me } from '../store';
 import { connect } from 'react-redux'
 import history from '../history'
+import TeacherAddQuestion from '../components/gameplay/teacher/Teacher_AddQuestion'
 
 
 
@@ -34,7 +35,7 @@ export class AllQuestions extends Component {
         .once('value', async (snapshot) => {
           try {
             const questionSetRef = await firebase.database().ref(`questionSets/${questionSetId}`).child(idx)
-              questionSetRef.remove()
+            questionSetRef.remove()
           }
           catch (err) {
             console.log(err)
@@ -94,7 +95,7 @@ export class AllQuestions extends Component {
             currentQuiz = await snapshot.val()
             this.setState({
               currentQuiz: currentQuiz,
-             })
+            })
           }
           catch (err) {
             console.log(err)
@@ -112,24 +113,24 @@ export class AllQuestions extends Component {
       <div>
         <h1>Edit Your Current Quiz Below</h1>
         {
+          quiz ?
+            (quiz.length && quiz.map((question, idx) => {
+              return (
+                <div key={idx}>
+                  <div>{question.question}</div>
+                  <button onClick={(e) => { this.deleteQuestion(e, idx) }}> X </button>
+                  <div>{question.rightAnswer}</div>
+                  <div>{question.wrongAnswers[0]}</div>
+                  <div>{question.wrongAnswers[1]}</div>
+                  <div>{question.wrongAnswers[2]}</div>
+                </div>
+              )
 
-          quiz ? 
-         (quiz.length && quiz.map((question, idx) => {
-            return (
-              <div key={idx}>
-                <div>{question.question}</div>
-                <button onClick={(e) => {this.deleteQuestion(e, idx)}}> X </button>
-                <div>{question.rightAnswer}</div>
-                <div>{question.wrongAnswers[0]}</div>
-                <div>{question.wrongAnswers[1]}</div>
-                <div>{question.wrongAnswers[2]}</div>
-              </div>
-            )
-
-          })): <div> </div>
+            })) : <div> </div>
         }
         <button onClick={this.saveQuiz}>Click here for next thing</button>
-      </div> 
+        <TeacherAddQuestion />
+      </div>
     )
   }
 }
