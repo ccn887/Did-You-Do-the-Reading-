@@ -2,7 +2,7 @@ const router = require('express').Router();
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const {WordList} = require('../db/models');
-const {lookup, getRandomIndex, getRandomWords} = require('./utils');
+const {lookup, getRandomIndex, getRandomWords, shuffle} = require('./utils');
 
 
 module.exports = router;
@@ -53,9 +53,10 @@ router.post('/vocab', async (req, res, next)=> {
       questionObject.rightAnswer = synonym;
 
       if (!antonym.length){
-        questionObject.wrongAnswers = randomWords;
+        questionObject.answers = randomWords;
       } else {
-        questionObject.wrongAnswers = [antonym, randomWords[0], randomWords[1]];
+        questionObject.answers = shuffle([antonym, randomWords[0], randomWords[1], synonym]);
+
       }
       //nice-to-haves
       /*

@@ -113,23 +113,23 @@ export class AllQuestions extends Component {
         <h1>Edit Your Current Quiz Below</h1>
         {
 
-          quiz ? 
+          quiz ?
          (quiz.length && quiz.map((question, idx) => {
             return (
               <div key={idx}>
                 <div>{question.question}</div>
                 <button onClick={(e) => {this.deleteQuestion(e, idx)}}> X </button>
                 <div>{question.rightAnswer}</div>
-                <div>{question.wrongAnswers[0]}</div>
-                <div>{question.wrongAnswers[1]}</div>
-                <div>{question.wrongAnswers[2]}</div>
+                <div>{question.answers[0]}</div>
+                <div>{question.answers[1]}</div>
+                <div>{question.answers[2]}</div>
               </div>
             )
 
           })): <div> </div>
         }
         <button onClick={this.saveQuiz}>Click here for next thing</button>
-      </div> 
+      </div>
     )
   }
 }
