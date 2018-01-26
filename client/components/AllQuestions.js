@@ -14,20 +14,37 @@ export class AllQuestions extends Component {
     this.state = {
       currentQuiz: [],
       teacherId: null,
+      key: null,
       pin: ''
     }
     this.saveQuiz = this.saveQuiz.bind(this)
-    // this.deleteQuestion = this.deleteQuestion.bind(this)
+    this.deleteQuestion = this.deleteQuestion.bind(this)
     // this.getQuiz = this.getQuiz.bind(this)
 
 
     //addQuestion, updatequestion
     //edit answer
   }
-  async deleteQuestion(e) {
+
+  async deleteQuestion(e, idx) {
     e.preventDefault()
-    //deleteQuestionFromFB
+    try {
+      const questionSetId = this.props.match.params.questionSetId
+        .once('value', async (snapshot) => {
+          try {
+            const questionSetRef = await firebase.database().ref(`questionSets/${questionSetId}`).child(idx)
+              questionSetRef.remove()
+          }
+          catch (err) {
+            console.log(err)
+          }
+        })
+    }
+    catch (err) {
+      console.log(err)
+    }
   }
+
   async saveQuiz(e) {
     e.preventDefault();
     const pin = Math.floor(Math.random() * 90000) + 10000;
@@ -42,7 +59,6 @@ export class AllQuestions extends Component {
       })
       history.push(`/teacher-waiting-room/${pin}`)
 
-
     }
     catch (err) {
       console.log(err)
@@ -56,7 +72,9 @@ export class AllQuestions extends Component {
         .once('value', async (snapshot) => {
           try {
             currentQuiz = await snapshot.val()
-            this.setState({ currentQuiz: currentQuiz })
+            this.setState({
+              currentQuiz: currentQuiz,
+             })
           }
           catch (err) {
             console.log(err)
@@ -74,15 +92,15 @@ export class AllQuestions extends Component {
       <div>
         <h1>Edit Your Current Quiz Below</h1>
         {
-          quiz.length && quiz.map(question => {
+          quiz.length && quiz.map((question, idx) => {
             return (
-              <div key={question.rightAnswer}>
+              <div key={idx}>
                 <div>{question.question}</div>
+                <button onClick={(e) => {this.deleteQuestion(e, idx)}}> X </button>
                 <div>{question.rightAnswer}</div>
                 <div>{question.wrongAnswers[0]}</div>
                 <div>{question.wrongAnswers[1]}</div>
                 <div>{question.wrongAnswers[2]}</div>
-
               </div>
             )
 
