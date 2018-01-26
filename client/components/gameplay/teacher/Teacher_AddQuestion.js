@@ -2,8 +2,9 @@ import firebase from '../../../../server/firebase'
 import React, { Component } from 'react'
 import { Form, TextArea, Input, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
+import { me } from '../../../store';
 
-export default class TeacherAddQuestion extends Component {
+export class TeacherAddQuestion extends Component {
     constructor() {
         super()
         this.state = {
@@ -40,9 +41,13 @@ export default class TeacherAddQuestion extends Component {
     //   }
  addQuestion (e) {
     e.preventDefault()
-    console.log(e.target.question.value)
-    // const questionSetId = this.props.match.params.questionSetId
-    // firebase.database().ref(`questionSets/${questionSetId}`)
+    console.log(this.props)
+    const questionSetId = this.props.match.params.questionSetId
+    firebase.database().ref(`questionSets/${questionSetId}`).push({
+        question: e.target.question.value,
+        rightAnswer: e.target.solution.value,
+        answers: [e.target.solution.value, e.target.wrongOne.value, e.target.wrongTwo.value, e.target.wrongThree.value]
+    })
     // try {
     //     const something = await someshit
     //       }
@@ -81,6 +86,14 @@ export default class TeacherAddQuestion extends Component {
   }
 }
 
+const mapState = state => {
+    return { user: state.user }
+  }
+  
+  const mapDispatch = {me}
+  
+  export default connect(mapState, mapDispatch)(TeacherAddQuestion)
+  
 // const mapState = state => {
 //   return { currentGame: state.currentGame }
 // }
