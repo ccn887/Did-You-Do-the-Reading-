@@ -38,8 +38,13 @@ export default class MakeQuiz extends Component {
     try {
       const wordsToSearch = this.tokenize(text)
       const res = await axios.post('/api/text/vocab', wordsToSearch)
+      const questionArr = res.data
       const questionSetRef = firebase.database().ref('questionSets');
-      let newQuestionSetRef = questionSetRef.push(res.data)
+      let newQuestionSetRef = questionSetRef.push({})
+      questionArr.forEach(questionObj => {
+        firebase.database().ref(`questionSets/${newQuestionSetRef.key}`)
+        .push(questionObj)
+      })
       history.push(`/${newQuestionSetRef.key}/all-questions`)
     }
     catch (err) {
