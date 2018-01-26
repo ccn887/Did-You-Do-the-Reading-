@@ -130,7 +130,7 @@ export class AllQuestions extends Component {
             })) : <div> </div>
         }
         <button onClick={this.saveQuiz}>Click here for next thing</button>
-        <TeacherAddQuestion />
+        <TeacherAddQuestion match ={this.props.match}/>
       </div>
     )
   }
