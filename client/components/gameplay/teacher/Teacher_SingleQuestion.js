@@ -24,7 +24,7 @@ export class TeacherSingleQuestion extends Component {
 
   }
 
-componentDidMount() {
+  componentDidMount() {
 
     const gameRoomId = this.props.match.params.pin;
     const questionId = this.props.match.params.questionId;
@@ -38,66 +38,63 @@ componentDidMount() {
 
   }
 
-// componentWillUnmount() {
-//   this.setState({timer: null, counter: 20, nextQuestionId: null})
+  // componentWillUnmount() {
+  //   this.setState({timer: null, counter: 20, nextQuestionId: null})
 
-// }
+  // }
 
-tick(){
-  if (this.state.counter === 0) {
-    this.setState({ counter: 20 })
-  } else {
-    this.setState({ counter: this.state.counter - 1 });
+  tick() {
+    if (this.state.counter === 0) {
+      this.setState({ counter: 20 })
+    } else {
+      this.setState({ counter: this.state.counter - 1 });
+    }
   }
-}
 
-shuffleToState(arr){
-  const questionId = this.props.match.params.questionId;
+  shuffleToState(arr) {
+  }
 
-}
-
-render() {
-  const gameRoomId = this.props.match.params.pin;
-  const questionId = this.props.match.params.questionId;
-  const nextQuestionId = this.state.nextQuestionId
-  const timer = this.state.counter;
-  const currentQuestion = this.props.currentGame[questionId]
-    console.log('currentq', currentQuestion)
-    const indexArray = currentQuestion && Object.keys(currentQuestion.answers);
-    const answerArray = indexArray && indexArray.map(index => {
+  render() {
+    const gameRoomId = this.props.match.params.pin;
+    const questionId = this.props.match.params.questionId;
+    const nextQuestionId = this.state.nextQuestionId
+    const timer = this.state.counter;
+    const currentQuestion = this.props.currentGame[questionId]
+    const indexArray = currentQuestion ? Object.keys(currentQuestion.answers) : []
+    const answerArray = indexArray.map(index => {
       return currentQuestion.answers[index]
     });
 
 
 
-  return (
-    <div>
-      {
-        timer === 0
-          ? <Redirect to={`/teacher/${gameRoomId}/question/${nextQuestionId}`} />
-          :
-          (
-            <div>
+    return (
+      <div>
+        {
+          timer === 0
+            ? <Redirect to={`/teacher/${gameRoomId}/question/${nextQuestionId}`} />
+            :
+            (
               <div>
-                <Card>
-                  <h1 id="teacher-single-question">{currentQuestion && currentQuestion.question}</h1>
-                </Card>
-                <Card.Group itemsPerRow={2}>
-                  <Card className="teacher-single-answer">{answerArray.length && answerArray[0]}</Card>
-                  <Card className="teacher-single-answer">{answerArray.length && answerArray[1]}</Card>
-                  <Card className="teacher-single-answer">{answerArray.length && answerArray[2]}</Card>
-                  <Card className="teacher-single-answer">{answerArray.length && answerArray[3]}</Card>
-                </Card.Group>
+                <div>
+                  <Card>
+                    <h1 id="teacher-single-question">{currentQuestion && currentQuestion.question}</h1>
+                  </Card>
+                  <Card.Group itemsPerRow={2}>
+                    <Card className="teacher-single-answer">{answerArray.length && answerArray[0]}</Card>
+                    <Card className="teacher-single-answer">{answerArray.length && answerArray[1]}</Card>
+                    <Card className="teacher-single-answer">{answerArray.length && answerArray[2]}</Card>
+                    <Card className="teacher-single-answer">{answerArray.length && answerArray[3]}</Card>
+                  </Card.Group>
+                </div>
+                <div>
+                  <div>Time Remaining: {this.state.counter}</div>
+                </div>
               </div>
-              <div>
-                <div>Time Remaining: {this.state.counter}</div>
-              </div>
-            </div>
-          )
-      }
-    </div>
-  )
-}
+            )
+        }
+      </div>
+    )
+  }
 
 
 }
