@@ -13,7 +13,7 @@ export class AllQuestions extends Component {
   constructor() {
     super()
     this.state = {
-      currentQuiz: [],
+      currentQuiz: {},
       teacherId: null,
       key: null,
       pin: ''
@@ -93,6 +93,8 @@ export class AllQuestions extends Component {
         .on('value', async (snapshot) => {
           try {
             currentQuiz = await snapshot.val()
+            console.log('quiz1', currentQuiz)
+
             this.setState({
               currentQuiz: currentQuiz,
             })
@@ -109,20 +111,22 @@ export class AllQuestions extends Component {
   }
   render() {
     const quiz = this.state.currentQuiz
+    console.log('quiz2', quiz)
+    const quizArr = Object.keys(quiz)
     return (
       <div>
         <h1>Edit Your Current Quiz Below</h1>
         {
-          quiz ?
-            (quiz.length && quiz.map((question, idx) => {
+          quizArr.length ?
+            (quiz && quizArr.map((question, idx) => {
               return (
                 <div key={idx}>
-                  <div>{question.question}</div>
+                  <div>{quiz[question].question}</div>
                   <button onClick={(e) => { this.deleteQuestion(e, idx) }}> X </button>
-                  <div>{question.rightAnswer}</div>
-                  <div>{question.wrongAnswers[0]}</div>
-                  <div>{question.wrongAnswers[1]}</div>
-                  <div>{question.wrongAnswers[2]}</div>
+                  <div>{quiz[question].answers[3]}</div>
+                  <div>{quiz[question].answers[0]}</div>
+                  <div>{quiz[question].answers[1]}</div>
+                  <div>{quiz[question].answers[2]}</div>
                 </div>
               )
 
