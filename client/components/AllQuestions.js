@@ -30,6 +30,7 @@ export class AllQuestions extends Component {
     e.preventDefault()
     try {
       const questionSetId = this.props.match.params.questionSetId
+      const questionSetRef = await firebase.database().ref(`questionSets/${questionSetId}`).child(idx)
         .once('value', async (snapshot) => {
           try {
             const questionSetRef = await firebase.database().ref(`questionSets/${questionSetId}`).child(idx)
@@ -43,6 +44,25 @@ export class AllQuestions extends Component {
     catch (err) {
       console.log(err)
     }
+    // let currentQuiz
+    // try {
+    //   const questionSetId = this.props.match.params.questionSetId
+    //   const questionSetRef = await firebase.database().ref(`questionSets/${questionSetId}`)
+    //     .once('value', async (snapshot) => {
+    //       try {
+    //         currentQuiz = await snapshot.val()
+    //         this.setState({
+    //           currentQuiz: currentQuiz,
+    //          })
+    //       }
+    //       catch (err) {
+    //         console.log(err)
+    //       }
+    //     })
+    // }
+    // catch (err) {
+    //   console.log(err)
+    // }
   }
 
   async saveQuiz(e) {
@@ -69,7 +89,7 @@ export class AllQuestions extends Component {
     try {
       const questionSetId = this.props.match.params.questionSetId
       const questionSetRef = await firebase.database().ref(`questionSets/${questionSetId}`)
-        .once('value', async (snapshot) => {
+        .on('value', async (snapshot) => {
           try {
             currentQuiz = await snapshot.val()
             this.setState({
@@ -92,7 +112,9 @@ export class AllQuestions extends Component {
       <div>
         <h1>Edit Your Current Quiz Below</h1>
         {
-          quiz.length && quiz.map((question, idx) => {
+
+          quiz ? 
+         (quiz.length && quiz.map((question, idx) => {
             return (
               <div key={idx}>
                 <div>{question.question}</div>
@@ -104,9 +126,10 @@ export class AllQuestions extends Component {
               </div>
             )
 
-          })}
+          })): <div> </div>
+        }
         <button onClick={this.saveQuiz}>Click here for next thing</button>
-      </div>
+      </div> 
     )
   }
 }
