@@ -15,7 +15,7 @@ const Main = (props) => {
 
   return (
     <div>
-      <h1>Did You Do the</h1>
+      <h1>Did You Do the Reading?</h1>
       <nav>
         {
           isLoggedIn
