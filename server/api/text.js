@@ -53,7 +53,7 @@ router.post('/vocab', async (req, res, next)=> {
       questionObject.rightAnswer = synonym;
 
       if (!antonym.length){
-        questionObject.answers = randomWords;
+        questionObject.answers = [randomWords[0], randomWords[1], randomWords[2], synonym];
       } else {
         questionObject.answers = shuffle([antonym, randomWords[0], randomWords[1], synonym]);
 
