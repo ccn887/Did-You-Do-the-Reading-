@@ -20,21 +20,17 @@ export class AllQuestions extends Component {
     }
     this.saveQuiz = this.saveQuiz.bind(this)
     this.deleteQuestion = this.deleteQuestion.bind(this)
-    // this.getQuiz = this.getQuiz.bind(this)
 
-
-    //addQuestion, updatequestion
-    //edit answer
   }
 
-  async deleteQuestion(e, idx) {
+  async deleteQuestion(e, id) {
     e.preventDefault()
     try {
       const questionSetId = this.props.match.params.questionSetId
-      const questionSetRef = await firebase.database().ref(`questionSets/${questionSetId}`).child(idx)
+      const questionSetRef = await firebase.database().ref(`questionSets/${questionSetId}`).child(id)
         .once('value', async (snapshot) => {
           try {
-            const questionSetRef = await firebase.database().ref(`questionSets/${questionSetId}`).child(idx)
+            const questionSetRef = await firebase.database().ref(`questionSets/${questionSetId}`).child(id)
             questionSetRef.remove()
           }
           catch (err) {
@@ -45,25 +41,7 @@ export class AllQuestions extends Component {
     catch (err) {
       console.log(err)
     }
-    // let currentQuiz
-    // try {
-    //   const questionSetId = this.props.match.params.questionSetId
-    //   const questionSetRef = await firebase.database().ref(`questionSets/${questionSetId}`)
-    //     .once('value', async (snapshot) => {
-    //       try {
-    //         currentQuiz = await snapshot.val()
-    //         this.setState({
-    //           currentQuiz: currentQuiz,
-    //          })
-    //       }
-    //       catch (err) {
-    //         console.log(err)
-    //       }
-    //     })
-    // }
-    // catch (err) {
-    //   console.log(err)
-    // }
+
   }
 
   async saveQuiz(e) {
@@ -93,7 +71,6 @@ export class AllQuestions extends Component {
         .on('value', async (snapshot) => {
           try {
             currentQuiz = await snapshot.val()
-            console.log('quiz1', currentQuiz)
 
             this.setState({
               currentQuiz: currentQuiz,
@@ -111,18 +88,19 @@ export class AllQuestions extends Component {
   }
   render() {
     const quiz = this.state.currentQuiz
-    console.log('quiz2', quiz)
     const quizArr = Object.keys(quiz)
+
     return (
       <div>
         <h1>Edit Your Current Quiz Below</h1>
         {
           quizArr.length ?
-            (quiz && quizArr.map((question, idx) => {
+            (quiz && quizArr.map((question) => {
+
               return (
-                <div key={idx}>
+                <div key={question}>
                   <div>{quiz[question].question}</div>
-                  <button onClick={(e) => { this.deleteQuestion(e, idx) }}> X </button>
+                  <button onClick={(e) => { this.deleteQuestion(e, question) }}> X </button>
                   <div>{quiz[question].answers[3]}</div>
                   <div>{quiz[question].answers[0]}</div>
                   <div>{quiz[question].answers[1]}</div>
@@ -131,10 +109,10 @@ export class AllQuestions extends Component {
               )
 
 
-            })) : <div> </div>
+            })) : <div />
         }
         <button onClick={this.saveQuiz}>Click here for next thing</button>
-        <TeacherAddQuestion match ={this.props.match}/>
+        <TeacherAddQuestion match={this.props.match} />
       </div>
     )
   }
