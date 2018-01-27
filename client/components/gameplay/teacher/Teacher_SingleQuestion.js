@@ -1,7 +1,6 @@
 import firebase from '../../../../server/firebase'
 import React, { Component } from 'react'
 import { Card } from 'semantic-ui-react'
-import { shuffle } from '../../../utils'
 import { history } from '../../../history'
 import { Redirect } from 'react-router-dom'
 import { setGameOnStateThunk, setCurrentQuestionThunk } from '../../../store'
@@ -26,14 +25,11 @@ export class TeacherSingleQuestion extends Component {
 
     const gameRoomId = this.props.match.params.pin;
     const questionId = this.props.match.params.questionId;
-    const nextQuestionId = +this.props.match.params.questionId + 1
     this.props.setGameOnStateThunk(gameRoomId)
     this.props.setCurrentQuestionThunk(questionId, gameRoomId)
     const currentGame = this.props.currentGame
-    console.log('currentGameObj', this.props.currentGame)
-
     let timer = setInterval(this.tick, 1000);
-    this.setState({ timer, nextQuestionId });
+    this.setState({ timer });
 
   }
 
@@ -56,10 +52,8 @@ export class TeacherSingleQuestion extends Component {
   render() {
     const gameRoomId = this.props.match.params.pin;
     const questionId = this.props.match.params.questionId;
-    const nextQuestionId = this.state.nextQuestionId
     const timer = this.state.counter;
     const currentQuestion = this.props.currentQuestion
-    console.log('currentQ?', currentQuestion)
     const answerArray =  currentQuestion.answers ? Object.values(currentQuestion.answers) : []
 
     // const answerArray = indexArray.map(index => {
@@ -72,7 +66,7 @@ export class TeacherSingleQuestion extends Component {
       <div>
         {
           timer === 0
-            ? <Redirect to={`/teacher/${gameRoomId}/question/${nextQuestionId}`} />
+            ? <Redirect to={`/teacher/${gameRoomId}/answer/${questionId}`} />
             :
             (
               <div>

@@ -678,7 +678,6 @@ calumny n. Slander.
 Calvary n. The place where Christ was crucified.
 Calvinism n. The system of doctrine taught by John Calvin.
 Calvinize v. To teach or imbue with the doctrines of Calvinism.
-came n. A leaden sash-bar or grooved strip for fastening panes in stained-glass windows.
 cameo n. Any small engraved or carved work in relief.
 campaign n. A complete series of connected military operations.
 Canaanite n. A member of one of the three tribes that dwelt in the land of Canaan, or western Palestine.

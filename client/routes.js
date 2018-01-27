@@ -1,22 +1,22 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
-import {Route, Switch, Router} from 'react-router-dom'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { Route, Switch, Router } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import history from './history'
-import {Main, Login, Signup, UserHome, MakeQuiz, AllQuestions, TeacherWaitingRoom, StudentJoinGame, StudentWaitingRoom, TeacherSingleQuestion} from './components'
-import {me} from './store'
+import { Main, Login, Signup, UserHome, MakeQuiz, AllQuestions, TeacherWaitingRoom, StudentJoinGame, StudentWaitingRoom, TeacherSingleQuestion, TeacherAnswerReveal } from './components'
+import { me } from './store'
 
 
 /**
  * COMPONENT
  */
 class Routes extends Component {
-  componentDidMount () {
+  componentDidMount() {
     this.props.loadInitialData()
   }
 
-  render () {
-    const {isLoggedIn} = this.props
+  render() {
+    const { isLoggedIn } = this.props
 
     return (
       <Router history={history}>
@@ -27,37 +27,42 @@ class Routes extends Component {
             <Route path="/signup" component={Signup} />
             <Route path="/join" component={StudentJoinGame} />
             <Route
-            exact
-            path="/student-waiting-room/:pin"
-            component={StudentWaitingRoom}
+              exact
+              path="/student-waiting-room/:pin"
+              component={StudentWaitingRoom}
             />
             {
               isLoggedIn &&
-                <Switch>
-                  {/* Routes placed here are only available after logging in */}
-                  <Route path="/home" component={UserHome}
-                  />
-                  <Route
+              <Switch>
+                {/* Routes placed here are only available after logging in */}
+                <Route path="/home" component={UserHome}
+                />
+                <Route
                   exact
                   path="/make-quiz"
                   component={MakeQuiz}
-                  />
-                  <Route
+                />
+                <Route
                   exact
                   path="/:questionSetId/all-questions"
                   component={AllQuestions}
-                  />
-                  <Route
+                />
+                <Route
                   exact
                   path="/teacher-waiting-room/:pin"
                   component={TeacherWaitingRoom}
-                  />
-                  <Route
+                />
+                <Route
                   exact
                   path="/teacher/:pin/question/:questionId"
                   component={TeacherSingleQuestion}
-                  />
-                </Switch>
+                />
+                <Route
+                  exact
+                  path="/teacher/:pin/answer/:questionId"
+                  component={TeacherAnswerReveal}
+                />
+              </Switch>
             }
             {/* Displays our Login component as a fallback */}
             <Route component={Login} />
@@ -81,7 +86,7 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch) => {
   return {
-    loadInitialData () {
+    loadInitialData() {
       dispatch(me())
     }
   }

@@ -6,8 +6,16 @@ const API_KEY = '3bdcf6b9dc86fe668496d790bf084049';
 
 
 const lookup = async(word) => {
+  try{
   const thesaurus = await axios.get(`http://words.bighugelabs.com/api/2/${API_KEY}/${word}/json`);
+  if (thesaurus.data.Error){
+    return undefined
+  }
   return thesaurus.data;
+  }
+  catch (err){
+    return undefined
+  }
 }
 
 const getRandomIndex = (arr) => {
