@@ -12,3 +12,4 @@ export {default as TeacherWaitingRoom} from './gameplay/teacher/Teacher_WaitingR
 export {default as StudentJoinGame} from './gameplay/student/Student_JoinGame';
 export {default as StudentWaitingRoom} from './gameplay/student/Student_WaitingRoom';
 export {default as TeacherSingleQuestion} from './gameplay/teacher/Teacher_SingleQuestion';
+export {default as TeacherAnswerReveal} from './gameplay/teacher/Teacher_AnswerReveal';
