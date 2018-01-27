@@ -1,7 +1,7 @@
 import firebase from '../../server/firebase'
 import React, { Component } from 'react'
 import axios from 'axios'
-import { Form, TextArea, Button } from 'semantic-ui-react'
+import { Form, TextArea, Button, Container } from 'semantic-ui-react'
 import history from '../history'
 
 
@@ -55,9 +55,11 @@ export default class MakeQuiz extends Component {
   render() {
     return (
       <div>
-        <h1>Enter Your Text!</h1>
-        <Form.Field onChange={this.handleChange} control={TextArea} />
-        <Button type="submit" onClick={this.submit}> Generate Quiz </Button>
+        <Container>
+          <h3>enter text to generate quiz questions</h3>
+          <Form.TextArea id="enter-text" onChange={this.handleChange}  />
+          <Button type="submit" onClick={this.submit}> Generate Quiz </Button>
+        </Container>
       </div>
     )
   }

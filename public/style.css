@@ -2,12 +2,33 @@ body {
   font-family: sans-serif;
 }
 
+#game-title{
+  font-family: 'Peralta', cursive;
+  font-size: 3.5rem;
+  text-align: center;
+  color: #C6DABF;
+}
+
+#enter-text{
+  width: 40vw;
+  height: 15vh;
+}
+
+#children-wrapper{
+  background-color: #114B5F;
+}
+
 a {
   text-decoration: none;
 }
 
 label {
   display: block;
+}
+
+#app-header{
+
+  background-color:#008080
 }
 
 nav a {
@@ -22,4 +43,34 @@ form div {
 
 .teacher-single-answer{
   width: 10rem !important;
+}
+
+.question-edit-box{
+  width: 75vw;
+  margin: 10px 10px !important;
+}
+
+.question-edit-flex{
+  display: flex;
+  justify-content: space-between;
+}
+
+.right-answer-flex{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#all-questions-container{
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.two-button-flex{
+  display: flex;
+  justify-content: space-around;
+}
+
+.add-new-question{
+  margin: 10px 10px !important;
 }

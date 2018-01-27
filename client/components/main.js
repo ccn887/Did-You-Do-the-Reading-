@@ -15,7 +15,8 @@ const Main = (props) => {
 
   return (
     <div>
-      <h1>Did You Do the Reading?</h1>
+      <div id="app-header">
+      <h1 id='game-title'>Did You Do the Reading?</h1>
       <nav>
         {
           isLoggedIn
@@ -32,8 +33,10 @@ const Main = (props) => {
             </div>
         }
       </nav>
-      <hr />
+    </div>
+    <div id="children-wrapper">
       {children}
+    </div>
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import firebase from '../../../../server/firebase'
 import React, { Component } from 'react'
-import { Form, TextArea, Input, Button } from 'semantic-ui-react'
+import { Form, Input, Button, Container, Message } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { me } from '../../../store';
 
@@ -61,27 +61,32 @@ export class TeacherAddQuestion extends Component {
         // const users = Object.keys(this.state.users)
 
         return (
-            <div>
+            <Container>
+              <Message className="add-new-question">
                 <Form onSubmit = {this.addQuestion}>
+                  <div className="right-answer-flex">
                     <label> Question
-                  </label>
-                  <Input type = "text" name = "question"/> 
-                  <label> Solution
-                  <Input type = "text" name = "solution"/> 
-                  </label>
-                  <label> Wrong Answer 1
-                  <Input type = "text" name = "wrongOne"/> 
-                  </label>
-                  <label> Wrong Answer 2
-                  <Input type = "text" name = "wrongTwo"/> 
-                  </label>
-                  <label> Wrong Answer 3
-                  <Input type = "text" name = "wrongThree"/> 
-                  </label>
+                      <Input type = "text" name = "question"/>
+                    </label>
+                    <label> Solution
+                      <Input type = "text" name = "solution"/>
+                    </label>
+                  </div>
+                  <div className="right-answer-flex">
+                    <label> Wrong Answer 1
+                      <Input type = "text" name = "wrongOne"/>
+                    </label>
+                    <label> Wrong Answer 2
+                      <Input type = "text" name = "wrongTwo"/>
+                    </label>
+                    <label> Wrong Answer 3
+                      <Input type = "text" name = "wrongThree"/>
+                    </label>
+                  </div>
                   <Button type = "Submit" value = "submit"> Add Question </Button>
-                    </Form>
-
-      </div>
+                </Form>
+              </Message>
+            </Container>
                 )
   }
 }
@@ -89,11 +94,11 @@ export class TeacherAddQuestion extends Component {
 const mapState = state => {
     return { user: state.user }
   }
-  
+
   const mapDispatch = {me}
-  
+
   export default connect(mapState, mapDispatch)(TeacherAddQuestion)
-  
+
 // const mapState = state => {
 //   return { currentGame: state.currentGame }
 // }
