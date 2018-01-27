@@ -4,7 +4,7 @@ import { Card } from 'semantic-ui-react'
 import { shuffle } from '../../../utils'
 import { history } from '../../../history'
 import { Redirect } from 'react-router-dom'
-import { setGameOnStateThunk } from '../../../store'
+import { setGameOnStateThunk, setCurrentQuestionThunk } from '../../../store'
 import { connect } from 'react-redux'
 
 
@@ -13,14 +13,12 @@ export class TeacherSingleQuestion extends Component {
   constructor() {
     super();
     this.state = {
-      currentQuestion: {},
       timer: null,
       counter: 20,
       shuffledArray: [],
       nextQuestionId: null
     }
     this.tick = this.tick.bind(this);
-    // this.timesUp = this.timesUp.bind(this);
 
   }
 
@@ -30,6 +28,7 @@ export class TeacherSingleQuestion extends Component {
     const questionId = this.props.match.params.questionId;
     const nextQuestionId = +this.props.match.params.questionId + 1
     this.props.setGameOnStateThunk(gameRoomId)
+    this.props.setCurrentQuestionThunk(questionId, gameRoomId)
     const currentGame = this.props.currentGame
     console.log('currentGameObj', this.props.currentGame)
 
@@ -59,11 +58,13 @@ export class TeacherSingleQuestion extends Component {
     const questionId = this.props.match.params.questionId;
     const nextQuestionId = this.state.nextQuestionId
     const timer = this.state.counter;
-    const currentQuestion = this.props.currentGame[questionId]
-    const indexArray = currentQuestion ? Object.keys(currentQuestion.answers) : []
-    const answerArray = indexArray.map(index => {
-      return currentQuestion.answers[index]
-    });
+    const currentQuestion = this.props.currentQuestion
+    console.log('currentQ?', currentQuestion)
+    const answerArray =  currentQuestion.answers ? Object.values(currentQuestion.answers) : []
+
+    // const answerArray = indexArray.map(index => {
+    //   return currentQuestion.answers[index]
+    // });
 
 
 
@@ -101,9 +102,10 @@ export class TeacherSingleQuestion extends Component {
 
 const mapState = state => {
   return {
-    currentGame: state.currentGame
+    currentGame: state.currentGame,
+    currentQuestion: state.currentQuestion
   }
 }
-const mapDispatch = { setGameOnStateThunk }
+const mapDispatch = { setGameOnStateThunk, setCurrentQuestionThunk }
 
 export default connect(mapState, mapDispatch)(TeacherSingleQuestion)
