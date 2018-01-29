@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { Form, Input, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import history from '../../../history'
+import { setCurrentStudent } from '../../../store'
 
 
 export class StudentJoinGame extends Component {
@@ -37,6 +38,7 @@ export class StudentJoinGame extends Component {
       })
     const gameRoomRef = firebase.database().ref(`gameRooms/${currentGame}/users`)
       .child(name).push(true)
+      this.props.setCurrentStudent(usersRef.key)
     history.push(`/student-waiting-room/${currentGame}`)
   }
   render() {
@@ -62,5 +64,6 @@ const mapState = state => {
   return { currentGame: state.currentGame }
 }
 
+const mapDispatch = {setCurrentStudent}
 
-export default connect(mapState)(StudentJoinGame)
+export default connect(mapState, mapDispatch)(StudentJoinGame)
