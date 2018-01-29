@@ -1,7 +1,7 @@
 import firebase from '../../server/firebase'
 import React, { Component } from 'react'
 import axios from 'axios'
-import { Form, TextArea, Button } from 'semantic-ui-react'
+import { Form, TextArea, Button, Message, Icon, Container } from 'semantic-ui-react'
 import { me } from '../store';
 import { connect } from 'react-redux'
 import history from '../history'
@@ -16,10 +16,12 @@ export class AllQuestions extends Component {
       currentQuiz: {},
       teacherId: null,
       key: null,
-      pin: ''
+      pin: '',
+      showAddForm: false
     }
     this.saveQuiz = this.saveQuiz.bind(this)
     this.deleteQuestion = this.deleteQuestion.bind(this)
+    this.showAddForm = this.showAddForm.bind(this);
 
   }
 
@@ -63,6 +65,7 @@ export class AllQuestions extends Component {
       console.log(err)
     }
   }
+
   async componentDidMount() {
     let currentQuiz
     try {
@@ -86,33 +89,67 @@ export class AllQuestions extends Component {
     }
 
   }
+
+  showAddForm(){
+    this.setState({
+      showAddForm: true
+    })
+  }
+
   render() {
     const quiz = this.state.currentQuiz
     const quizArr = Object.keys(quiz)
+    const showAddForm = this.state.showAddForm;
 
     return (
       <div>
-        <h1>Edit Your Current Quiz Below</h1>
+      <Container id="all-questions-container">
+        <h2>edit your quiz below</h2>
         {
           quizArr.length ?
             (quiz && quizArr.map((question) => {
 
               return (
                 <div key={question}>
-                  <div>{quiz[question].question}</div>
-                  <button onClick={(e) => { this.deleteQuestion(e, question) }}> X </button>
-                  <div>{quiz[question].answers[3]}</div>
-                  <div>{quiz[question].answers[0]}</div>
-                  <div>{quiz[question].answers[1]}</div>
-                  <div>{quiz[question].answers[2]}</div>
+                  <Message className='question-edit-box' color='teal'>
+                    <div className='question-edit-flex'>
+                      <h3 >{quiz[question].question} </h3>
+                      <Button onClick={(e) => { this.deleteQuestion(e, question) }}>
+                        <Icon name="trash"></Icon>
+                      </Button>
+                    </div>
+                    <div>
+                      {quiz[question].answers.map(answer => {
+                        if(answer === quiz[question].rightAnswer){
+                          return (
+                            <div className='right-answer-flex' key={answer}>
+                              <div>{answer}</div>
+                              <Icon color="olive" name="checkmark"></Icon>
+                            </div>
+                          )
+                        } else {
+                          return (
+                            <div key={answer}>
+                              <div>{answer}</div>
+                            </div>
+                          )
+                        }
+                      })
+                    }
+                    </div>
+                  </Message>
                 </div>
               )
 
 
             })) : <div />
         }
-        <button onClick={this.saveQuiz}>Click here for next thing</button>
-        <TeacherAddQuestion match={this.props.match} />
+        <div className="two-button-flex">
+          <Button color="orange" onClick={this.showAddForm}>Add Another Question</Button>
+          <Button color="purple" onClick={this.saveQuiz}>Generate Quiz</Button>
+        </div>
+        {showAddForm && <TeacherAddQuestion match={this.props.match} />}
+        </Container>
       </div>
     )
   }

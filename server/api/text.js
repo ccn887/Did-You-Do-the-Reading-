@@ -51,7 +51,7 @@ router.post('/vocab', async (req, res, next) => {
 
 
 
-          questionObject.question = `What word means ${word}?`;
+          questionObject.question = `Which word means ${word}?`;
           questionObject.rightAnswer = synonym;
 
           if (!antonym.length) {
