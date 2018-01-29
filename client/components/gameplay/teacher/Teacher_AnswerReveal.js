@@ -1,52 +1,78 @@
 import React, { Component } from 'react'
-import firebase from '../../../../server/firebase'
 import { connect } from 'react-redux'
 import { setGameOnStateThunk, setCurrentQuestionThunk, updateGameState } from '../../../store'
 import history from '../../../history'
-import { Card, Button } from 'semantic-ui-react'
+import { Button } from 'semantic-ui-react'
 
 
 
 export class TeacherAnswerReveal extends Component {
   constructor() {
     super()
+    this.state = {
+      gameRoomId: '',
+      questionId: ''
+    }
 
     this.nextQuestion = this.nextQuestion.bind(this)
+    this.endGame = this.endGame.bind(this)
   }
 
   componentDidMount() {
-    const gameRoomId = this.props.match.params.pin;
-    const questionId = this.props.match.params.questionId;
-    this.props.setGameOnStateThunk(gameRoomId)
-    this.props.setCurrentQuestionThunk(questionId, gameRoomId)
+    this.props.setGameOnStateThunk(this.props.match.params.pin)
+    this.props.setCurrentQuestionThunk(this.props.match.params.questionId, this.props.match.params.pin)
+  }
+
+  componentWillReceiveProps(nextProps){
+    this.setState({
+      gameRoomId: this.props.match.params.pin,
+      questionId: this.props.match.params.questionId
+    })
   }
 
   nextQuestion() {
-
     const currentGame = this.props.currentGame
     const gameRoomId = this.props.match.params.pin;
-    console.log()
     const questionsArr = Object.keys(currentGame)
     const currentQuestionId = this.props.match.params.questionId
     const nextIndex = questionsArr.indexOf(currentQuestionId) + 1
     const nextId = questionsArr[nextIndex]
-    // if nextId is undefined, end the game
-    // set "gameOver" as game state
-    // render leaderboard
-    console.log('NEXT ID:', nextId )
+
     this.props.updateGameState(gameRoomId, 'askingQuestion');
     history.push(`/teacher/${gameRoomId}/question/${nextId}`)
+  }
 
+  endGame() {
+    const gameRoomId = this.props.match.params.pin
+
+    this.props.updateGameState(gameRoomId, 'gameOver')
+    history.push(`/teacher/${gameRoomId}/gameOver`)
   }
 
   render() {
+
+    const currentGame = this.props.currentGame
+    const questionsArr = Object.keys(currentGame)
+    const currentQuestionId = this.props.match.params.questionId
+
+    let lastQuestion;
+    if (questionsArr.indexOf(currentQuestionId) === questionsArr.length - 1){
+      lastQuestion = true;
+    } else {
+      lastQuestion = false;
+    }
+
     const currentQuestion = this.props.currentQuestion.question || ''
     const rightAnswer = this.props.currentQuestion.rightAnswer || ''
     return (
       <div>
         <h1>{currentQuestion}</h1>
         <h1>{rightAnswer}</h1>
-        <Button className="ui button teal" onClick={this.nextQuestion}> Next Question</Button>
+        {
+          lastQuestion ?
+          <Button className="ui button purple" onClick={this.endGame}> End Game</Button>:
+          <Button className="ui button teal" onClick={this.nextQuestion}> Next Question</Button>
+        }
       </div>
     )
   }

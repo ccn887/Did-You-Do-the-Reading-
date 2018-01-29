@@ -21,10 +21,7 @@ export class StudentWaitingRoom extends Component {
     this.props.listenForNewStudents(gameId);
     this.props.listenForGameStateChange(gameId);
 
-    // if (this.props.gameState === 'askingQuestion'){
-    //   history.push(`/${gameId}/question/${firstQuestionId}/${userId}`)
-    // }
-
+  
 }
 
 componentWillReceiveProps(nextProps){
