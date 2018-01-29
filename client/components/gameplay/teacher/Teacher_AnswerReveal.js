@@ -27,6 +27,8 @@ export class TeacherAnswerReveal extends Component {
    const currentQuestionId = this.props.match.params.questionId
     const nextIndex = questionsArr.indexOf(currentQuestionId) + 1
     const nextId = questionsArr[nextIndex]
+    const gameStateRef = firebase.database().ref(`gameRooms/${gameRoomId}/gameState`)
+    .set('askingQuestion')
     history.push(`/teacher/${gameRoomId}/question/${nextId}`)
 
   }

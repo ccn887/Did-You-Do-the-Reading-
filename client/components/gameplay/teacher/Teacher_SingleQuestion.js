@@ -1,7 +1,7 @@
 import firebase from '../../../../server/firebase'
 import React, { Component } from 'react'
 import { Card } from 'semantic-ui-react'
-import { history } from '../../../history'
+import history from '../../../history'
 import { Redirect } from 'react-router-dom'
 import { setGameOnStateThunk, setCurrentQuestionThunk } from '../../../store'
 import { connect } from 'react-redux'
@@ -18,6 +18,7 @@ export class TeacherSingleQuestion extends Component {
       nextQuestionId: null
     }
     this.tick = this.tick.bind(this);
+    this.gameChangeState = this.gameChangeState.bind(this);
 
   }
 
@@ -46,7 +47,12 @@ export class TeacherSingleQuestion extends Component {
     }
   }
 
-  shuffleToState(arr) {
+  gameChangeState() {
+    const gameRoomId = this.props.match.params.pin;
+    const questionId = this.props.match.params.questionId;
+   const gameStateRef = firebase.database().ref(`gameRooms/${gameRoomId}/gameState`)
+    .set('answeringQuestion')
+    history.push(`/teacher/${gameRoomId}/answer/${questionId}`)
   }
 
   render() {
@@ -54,43 +60,42 @@ export class TeacherSingleQuestion extends Component {
     const questionId = this.props.match.params.questionId;
     const timer = this.state.counter;
     const currentQuestion = this.props.currentQuestion
-    const answerArray =  currentQuestion.answers ? Object.values(currentQuestion.answers) : []
+    const answerArray = currentQuestion.answers ? Object.values(currentQuestion.answers) : []
 
     // const answerArray = indexArray.map(index => {
     //   return currentQuestion.answers[index]
     // });
 
-
-
+    if (timer === 0) {
     return (
       <div>
-        {
-          timer === 0
-            ? <Redirect to={`/teacher/${gameRoomId}/answer/${questionId}`} />
-            :
-            (
-              <div>
-                <div>
-                  <Card>
-                    <h1 id="teacher-single-question">{currentQuestion && currentQuestion.question}</h1>
-                  </Card>
-                  <Card.Group itemsPerRow={2}>
-                    <Card className="teacher-single-answer">{answerArray.length && answerArray[0]}</Card>
-                    <Card className="teacher-single-answer">{answerArray.length && answerArray[1]}</Card>
-                    <Card className="teacher-single-answer">{answerArray.length && answerArray[2]}</Card>
-                    <Card className="teacher-single-answer">{answerArray.length && answerArray[3]}</Card>
-                  </Card.Group>
-                </div>
-                <div>
-                  <div>Time Remaining: {this.state.counter}</div>
-                </div>
-              </div>
-            )
-        }
+      {this.gameChangeState()}
       </div>
     )
-  }
+    } else {
 
+      return (
+        <div>
+          <div>
+            <div>
+              <Card>
+                <h1 id="teacher-single-question">{currentQuestion && currentQuestion.question}</h1>
+              </Card>
+              <Card.Group itemsPerRow={2}>
+                <Card className="teacher-single-answer">{answerArray.length && answerArray[0]}</Card>
+                <Card className="teacher-single-answer">{answerArray.length && answerArray[1]}</Card>
+                <Card className="teacher-single-answer">{answerArray.length && answerArray[2]}</Card>
+                <Card className="teacher-single-answer">{answerArray.length && answerArray[3]}</Card>
+              </Card.Group>
+            </div>
+            <div>
+              <div>Time Remaining: {this.state.counter}</div>
+            </div>
+          </div>
+        </div>
+      )
+    }
+  }
 
 }
 
