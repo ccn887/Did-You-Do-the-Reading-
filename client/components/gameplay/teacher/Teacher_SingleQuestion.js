@@ -14,30 +14,25 @@ export class TeacherSingleQuestion extends Component {
     this.state = {
       timer: null,
       counter: 20,
-      shuffledArray: [],
       nextQuestionId: null
     }
     this.tick = this.tick.bind(this);
     this.gameChangeState = this.gameChangeState.bind(this);
-
   }
 
   componentDidMount() {
-
     const gameRoomId = this.props.match.params.pin;
     const questionId = this.props.match.params.questionId;
     this.props.setGameOnStateThunk(gameRoomId)
     this.props.setCurrentQuestionThunk(questionId, gameRoomId)
-    const currentGame = this.props.currentGame
-    let timer = setInterval(this.tick, 1000);
-    this.setState({ timer });
 
+    this.timer = setInterval(this.tick, 1000);
   }
 
-  // componentWillUnmount() {
-  //   this.setState({timer: null, counter: 20, nextQuestionId: null})
-
-  // }
+  componentWillUnmount() {
+    clearInterval(this.timer)
+    this.setState({counter: 20, nextQuestionId: null})
+  }
 
   tick() {
     if (this.state.counter === 0) {
@@ -55,22 +50,16 @@ export class TeacherSingleQuestion extends Component {
   }
 
   render() {
-    const gameRoomId = this.props.match.params.pin;
-    const questionId = this.props.match.params.questionId;
-    const timer = this.state.counter;
+
+    const counter = this.state.counter;
     const currentQuestion = this.props.currentQuestion
     const answerArray = currentQuestion.answers ? Object.values(currentQuestion.answers) : []
 
-    // const answerArray = indexArray.map(index => {
-    //   return currentQuestion.answers[index]
-    // });
 
-    if (timer === 0) {
-    return (
-      <div>
-      {this.gameChangeState()}
-      </div>
-    )
+    if (counter === 0) {
+      return (
+        <div>{this.gameChangeState()}</div>
+      )
     } else {
 
       return (

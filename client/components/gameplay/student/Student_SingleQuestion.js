@@ -35,6 +35,9 @@ export class StudentSingleQuestion extends Component {
     if (nextProps.gameState === 'answeringQuestion'){
       history.push(`/${gameRoomId}/waiting/${questionId}/${studentId}`)
     }
+    else if (nextProps.gameState === 'gameOver'){
+      history.push(`/${gameRoomId}/gameOver/${studentId}`)
+    }
   }
 
   componentWillUnmount(){
@@ -50,7 +53,7 @@ export class StudentSingleQuestion extends Component {
         const studentId = this.props.match.params.studentId
     const gameRoomId = this.props.match.params.pin;
         const rightAnswer = questionObj.rightAnswer
-    if(e.target.value === rightAnswer) {
+    if (e.target.value === rightAnswer) {
           const usersRef = firebase.database().ref(`users/${studentId}/score`)
             .transaction(function (score) {
               return score + 1

@@ -1,66 +1,49 @@
 import React, { Component } from 'react'
-import { Card, Button } from 'semantic-ui-react'
 import { setGameOnStateThunk, listenForGameStateChange, stopListeningForGameState } from '../../../store'
 import { connect } from 'react-redux'
-import firebase from '../../../../server/firebase'
 import history from '../../../history'
 
 
 export class StudentAnswerReveal extends Component {
   constructor() {
     super();
-
+    this.state = {
+      gameRoomId: '',
+      studentId: ''
+    }
     this.nextQuestion = this.nextQuestion.bind(this)
   }
 
-componentDidMount() {
-    const currentGame = this.props.currentGame
-    const gameRoomId = this.props.match.params.pin;
-    const studentId = this.props.match.params.studentId
-    const questionsArr = Object.keys(currentGame)
-    const currentQuestionId = this.props.match.params.questionId
-    const nextIndex = questionsArr.indexOf(currentQuestionId) + 1
-    const nextId = questionsArr[nextIndex]
+  componentDidMount() {
 
-    this.props.setGameOnStateThunk(gameRoomId)
-    this.props.listenForGameStateChange(gameRoomId);
-
-
-    // try {
-    //   const gameRoomId = this.props.match.params.pin;
-    //   this.props.setGameOnStateThunk(gameRoomId)
-    //   const gameRoomRef = firebase.database().ref(`gameRooms/${gameRoomId}/gameState`)
-    //     .on('value', snapshot => {
-    //       if (snapshot.val() === 'answeringQuestion') {
-    //         const gameSecondStateRef = firebase.database().ref(`gameRooms/${gameRoomId}/gameState`)
-    //           .on('value', snapshot => {
-    //             if (snapshot.val() === 'askingQuestion') {
-    //               this.nextQuestion()
-    //             }
-    //           })
-    //       }
-    //     })
-    // }
-    // catch (err) {
-    //   console.error('could not get game state', err)
-    // }
+    this.props.setGameOnStateThunk(this.props.match.params.pin)
+    this.props.listenForGameStateChange(this.props.match.params.pin);
   }
 
   componentWillReceiveProps(nextProps){
+
+    this.setState({
+      gameRoomId: this.props.match.params.pin,
+      studentId: this.props.match.params.studentId
+    })
+
     if (nextProps.gameState === 'askingQuestion' && this.props.gameState === 'answeringQuestion'){
       this.nextQuestion();
+    }
+    if (nextProps.gameState === 'gameOver'){
+      console.log('helloooooo game over!')
+      history.push(`/${this.state.gameRoomId}/gameOver/${this.state.studentId}`)
     }
   }
 
   nextQuestion() {
     const currentGame = this.props.currentGame
-    const gameRoomId = this.props.match.params.pin;
-    const studentId = this.props.match.params.studentId
     const questionsArr = Object.keys(currentGame)
     const currentQuestionId = this.props.match.params.questionId
     const nextIndex = questionsArr.indexOf(currentQuestionId) + 1
     const nextId = questionsArr[nextIndex]
-    history.push(`/${gameRoomId}/question/${nextId}/${studentId}`)
+
+    history.push(`/${this.state.gameRoomId}/question/${nextId}/${this.state.studentId}`)
 
   }
 
