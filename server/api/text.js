@@ -13,6 +13,7 @@ router.post('/vocab', async (req, res, next) => {
   try {
     const response = await WordList.findAll({
       where: {
+        // REVIEW: is word indexed?
         word: {
           [Op.or]: textArray
         }

@@ -28,12 +28,14 @@ export class TeacherSingleQuestion extends Component {
     this.props.setGameOnStateThunk(gameRoomId)
     this.props.setCurrentQuestionThunk(questionId, gameRoomId)
     const currentGame = this.props.currentGame
-    let timer = setInterval(this.tick, 1000);
-    this.setState({ timer });
+    // REVIEW: clean up this timer on unmount
+    this.timer = setInterval(this.tick, 1000);
+    // this.setState({ timer });
 
   }
 
   // componentWillUnmount() {
+  //   clearInterval(this.timer)
   //   this.setState({timer: null, counter: 20, nextQuestionId: null})
 
   // }
@@ -52,6 +54,7 @@ export class TeacherSingleQuestion extends Component {
   render() {
     const gameRoomId = this.props.match.params.pin;
     const questionId = this.props.match.params.questionId;
+    // REVIEW: is it a counter or a timer?
     const timer = this.state.counter;
     const currentQuestion = this.props.currentQuestion
     const answerArray =  currentQuestion.answers ? Object.values(currentQuestion.answers) : []
@@ -62,6 +65,8 @@ export class TeacherSingleQuestion extends Component {
 
 
 
+    // REVIEW: redirect as a side effect of rendering seems odd
+    //         how else could we do this?
     return (
       <div>
         {

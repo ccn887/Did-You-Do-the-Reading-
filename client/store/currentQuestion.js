@@ -9,6 +9,17 @@ export const setCurrentQuestion = question => ({type: SET_CURRENT_QUESTION, ques
 
 
 export const setCurrentQuestionThunk = (qId, pin) => dispatch =>{
+  // REVIEW: async
+  // const ref = firebase.database().ref(`gameRooms/${pin}/quiz/${qId}`)
+  // try {
+  //   const snapshot = await snapshot.once('value')
+  //   const currentQuestion = snapshot.val();
+  //   console.log('currentqfromfb', currentQuestion)
+  //   dispatch(setCurrentQuestion(currentQuestion))
+  // }
+  // catch (error) {
+  //   // handleError
+  // }
   firebase.database().ref(`gameRooms/${pin}/quiz/${qId}`)
       .once('value', snapshot => {
         const currentQuestion = snapshot.val();
