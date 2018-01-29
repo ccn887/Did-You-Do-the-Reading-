@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { Card } from 'semantic-ui-react'
 import history from '../../../history'
 import { Redirect } from 'react-router-dom'
-import { setGameOnStateThunk, setCurrentQuestionThunk } from '../../../store'
+import { setGameOnStateThunk, setCurrentQuestionThunk, updateGameState } from '../../../store'
 import { connect } from 'react-redux'
 
 
@@ -50,8 +50,7 @@ export class TeacherSingleQuestion extends Component {
   gameChangeState() {
     const gameRoomId = this.props.match.params.pin;
     const questionId = this.props.match.params.questionId;
-   const gameStateRef = firebase.database().ref(`gameRooms/${gameRoomId}/gameState`)
-    .set('answeringQuestion')
+    this.props.updateGameState(gameRoomId, 'answeringQuestion');
     history.push(`/teacher/${gameRoomId}/answer/${questionId}`)
   }
 
@@ -102,9 +101,10 @@ export class TeacherSingleQuestion extends Component {
 const mapState = state => {
   return {
     currentGame: state.currentGame,
-    currentQuestion: state.currentQuestion
+    currentQuestion: state.currentQuestion,
+    gameState: state.gameState
   }
 }
-const mapDispatch = { setGameOnStateThunk, setCurrentQuestionThunk }
+const mapDispatch = { setGameOnStateThunk, setCurrentQuestionThunk, updateGameState }
 
 export default connect(mapState, mapDispatch)(TeacherSingleQuestion)

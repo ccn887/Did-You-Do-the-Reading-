@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import firebase from '../../../../server/firebase'
 import { connect } from 'react-redux'
-import { setGameOnStateThunk, setCurrentQuestionThunk } from '../../../store'
+import { setGameOnStateThunk, setCurrentQuestionThunk, updateGameState } from '../../../store'
 import history from '../../../history'
 import { Card, Button } from 'semantic-ui-react'
 
@@ -20,18 +20,25 @@ export class TeacherAnswerReveal extends Component {
     this.props.setGameOnStateThunk(gameRoomId)
     this.props.setCurrentQuestionThunk(questionId, gameRoomId)
   }
+
   nextQuestion() {
+
     const currentGame = this.props.currentGame
     const gameRoomId = this.props.match.params.pin;
+    console.log()
     const questionsArr = Object.keys(currentGame)
-   const currentQuestionId = this.props.match.params.questionId
+    const currentQuestionId = this.props.match.params.questionId
     const nextIndex = questionsArr.indexOf(currentQuestionId) + 1
     const nextId = questionsArr[nextIndex]
-    const gameStateRef = firebase.database().ref(`gameRooms/${gameRoomId}/gameState`)
-    .set('askingQuestion')
+    // if nextId is undefined, end the game
+    // set "gameOver" as game state
+    // render leaderboard
+    console.log('NEXT ID:', nextId )
+    this.props.updateGameState(gameRoomId, 'askingQuestion');
     history.push(`/teacher/${gameRoomId}/question/${nextId}`)
 
   }
+
   render() {
     const currentQuestion = this.props.currentQuestion.question || ''
     const rightAnswer = this.props.currentQuestion.rightAnswer || ''
@@ -53,7 +60,6 @@ const mapState = state => {
   }
 }
 
-const mapDispatch = { setGameOnStateThunk, setCurrentQuestionThunk }
+const mapDispatch = { setGameOnStateThunk, setCurrentQuestionThunk, updateGameState }
 
 export default connect(mapState, mapDispatch)(TeacherAnswerReveal)
-

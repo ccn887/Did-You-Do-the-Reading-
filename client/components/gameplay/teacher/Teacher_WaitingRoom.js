@@ -35,7 +35,14 @@ playGame(e) {
     history.push(`/teacher/${gameRoomId}/question/${firstQuestionId}`)
   }
   render() {
-    const users = Object.keys(this.props.currentStudents);
+
+    let users;
+    if (this.props.currentStudents){
+      users = Object.keys(this.props.currentStudents)
+    } else {
+      users = [];
+    }
+
 
     const gamePin = this.props.match.params.pin
 
