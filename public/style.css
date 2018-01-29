@@ -6,8 +6,11 @@ body {
   font-family: 'Peralta', cursive;
   font-size: 3.5rem;
   text-align: center;
-  color: #C6DABF;
+  color: #F3E9D2;
 }
+
+
+
 
 #enter-text{
   width: 40vw;
@@ -20,6 +23,7 @@ body {
 
 a {
   text-decoration: none;
+  color: #C6DABF !important;
 }
 
 label {

@@ -35,6 +35,9 @@ export class StudentSingleQuestion extends Component {
     if (nextProps.gameState === 'answeringQuestion') {
       history.push(`/${gameRoomId}/waiting/${questionId}/${studentId}`)
     }
+    else if (nextProps.gameState === 'gameOver'){
+      history.push(`/${gameRoomId}/gameOver/${studentId}`)
+    }
   }
 
   componentWillUnmount() {
@@ -49,6 +52,7 @@ export class StudentSingleQuestion extends Component {
     const questionId = this.props.match.params.questionId;
     const studentId = this.props.match.params.studentId
     const gameRoomId = this.props.match.params.pin;
+
     const rightAnswer = questionObj.rightAnswer
     if (e.target.value === rightAnswer) {
       this.props.addToStudentScore(studentId);
@@ -56,6 +60,7 @@ export class StudentSingleQuestion extends Component {
     } else {
       this.props.breakStudentStreak(studentId)
     }
+
     history.push(`/${gameRoomId}/waiting/${questionId}/${studentId}`)
 
   }
