@@ -39,7 +39,8 @@ export class StudentJoinGame extends Component {
     const gameRoomRef = firebase.database().ref(`gameRooms/${currentGame}/users`)
       .child(name).push(true)
       this.props.setCurrentStudent(usersRef.key)
-    history.push(`/student-waiting-room/${currentGame}`)
+      const studentId = usersRef.key
+    history.push(`/student-waiting-room/${currentGame}/${studentId}`)
   }
   render() {
     return (

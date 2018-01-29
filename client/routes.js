@@ -28,7 +28,7 @@ class Routes extends Component {
             <Route path="/join" component={StudentJoinGame} />
             <Route
               exact
-              path="/student-waiting-room/:pin"
+              path="/student-waiting-room/:pin/:studentId"
               component={StudentWaitingRoom}
             />
             <Route

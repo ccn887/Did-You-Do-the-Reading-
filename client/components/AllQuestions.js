@@ -56,7 +56,8 @@ export class AllQuestions extends Component {
       let newGameRoomRef = gameRoomRef.child(pin).set({
         quiz: quiz,
         teacherId: teacherId,
-        pin: pin
+        pin: pin,
+        gameState: 'waitingRoom'
       })
       history.push(`/teacher-waiting-room/${pin}`)
 
@@ -71,7 +72,7 @@ export class AllQuestions extends Component {
     try {
       const questionSetId = this.props.match.params.questionSetId
       const questionSetRef = await firebase.database().ref(`questionSets/${questionSetId}`)
-        .on('value', async (snapshot) => {
+        .on('value', async  (snapshot) => {
           try {
             currentQuiz = await snapshot.val()
 
