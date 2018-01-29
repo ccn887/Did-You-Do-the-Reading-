@@ -1,8 +1,9 @@
 import firebase from 'firebase'
 
+const API_KEY = process.env.WORDS_API_KEY
 
 var config = {
-  apiKey: "AIzaSyCwlnC_PyCan4hJZD93I0u7cgOtOrkV-6A",
+  apiKey: API_KEY,
   authDomain: "did-you-do-the-reading.firebaseapp.com",
   databaseURL: "https://did-you-do-the-reading.firebaseio.com",
   projectId: "did-you-do-the-reading",

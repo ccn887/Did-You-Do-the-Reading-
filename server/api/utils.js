@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const API_KEY = '3bdcf6b9dc86fe668496d790bf084049';
+const API_KEY = process.env.WORDS_API_KEY;
 
 
 
