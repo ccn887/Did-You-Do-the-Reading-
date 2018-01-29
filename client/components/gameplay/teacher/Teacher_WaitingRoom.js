@@ -3,60 +3,48 @@ import React, { Component } from 'react'
 import { Form, TextArea, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import history from '../../../history'
-import { setGameOnStateThunk } from '../../../store'
+import { setGameOnStateThunk, listenForNewStudents, stopListeningForNewStudents, updateGameState } from '../../../store'
 
 export class TeacherWaitingRoom extends Component {
   constructor() {
-    super()
-    this.state = {
-      users: [],
-      currentGame: ''
-    }
+    super();
     this.playGame = this.playGame.bind(this)
 
   }
-  async componentDidMount() {
+  componentDidMount() {
     const gameId = this.props.match.params.pin
-    const users = this.state.users
+
     this.props.setGameOnStateThunk(gameId)
-    let newUser = []
-    try{
-    await firebase.database().ref(`gameRooms/${gameId}/users`)
-      .on('value', (snapshot) => {
-        newUser = snapshot.val()
-        this.setState({
-          users: newUser || users
-        })
-      })
-    }
-    catch(err){
-      console.error('Error mounting component:', err)
-    }
+
+
+    this.props.listenForNewStudents(gameId);
+  }
+
+  componentWillUnmount(){
+    const gameId = this.props.match.params.pin;
+    this.props.stopListeningForNewStudents(gameId);
   }
 
 playGame(e) {
     e.preventDefault();
     const currentGame = this.props.currentGame
-    console.log('current Game', currentGame)
     const gameRoomId = this.props.match.params.pin;
     const questionsArr = Object.keys(currentGame)
-    console.log('questionsArr', questionsArr)
     const firstQuestionId = questionsArr[0]
-    console.log('firstQuestion?', firstQuestionId)
-    const gameStateRef = firebase.database().ref(`gameRooms/${gameRoomId}/gameState`)
-    .set('askingQuestion')
+    this.props.updateGameState(gameRoomId, 'askingQuestion')
     history.push(`/teacher/${gameRoomId}/question/${firstQuestionId}`)
   }
   render() {
-    const users = this.state.users && Object.keys(this.state.users)
-    console.log('users:',this.state)
+    const users = Object.keys(this.props.currentStudents);
+
     const gamePin = this.props.match.params.pin
+
     return (
       <div>
         <h1>Enter the Pin to Join the Game!</h1>
         <h1>{gamePin}</h1>
         <ul>
-        { users.length ? (users.map( user => {
+        {users.length ? (users.map( user => {
             return (
               <li key={user}>
                 {user}
@@ -75,9 +63,9 @@ playGame(e) {
 }
 
 const mapState = state => {
-  return { currentGame: state.currentGame }
+  return { currentGame: state.currentGame, currentStudents: state.currentStudents, gameState: state.gameState }
 }
 
-const mapDispatch = { setGameOnStateThunk}
+const mapDispatch = { setGameOnStateThunk, listenForNewStudents, stopListeningForNewStudents, updateGameState}
 
 export default connect(mapState, mapDispatch)(TeacherWaitingRoom)

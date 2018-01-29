@@ -3,56 +3,59 @@ import React, { Component } from 'react'
 import { Form, TextArea, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import history from '../../../history'
-import { setGameOnStateThunk } from '../../../store'
+import { setGameOnStateThunk, stopListeningForNewStudents, listenForNewStudents, listenForGameStateChange, stopListeningForGameState } from '../../../store'
 
 
 export class StudentWaitingRoom extends Component {
   constructor() {
     super()
-    this.state = {
-      users: [],
-      currentGame: ''
-    }
     this.playGame = this.playGame.bind(this)
 
   }
-  async componentDidMount() {
-    try{
-    const gameId = this.props.match.params.pin
-    await this.props.setGameOnStateThunk(gameId)
+  componentDidMount() {
     const userId = this.props.match.params.studentId
-    const currentGame = this.props.currentGame
-    const questionsArr = Object.keys(currentGame)
-    console.log('current:', questionsArr)
-    const firstQuestionId = questionsArr[0]
-    console.log('firstQuestionId', firstQuestionId)
-    const users = this.state.users
-    const gameRoomRef = firebase.database().ref(`gameRooms/${gameId}/users`)
-      .on('value', (snapshot) => {
-        let newuser = snapshot.val()
-        this.setState({
-          users: newuser
-        })
-      })
-    const gameStateRef = firebase.database().ref(`gameRooms/${gameId}/gameState`)
-    .on('value', snapshot =>{
-      if(snapshot.val() === 'askingQuestion'){
-        history.push(`/${gameId}/question/${firstQuestionId}/${userId}`)
-      }
-    })
-  }
-  catch(err){
-    console.log('could not mount:', err)
+    const gameId = this.props.match.params.pin
+
+    this.props.setGameOnStateThunk(gameId)
+
+    this.props.listenForNewStudents(gameId);
+    this.props.listenForGameStateChange(gameId);
+
+    // if (this.props.gameState === 'askingQuestion'){
+    //   history.push(`/${gameId}/question/${firstQuestionId}/${userId}`)
+    // }
+
+}
+
+componentWillReceiveProps(nextProps){
+  const gameId = this.props.match.params.pin
+  const userId = this.props.match.params.studentId
+
+
+  const currentGame = this.props.currentGame
+  const questionsArr = Object.keys(currentGame)
+  console.log('current:', questionsArr)
+  const firstQuestionId = questionsArr[0]
+  console.log('firstQuestionId', firstQuestionId)
+
+  if (nextProps.gameState === 'askingQuestion'){
+    history.push(`/${gameId}/question/${firstQuestionId}/${userId}`)
   }
 }
 
-  async playGame(e) {
-    e.preventDefault();
-
-
+  componentWillUnmount () {
+    const gameId = this.props.match.params.pin
+    this.props.stopListeningForNewStudents(gameId);
+    this.props.stopListeningForGameState(gameId);
   }
+
+
+  playGame (e) {
+    e.preventDefault();
+  }
+
   render() {
-    const users = Object.keys(this.state.users)
+    const users = Object.keys(this.props.currentStudents)
 
     return (
       <div>
@@ -73,9 +76,13 @@ export class StudentWaitingRoom extends Component {
 }
 
 const mapState = state => {
-  return { currentGame: state.currentGame }
+  return {
+    currentGame: state.currentGame,
+    currentStudents: state.currentStudents,
+    gameState: state.gameState
+  }
 }
-const mapDispatch = { setGameOnStateThunk}
+const mapDispatch = { setGameOnStateThunk, stopListeningForNewStudents, listenForNewStudents, listenForGameStateChange, stopListeningForGameState}
 
 
 export default connect(mapState, mapDispatch)(StudentWaitingRoom)

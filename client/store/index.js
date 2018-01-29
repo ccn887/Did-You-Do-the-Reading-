@@ -5,11 +5,12 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import user from './user'
 import currentGame from './currentGame'
 import currentQuestion from './currentQuestion'
-import currentStudent from './currentStudent'
+import currentStudents from './currentStudents'
+import gameState from './gameState'
 
 
 
-const reducer = combineReducers({user, currentGame, currentStudent, currentQuestion})
+const reducer = combineReducers({user, currentGame, currentStudents, currentQuestion, gameState})
 const middleware = composeWithDevTools(applyMiddleware(
   thunkMiddleware,
   createLogger({collapsed: true})
@@ -20,4 +21,5 @@ export default store
 export * from './user'
 export * from './currentGame'
 export * from './currentQuestion'
-export * from './currentStudent'
+export * from './currentStudents'
+export * from './gameState';
