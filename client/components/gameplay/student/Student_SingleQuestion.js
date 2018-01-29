@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { Card, Button } from 'semantic-ui-react'
 import history from '../../../history'
 import { Redirect } from 'react-router-dom'
-import { setGameOnStateThunk, setCurrentQuestionThunk } from '../../../store'
+import { setGameOnStateThunk, setCurrentQuestionThunk, listenForGameStateChange, stopListeningForGameState } from '../../../store'
 import { connect } from 'react-redux'
 
 
@@ -20,18 +20,29 @@ export class StudentSingleQuestion extends Component {
 
     const gameRoomId = this.props.match.params.pin;
     const questionId = this.props.match.params.questionId;
-    const studentId = this.props.match.params.studentId
+
     this.props.setGameOnStateThunk(gameRoomId)
     this.props.setCurrentQuestionThunk(questionId, gameRoomId)
-    const currentGame = this.props.currentGame
-    const gameRoomRef = firebase.database().ref(`gameRooms/${gameRoomId}/gameState`)
-      .on('value', snapshot => {
-        if (snapshot.val() === 'answeringQuestion') {
-          history.push(`/${gameRoomId}/waiting/${questionId}/${studentId}`)
-        }
+    this.props.listenForGameStateChange(gameRoomId)
 
-      })
     }
+
+  componentWillReceiveProps(nextProps){
+    const gameRoomId = this.props.match.params.pin;
+    const questionId = this.props.match.params.questionId;
+    const studentId = this.props.match.params.studentId
+
+    if (nextProps.gameState === 'answeringQuestion'){
+      history.push(`/${gameRoomId}/waiting/${questionId}/${studentId}`)
+    }
+  }
+
+  componentWillUnmount(){
+    const gameRoomId = this.props.match.params.pin;
+
+    this.props.stopListeningForGameState(gameRoomId);
+  }
+
   submitAnswer(e){
         e.preventDefault();
         const questionObj = this.props.currentQuestion
@@ -95,9 +106,10 @@ const mapState = state => {
   return {
     currentGame: state.currentGame,
     currentQuestion: state.currentQuestion,
-    currentStudent: state.currentStudent
+    currentStudent: state.currentStudent,
+    gameState: state.gameState
   }
 }
-const mapDispatch = { setGameOnStateThunk, setCurrentQuestionThunk }
+const mapDispatch = { setGameOnStateThunk, setCurrentQuestionThunk, listenForGameStateChange, stopListeningForGameState}
 
 export default connect(mapState, mapDispatch)(StudentSingleQuestion)
