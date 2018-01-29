@@ -7,10 +7,12 @@ import currentGame from './currentGame'
 import currentQuestion from './currentQuestion'
 import currentStudents from './currentStudents'
 import gameState from './gameState'
+import singleStudent from './singleStudent'
 
 
 
-const reducer = combineReducers({user, currentGame, currentStudents, currentQuestion, gameState})
+
+const reducer = combineReducers({user, currentGame, currentStudents, currentQuestion, singleStudent, gameState})
 const middleware = composeWithDevTools(applyMiddleware(
   thunkMiddleware,
   createLogger({collapsed: true})
@@ -22,4 +24,7 @@ export * from './user'
 export * from './currentGame'
 export * from './currentQuestion'
 export * from './currentStudents'
-export * from './gameState';
+export * from './gameState'
+export * from './singleStudent'
+
+
