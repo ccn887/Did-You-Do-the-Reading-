@@ -16,13 +16,8 @@ export class StudentWaitingRoom extends Component {
   componentDidMount() {
     const gameId = this.props.match.params.pin
     const users = this.state.users
-    const gameRoomRef = firebase.database().ref(`gameRooms/${gameId}/users`)
-      .on('value', (snapshot) => {
-        let newuser = snapshot.val()
-        this.setState({
-          users: newuser
-        })
-      })
+    // REVIEW: cleaning up after ourselves
+    //         do we want this in the store?
   }
 
   async playGame(e) {
@@ -53,6 +48,15 @@ export class StudentWaitingRoom extends Component {
 
 const mapState = state => {
   return { currentGame: state.currentGame }
+}
+
+const mapDispatch = (dispatch) => {
+  listenToGameRoom: (gameId) => {
+    dispatch(listenToGameRoom(gameId))
+  },
+  unlistenFromGameRoom: (gameId) => {
+    dispatch(unlistenFromGameRoom(gameId))
+  },
 }
 
 

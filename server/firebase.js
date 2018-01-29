@@ -2,6 +2,7 @@ import firebase from 'firebase'
 
 
 var config = {
+  // REVIEW: DANGER DANGER DANGER
   apiKey: "AIzaSyCwlnC_PyCan4hJZD93I0u7cgOtOrkV-6A",
   authDomain: "did-you-do-the-reading.firebaseapp.com",
   databaseURL: "https://did-you-do-the-reading.firebaseio.com",

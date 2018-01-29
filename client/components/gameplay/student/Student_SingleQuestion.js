@@ -9,13 +9,6 @@ import { connect } from 'react-redux'
 
 
 export class StudentSingleQuestion extends Component {
-  constructor() {
-    super();
-
-    this.submitAnswer = this.submitAnswer.bind(this);
-
-  }
-
   componentDidMount() {
 
     const gameRoomId = this.props.match.params.pin;
@@ -26,7 +19,7 @@ export class StudentSingleQuestion extends Component {
     const currentGame = this.props.currentGame
 
   }
-  submitAnswer(e){
+  submitAnswer = (e) => {
     e.preventDefault();
     const questionObj = this.props.currentQuestion
     const questionId = this.props.match.params.questionId;
@@ -34,19 +27,21 @@ export class StudentSingleQuestion extends Component {
     const gameRoomId = this.props.match.params.pin;
     const rightAnswer = questionObj.rightAnswer
     if(e.target.value === rightAnswer){
+      // REVIEW: handle transaction failure?
+      // REVIEW: handle indentation
      const usersRef = firebase.database().ref(`users/${studentId}/score`)
-     .transaction(function(score){
-       return score + 1
-     })
+       .transaction(function(score){
+         return score + 1
+       })
      const usersRefStreak = firebase.database().ref(`users/${studentId}/streak`)
-     .transaction(function(streak){
-      return streak + 1
-    })
+       .transaction(function(streak){
+          return streak + 1
+        })
     } else {
       const usersLosingRef = firebase.database().ref(`users/${studentId}/streak`)
      .transaction(function(streak){
-      return 0
-    })
+        return 0
+      })
 
     }
     history.push(`/${gameRoomId}/waiting/${questionId}/${studentId}`)

@@ -26,6 +26,7 @@ class Routes extends Component {
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
             <Route path="/join" component={StudentJoinGame} />
+            {/* REVIEW: consistency of route definition */}
             <Route
               exact
               path="/student-waiting-room/:pin"

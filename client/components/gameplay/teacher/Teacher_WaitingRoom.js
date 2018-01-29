@@ -18,6 +18,7 @@ export class TeacherWaitingRoom extends Component {
     const users = this.state.users
     let newUser = []
     try{
+      // REVIEW: await, but not using the value
     await firebase.database().ref(`gameRooms/${gameId}/users`)
       .on('value', (snapshot) => {
         newUser = snapshot.val()
