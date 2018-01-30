@@ -25,7 +25,7 @@ export const listenForNewStudents =  (gameId) => (dispatch) => {
    const ref = database.ref(path)
    const listener = (snapshot) => {
      if (!snapshot.val()) return
-     const studentIds = Object.keys(snapshot.val())
+     const studentIds = Object.values(snapshot.val())
     database.ref('users').once('value').then(snapshot2 => {
        let users = snapshot2.val()
        console.log("Users in thunk", studentIds)
