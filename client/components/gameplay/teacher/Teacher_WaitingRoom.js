@@ -9,6 +9,7 @@ import {
   stopListeningForNewStudents,
   updateGameState
 } from '../../../store'
+import Leaderboard from '../../Leaderboard'
 
 
 export class TeacherWaitingRoom extends Component {
@@ -61,6 +62,7 @@ let userScore
             <h1 id="game-pin">{gamePin}</h1>
           </div>
           {currentStudents.length ?
+            <div>
             <Table id="contestant-table">
               <th id="table-header">
                 contestants:
@@ -78,6 +80,8 @@ let userScore
             }
             </Table.Body>
             </Table>
+            <Leaderboard />
+            </div>
           : (
             <div id="waiting-for-contestants">Waiting for contestants...</div>
           )

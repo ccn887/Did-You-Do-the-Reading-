@@ -1,98 +1,93 @@
-// import firebase from '../../../../server/firebase'
-// import React, { Component } from 'react'
-// import { Table, Container, Button } from 'semantic-ui-react'
-// import { connect } from 'react-redux'
-// import history from '../../../history'
-// import { getSingleStudentOnce } from '../../../store'
-//
-// export class Leaderboard extends Component {
-//   constructor() {
-//     super();
-//     this.playGame = this.playGame.bind(this)
-//
-//   }
-//   componentDidMount() {
-//     const gameId = this.props.match.params.pin
-//
-//     this.props.getSingleStudentOnce(gameId)
-//   }
-//
-//   componentWillUnmount(){
-//     const gameId = this.props.match.params.pin;
-//     this.props.stopListeningForNewStudents(gameId);
-//   }
-//
-//   render() {
-//
-//     const gamePin = this.props.match.params.pin
-//     let users;
-//     let currentStudents;
-//     if (this.props.currentStudents){
-//       users = Object.keys(this.props.currentStudents)
-//       currentStudents = this.props.currentStudents
-//
-//     } else {
-//       users = [];
-//     }
-//
-//     // gets users names
-//     let currentUsers;
-//     firebase.database().ref(`/gameRooms/${gamePin}/users`)
-//     .on('value', snapshot => {
-//       currentUsers = Object.values(snapshot.val())
-//     })
-//
-//
-//     // puts users scores into array
-//     let usersArray = []
-//     users.map(user => {
-//       firebase.database().ref(`users/${user}`)
-//         .once('value', snapshot => {
-//           usersArray.push(snapshot.val())
-//         })
-//     })
-//
-//         return (
-//           <div>
-//             <Container className="game-join-box">
-//               <h1>Enter the Pin to Join the Game!</h1>
-//               <div id="game-pin-box">
-//                 <h1 id="game-pin">{gamePin}</h1>
-//               </div>
-//               {users.length ?
-//                 <Table id="contestant-table">
-//                   <th id="table-header">
-//                     contestants:
-//                   </th>
-//                   <Table.Body>
-//                 {
-//                   (currentUsers.map(user => {
-//                   return (
-//                     <Table.Row key={user}>
-//                       <Table.Cell >
-//                         {currentStudents[user]}
-//                       </Table.Cell>
-//                     </Table.Row>
-//                   )
-//                   }))
-//                 }
-//                 </Table.Body>
-//                 </Table>
-//               : (
-//                 <div id="waiting-for-contestants">Waiting for contestants...</div>
-//               )
-//                 }
-//               <Button className="ui button purple" onClick={this.playGame}>Start theQuiz!</Button>
-//             </Container>
-//           </div>
-//         )
-//       }
-//     }
-//
-// const mapState = state => {
-//   return { currentGame: state.currentGame, currentStudents: state.currentStudents, gameState: state.gameState }
-// }
-//
-// const mapDispatch = { setGameOnStateThunk, listenForNewStudents, stopListeningForNewStudents, updateGameState}
-//
-// export default connect(mapState, mapDispatch)(TeacherWaitingRoom)
+import React, { Component } from 'react'
+import { Table, Container, Button, Header, Image } from 'semantic-ui-react'
+import { connect } from 'react-redux'
+import history from '../history'
+import {
+  getSingleStudentOnce,
+  setGameOnStateThunk,
+  listenForNewStudents,
+  stopListeningForNewStudents,
+  updateGameState
+} from '../store'
+
+
+export class Leaderboard extends Component {
+  constructor() {
+    super();
+
+  }
+
+  componentDidMount() {
+    const gameId = Number(this.props.currentStudents.currentGame)
+
+    this.props.setGameOnStateThunk(gameId);
+    this.props.listenForNewStudents(gameId);
+    // this.props.getSingleStudentOnce()
+  }
+
+  componentWillUnmount(){
+    const gameId = Number(this.props.currentStudents.currentGame)
+    this.props.stopListeningForNewStudents(gameId);
+  }
+
+
+
+  render() {
+
+    const currentStudents = this.props.currentStudents
+
+    if(this.props.currentStudents.length) {
+      return (
+        <div>
+          <h2>Leaderboard</h2>
+              {
+                (currentStudents.map(user => {
+                  return (
+                        <Table key={user} basic='very' celled collapsing id="leaderboard-display">
+                          <Table.Header>
+                            <Table.Row>
+                              <Table.HeaderCell>Contestant</Table.HeaderCell>
+                              <Table.HeaderCell>Score</Table.HeaderCell>
+                              <Table.HeaderCell>Streak</Table.HeaderCell>
+                            </Table.Row>
+                          </Table.Header>
+                          <Table.Body>
+                            <Table.Row>
+                              <Table.Cell>
+                                <Header as='h4' image>
+                                  <Image src='/assets/images/avatar/small/lena.png' rounded size='mini' />
+                                  <Header.Content id="leaderboard-username">
+                                      {user.name}
+                                  </Header.Content>
+                                </Header>
+                              </Table.Cell>
+                              <Table.Cell id="leaderboard-score">
+                                  {user.score}
+                              </Table.Cell>
+                              <Table.Cell id="leaderboard-streak">
+                                  {user.streak}
+                              </Table.Cell>
+                            </Table.Row>
+                          </Table.Body>
+                        </Table>
+                      )
+                }))
+                }
+          </div>
+        )
+    } else {
+      return (
+        <h2>nope</h2>
+      )
+    }
+
+  }
+}
+
+const mapState = state => {
+  return { student: state.student, currentGame: state.currentGame, currentStudents: state.currentStudents, gameState: state.gameState }
+}
+
+const mapDispatch = { getSingleStudentOnce, setGameOnStateThunk, listenForNewStudents, stopListeningForNewStudents, updateGameState }
+
+export default connect(mapState, mapDispatch)(Leaderboard)
