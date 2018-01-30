@@ -51,8 +51,8 @@ export class TeacherWaitingRoom extends Component {
       <div>
         <Container className="game-join-box">
           <h1>Enter the Pin to Join the Game!</h1>
-          <div className="game-pin-box">
-            <h1 className="game-pin">{gamePin}</h1>
+          <div id="game-pin-box">
+            <h1 id="game-pin">{gamePin}</h1>
           </div>
           {currentStudents.length ?
             <div>
