@@ -100,18 +100,14 @@ export const addStudentToGameThunk = (name, currentGame) => dispatch => {
     })
   const studentId = usersRef.key
   firebase.database().ref(`gameRooms/${currentGame}/users`)
-    .child(studentId)
-    .set(name)
-    
+    .push(studentId)
+
     history.push(`/student-waiting-room/${currentGame}/${studentId}`)
 }
 
 
-<<<<<<< HEAD
-=======
 /* ------------       REDUCER     ------------------ */
 
->>>>>>> master
 export default function (student = {}, action) {
   switch (action.type) {
     case ADD_TO_STUDENT_SCORE:

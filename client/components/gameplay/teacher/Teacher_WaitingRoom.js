@@ -15,7 +15,6 @@ export class TeacherWaitingRoom extends Component {
   constructor() {
     super();
     this.playGame = this.playGame.bind(this)
-    this.getTheScore = this.getTheScore.bind(this)
   }
 
   componentDidMount() {
@@ -23,7 +22,7 @@ export class TeacherWaitingRoom extends Component {
 
     this.props.setGameOnStateThunk(gameId);
     this.props.listenForNewStudents(gameId);
-    this.props.getSingleStudentOnce()
+    // this.props.getSingleStudentOnce()
   }
 
   componentWillUnmount(){
@@ -42,22 +41,12 @@ export class TeacherWaitingRoom extends Component {
     history.push(`/teacher/${gameRoomId}/question/${firstQuestionId}`)
   }
 
-  getTheScore(userId) {
-    this.props.getSingleStudentOnce(userId)
-    console.log('props student:', this.props.singleStudent)
-  }
 
   render() {
+    console.log("Current Student", this.props.currentStudents)
 
-    let users;
-    let currentStudents;
-    if (this.props.currentStudents){
       // users = Object.keys(this.props.currentStudents)
-      currentStudents = this.props.currentStudents
-    }
-    else {
-      users = [];
-    }
+      const currentStudents = this.props.currentStudents
 
     const gamePin = this.props.match.params.pin
 
@@ -71,19 +60,18 @@ let userScore
           <div id="game-pin-box">
             <h1 id="game-pin">{gamePin}</h1>
           </div>
-          {users.length ?
+          {currentStudents.length ?
             <Table id="contestant-table">
               <th id="table-header">
                 contestants:
               </th>
               <Table.Body>
             {
-              (users.map(user => {
+              (currentStudents.map(user => {
               return (
                 <Table.Row key={user}>
                   <Table.Cell >
-                    {console.log('studdddd', this.getTheScore(user))}
-                    {currentStudents[user]}
+                    {user.name}
                   </Table.Cell>
                 </Table.Row>
               )}))
