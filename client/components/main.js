@@ -14,7 +14,7 @@ const Main = (props) => {
   const { children, handleClick, isLoggedIn } = props
 
   return (
-    <div>
+    <div id="main-wrapper">
       <div id="app-header">
       <h1 id='game-title'>Did You Do the Reading?</h1>
       <nav>
