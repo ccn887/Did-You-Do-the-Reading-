@@ -23,7 +23,6 @@ export class TeacherWaitingRoom extends Component {
 
     this.props.setGameOnStateThunk(gameId);
     this.props.listenForNewStudents(gameId);
-    // this.props.getSingleStudentOnce()
   }
 
   componentWillUnmount(){
@@ -44,16 +43,10 @@ export class TeacherWaitingRoom extends Component {
 
 
   render() {
-    console.log("Current Student", this.props.currentStudents)
 
-      // users = Object.keys(this.props.currentStudents)
-      const currentStudents = this.props.currentStudents
-
+    const currentStudents = this.props.currentStudents
     const gamePin = this.props.match.params.pin
 
-
-    // console.log(this.props.currentStudents)
-let userScore
     return (
       <div>
         <Container className="game-join-box">
@@ -86,7 +79,7 @@ let userScore
             <div id="waiting-for-contestants">Waiting for contestants...</div>
           )
             }
-          <Button className="ui button purple" onClick={this.playGame}>Start theQuiz!</Button>
+          <Button className="ui button purple" onClick={this.playGame}>Start the Quiz!</Button>
         </Container>
       </div>
     )

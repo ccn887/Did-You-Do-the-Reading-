@@ -40,17 +40,17 @@ export class Leaderboard extends Component {
       return (
         <div>
           <h2>Leaderboard</h2>
+          <Table basic='very' celled collapsing id="leaderboard-display">
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>Contestant</Table.HeaderCell>
+                <Table.HeaderCell>Score</Table.HeaderCell>
+                <Table.HeaderCell>Streak</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
               {
                 (currentStudents.map(user => {
                   return (
-                        <Table key={user} basic='very' celled collapsing id="leaderboard-display">
-                          <Table.Header>
-                            <Table.Row>
-                              <Table.HeaderCell>Contestant</Table.HeaderCell>
-                              <Table.HeaderCell>Score</Table.HeaderCell>
-                              <Table.HeaderCell>Streak</Table.HeaderCell>
-                            </Table.Row>
-                          </Table.Header>
                           <Table.Body>
                             <Table.Row>
                               <Table.Cell>
@@ -69,10 +69,10 @@ export class Leaderboard extends Component {
                               </Table.Cell>
                             </Table.Row>
                           </Table.Body>
-                        </Table>
                       )
                 }))
                 }
+              </Table>
           </div>
         )
     } else {
