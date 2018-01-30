@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import history from '../../../history'
+import { Table, Container, Button } from 'semantic-ui-react'
 import { setGameOnStateThunk, stopListeningForNewStudents, listenForNewStudents, listenForGameStateChange, stopListeningForGameState } from '../../../store'
 
 
@@ -37,22 +38,33 @@ export class StudentWaitingRoom extends Component {
   }
 
   render() {
-    const users = Object.keys(this.props.currentStudents)
-    const currentStudents = this.props.currentStudents
+    console.log('current students.....',this.props.currentStudents )
+    const userNameArray = this.props.currentStudents.map(studentObj => {
+      return studentObj.name
+    })
+
 
     return (
       <div>
+        <Container className="game-join-box">
         <h1>Waiting for the Game to Start!</h1>
-        <ul>
-          {users.length && users.map(user => {
+        <Table className="contestant-table">
+          <th  className="table-header">
+            contestants:
+          </th>
+          <Table.Body>
+          {
+            userNameArray.length && userNameArray.map((userName, idx) => {
             return (
-              <li key={user}>
-                {currentStudents[user]}
-              </li>
-            )
-          })
+              <Table.Row key={`${userName}+${idx}`}>
+                <Table.Cell>{userName}</Table.Cell>
+              </Table.Row>
+              )
+            })
           }
-        </ul>
+          </Table.Body>
+        </Table>
+      </Container>
       </div>
     )
   }

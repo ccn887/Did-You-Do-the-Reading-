@@ -58,13 +58,13 @@ let userScore
       <div>
         <Container className="game-join-box">
           <h1>Enter the Pin to Join the Game!</h1>
-          <div id="game-pin-box">
-            <h1 id="game-pin">{gamePin}</h1>
+          <div className="game-pin-box">
+            <h1 className="game-pin">{gamePin}</h1>
           </div>
           {currentStudents.length ?
             <div>
-            <Table id="contestant-table">
-              <th id="table-header">
+            <Table className="contestant-table">
+              <th className="table-header">
                 contestants:
               </th>
               <Table.Body>
