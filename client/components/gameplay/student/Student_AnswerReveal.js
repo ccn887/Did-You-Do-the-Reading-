@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { setGameOnStateThunk, listenForGameStateChange, stopListeningForGameState } from '../../../store'
+import { setGameOnStateThunk, listenForGameStateChange, stopListeningForGameState, getSingleStudentListener, stopListeningForSingleStudent } from '../../../store'
 import { connect } from 'react-redux'
 import history from '../../../history'
 
@@ -15,25 +15,29 @@ export class StudentAnswerReveal extends Component {
   }
 
   componentDidMount() {
-
+    this.props.getSingleStudentListener(this.props.match.params.studentId)
     this.props.setGameOnStateThunk(this.props.match.params.pin)
     this.props.listenForGameStateChange(this.props.match.params.pin);
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
 
     this.setState({
       gameRoomId: this.props.match.params.pin,
       studentId: this.props.match.params.studentId
     })
 
-    if (nextProps.gameState === 'askingQuestion' && this.props.gameState === 'answeringQuestion'){
+    if (nextProps.gameState === 'askingQuestion' && this.props.gameState === 'answeringQuestion') {
       this.nextQuestion();
     }
-    if (nextProps.gameState === 'gameOver'){
-      console.log('helloooooo game over!')
+    if (nextProps.gameState === 'gameOver') {
       history.push(`/${this.state.gameRoomId}/gameOver/${this.state.studentId}`)
     }
+  }
+
+  componentWillUnmount() {
+    this.props.getSingleStudentListener(this.props.match.params.studentId)
+    this.props.stopListeningForGameState(this.props.match.params.pin);
   }
 
   nextQuestion() {
@@ -48,8 +52,16 @@ export class StudentAnswerReveal extends Component {
   }
 
   render() {
+    const currentStudent = this.props.singleStudent
     return (
-      <h1> Waiting for Next Question...</h1>
+      <div>
+        <h1> Waiting for Next Question...</h1>
+        <h2>Your Score:  {currentStudent.score}</h2>
+        {
+          currentStudent.streak > 2 &&
+          <h2>You're on Fire! You've correctly answered {currentStudent.streak} questions in a row!</h2>
+        }
+      </div>
     )
   }
 }
@@ -58,9 +70,10 @@ const mapState = state => {
   return {
     currentGame: state.currentGame,
     currentQuestion: state.currentQuestion,
-    gameState: state.gameState
+    gameState: state.gameState,
+    singleStudent: state.singleStudent
   }
 }
-const mapDispatch = { setGameOnStateThunk, listenForGameStateChange, stopListeningForGameState}
+const mapDispatch = { setGameOnStateThunk, listenForGameStateChange, stopListeningForGameState, getSingleStudentListener, stopListeningForSingleStudent }
 
 export default connect(mapState, mapDispatch)(StudentAnswerReveal)
