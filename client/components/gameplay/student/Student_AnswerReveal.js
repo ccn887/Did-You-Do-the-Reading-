@@ -66,6 +66,7 @@ export class StudentAnswerReveal extends Component {
   }
 }
 
+
 const mapState = state => {
   return {
     currentGame: state.currentGame,

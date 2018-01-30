@@ -126,4 +126,18 @@ form div {
 #game-name{
   justify-content: space-around;
   color: #F3E9D2 !important;
+
+.student-join-box{
+  display: flex;
+  flex-direction: column;
+  padding: 5rem 5rem;
+  justify-content: space-around;
+}
+
+.join-game-input{
+  width: 120px !important;
+}
+
+#join-game-button{
+  width: 120px !important;
 }

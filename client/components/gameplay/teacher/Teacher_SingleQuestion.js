@@ -1,8 +1,6 @@
-import firebase from '../../../../server/firebase'
 import React, { Component } from 'react'
 import { Card } from 'semantic-ui-react'
 import history from '../../../history'
-import { Redirect } from 'react-router-dom'
 import { setGameOnStateThunk, setCurrentQuestionThunk, updateGameState } from '../../../store'
 import { connect } from 'react-redux'
 

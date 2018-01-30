@@ -3,11 +3,11 @@ import firebase from '../../server/firebase'
 
 
 /*Actions */
-const SET_CURRENT_STUDENT = 'SET_CURRENT_STUDENT'
+
 const UPDATE_STUDENT_LIST = 'UPDATE_STUDENT_LIST'
 
 /* Action creators */
-export const setCurrentStudent = id => ({type: SET_CURRENT_STUDENT, id})
+
 export const updateStudentList = list => ({type: UPDATE_STUDENT_LIST, list})
 
 

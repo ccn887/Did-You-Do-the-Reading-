@@ -1,8 +1,6 @@
-import firebase from '../../../../server/firebase'
 import React, { Component } from 'react'
 import { Card, Button } from 'semantic-ui-react'
 import history from '../../../history'
-import { Redirect } from 'react-router-dom'
 import { setGameOnStateThunk, setCurrentQuestionThunk, listenForGameStateChange, stopListeningForGameState, addToStudentStreak, breakStudentStreak, addToStudentScore } from '../../../store'
 import { connect } from 'react-redux'
 
@@ -17,14 +15,12 @@ export class StudentSingleQuestion extends Component {
   }
 
   componentDidMount() {
-
     const gameRoomId = this.props.match.params.pin;
     const questionId = this.props.match.params.questionId;
 
     this.props.setGameOnStateThunk(gameRoomId)
     this.props.setCurrentQuestionThunk(questionId, gameRoomId)
     this.props.listenForGameStateChange(gameRoomId)
-
   }
 
   componentWillReceiveProps(nextProps) {
@@ -62,20 +58,12 @@ export class StudentSingleQuestion extends Component {
     }
 
     history.push(`/${gameRoomId}/waiting/${questionId}/${studentId}`)
-
   }
 
   render() {
-    const gameRoomId = this.props.match.params.pin;
-    const questionId = this.props.match.params.questionId;
+
     const currentQuestion = this.props.currentQuestion
     const answerArray = currentQuestion.answers ? Object.values(currentQuestion.answers) : []
-
-    // const answerArray = indexArray.map(index => {
-    //   return currentQuestion.answers[index]
-    // });
-
-
 
     return (
       <div>
@@ -93,8 +81,6 @@ export class StudentSingleQuestion extends Component {
       </div >
     )
   }
-
-
 }
 
 const mapState = state => {
@@ -105,6 +91,7 @@ const mapState = state => {
     gameState: state.gameState
   }
 }
+
 const mapDispatch = { setGameOnStateThunk, setCurrentQuestionThunk, listenForGameStateChange, stopListeningForGameState, addToStudentStreak, breakStudentStreak, addToStudentScore }
 
 export default connect(mapState, mapDispatch)(StudentSingleQuestion)
