@@ -24,12 +24,18 @@ export const listenForNewStudents =  (gameId) => (dispatch) => {
    const path = `gameRooms/${gameId}/users`
    const ref = database.ref(path)
    const listener = (snapshot) => {
-     dispatch(updateStudentList(snapshot.val()))
+     if (!snapshot.val()) return
+     const studentIds = Object.values(snapshot.val())
+    database.ref('users').once('value').then(snapshot2 => {
+       let users = snapshot2.val()
+       console.log("Users in thunk", studentIds)
+       dispatch(updateStudentList(studentIds.map(id => users[id])))
+     })
+
    }
    activeListeners[path] = { ref, listener }
    ref.on('value', listener)
  }
-
 
 
  export const stopListeningForNewStudents = (gameId) => (dispatch) => {
@@ -42,7 +48,7 @@ export const listenForNewStudents =  (gameId) => (dispatch) => {
 
  /* Reducer */
 
- export default function (list = {}, action) {
+ export default function (list = [], action) {
     switch (action.type) {
      case UPDATE_STUDENT_LIST:
        return action.list

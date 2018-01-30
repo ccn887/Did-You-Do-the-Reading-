@@ -150,3 +150,24 @@ form div {
 #join-game-button{
   width: 120px !important;
 }
+
+#leaderboard-username {
+  color: black;
+}
+
+#leaderboard-streak {
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
+}
+
+#leaderboard-score {
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
+}
+
+#leaderboard-display {
+  background: #F2E9D5;
+  width: 80%;
+}

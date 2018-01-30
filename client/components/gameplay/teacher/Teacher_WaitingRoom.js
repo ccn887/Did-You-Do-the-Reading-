@@ -2,13 +2,20 @@ import React, { Component } from 'react'
 import { Table, Container, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import history from '../../../history'
-import { setGameOnStateThunk, listenForNewStudents, stopListeningForNewStudents, updateGameState } from '../../../store'
+import {
+  getSingleStudentOnce,
+  setGameOnStateThunk,
+  listenForNewStudents,
+  stopListeningForNewStudents,
+  updateGameState
+} from '../../../store'
+import Leaderboard from '../../Leaderboard'
+
 
 export class TeacherWaitingRoom extends Component {
   constructor() {
     super();
     this.playGame = this.playGame.bind(this)
-
   }
 
   componentDidMount() {
@@ -16,6 +23,7 @@ export class TeacherWaitingRoom extends Component {
 
     this.props.setGameOnStateThunk(gameId);
     this.props.listenForNewStudents(gameId);
+    // this.props.getSingleStudentOnce()
   }
 
   componentWillUnmount(){
@@ -34,20 +42,18 @@ export class TeacherWaitingRoom extends Component {
     history.push(`/teacher/${gameRoomId}/question/${firstQuestionId}`)
   }
 
-  render() {
 
-    let users;
-    let currentStudents;
-    if (this.props.currentStudents){
-      users = Object.keys(this.props.currentStudents)
-      currentStudents = this.props.currentStudents
-    }
-    else {
-      users = [];
-    }
+  render() {
+    console.log("Current Student", this.props.currentStudents)
+
+      // users = Object.keys(this.props.currentStudents)
+      const currentStudents = this.props.currentStudents
 
     const gamePin = this.props.match.params.pin
 
+
+    // console.log(this.props.currentStudents)
+let userScore
     return (
       <div>
         <Container className="game-join-box">
@@ -55,24 +61,27 @@ export class TeacherWaitingRoom extends Component {
           <div id="game-pin-box">
             <h1 id="game-pin">{gamePin}</h1>
           </div>
-          {users.length ?
+          {currentStudents.length ?
+            <div>
             <Table id="contestant-table">
               <th id="table-header">
                 contestants:
               </th>
               <Table.Body>
             {
-              (users.map( user => {
+              (currentStudents.map(user => {
               return (
                 <Table.Row key={user}>
                   <Table.Cell >
-                    {currentStudents[user]}
+                    {user.name}
                   </Table.Cell>
                 </Table.Row>
               )}))
             }
             </Table.Body>
             </Table>
+            <Leaderboard />
+            </div>
           : (
             <div id="waiting-for-contestants">Waiting for contestants...</div>
           )
@@ -85,9 +94,9 @@ export class TeacherWaitingRoom extends Component {
 }
 
 const mapState = state => {
-  return { currentGame: state.currentGame, currentStudents: state.currentStudents, gameState: state.gameState }
+  return { student: state.student, currentGame: state.currentGame, currentStudents: state.currentStudents, gameState: state.gameState }
 }
 
-const mapDispatch = { setGameOnStateThunk, listenForNewStudents, stopListeningForNewStudents, updateGameState}
+const mapDispatch = { getSingleStudentOnce, setGameOnStateThunk, listenForNewStudents, stopListeningForNewStudents, updateGameState }
 
 export default connect(mapState, mapDispatch)(TeacherWaitingRoom)

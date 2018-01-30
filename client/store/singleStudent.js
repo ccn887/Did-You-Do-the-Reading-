@@ -7,6 +7,7 @@ const ADD_TO_STUDENT_SCORE = 'ADD_TO_STUDENT_SCORE'
 const ADD_TO_STUDENT_STREAK = 'ADD_TO_STUDENT_STREAK '
 const BREAK_STREAK = 'BREAK_STREAK'
 const GET_SINGLE_STUDENT = 'GET_SINGLE_STUDENT'
+const GET_STUDENT_ONCE = 'GET_STUDENT_ONCE'
 
 /* ------------   ACTION CREATORS     ------------------ */
 
@@ -14,6 +15,7 @@ export const addToStudentScoreActionCreator = updatedStudent => ({ type: ADD_TO_
 export const addToStudentStreakActionCreator = updatedStudent => ({ type: ADD_TO_STUDENT_STREAK, updatedStudent })
 export const breakStudentStreakActionCreator = updatedStudent => ({ type: BREAK_STREAK, updatedStudent })
 export const getSingleStudentActionCreator = student => ({ type: GET_SINGLE_STUDENT, student })
+export const getSingleStudentOnceActionCreator = student => ({ type: GET_STUDENT_ONCE, student })
 
 /* ------------   THUNK HELPERS    ------------------ */
 
@@ -67,6 +69,19 @@ export const getSingleStudentListener = (studentId) => dispatch => {
   ref.on('value', listener)
 }
 
+export const getSingleStudentOnce = (studentId) => dispatch => {
+  const path = `users/${studentId}/`
+  const ref = database.ref(path)
+  // console.log('this should be the students ID: ', studentId)
+  // console.log('path: ', path)
+  const listener = (snapshot) => {
+    console.log('snapshot to be sent back: ', snapshot.val())
+    dispatch(getSingleStudentOnceActionCreator(snapshot.val()))
+  }
+  activeListeners[path] = { ref, listener }
+  ref.once('value', listener)
+}
+
 
 export const stopListeningForSingleStudent = (studentId) => dispatch => {
   const path = `users/${studentId}/`
@@ -85,9 +100,8 @@ export const addStudentToGameThunk = (name, currentGame) => dispatch => {
     })
   const studentId = usersRef.key
   firebase.database().ref(`gameRooms/${currentGame}/users`)
-    .child(studentId)
-    .set(name)
-    
+    .push(studentId)
+
     history.push(`/student-waiting-room/${currentGame}/${studentId}`)
 }
 
@@ -103,6 +117,8 @@ export default function (student = {}, action) {
     case BREAK_STREAK:
       return action.updatedStudent
     case GET_SINGLE_STUDENT:
+      return action.student
+    case GET_STUDENT_ONCE:
       return action.student
     default:
       return student
