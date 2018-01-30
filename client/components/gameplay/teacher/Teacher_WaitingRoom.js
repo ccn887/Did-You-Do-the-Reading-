@@ -3,19 +3,27 @@ import React, { Component } from 'react'
 import { Table, Container, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import history from '../../../history'
-import { setGameOnStateThunk, listenForNewStudents, stopListeningForNewStudents, updateGameState } from '../../../store'
+import {
+  getSingleStudentOnce,
+  setGameOnStateThunk,
+  listenForNewStudents,
+  stopListeningForNewStudents,
+  updateGameState
+} from '../../../store'
+
 
 export class TeacherWaitingRoom extends Component {
   constructor() {
     super();
     this.playGame = this.playGame.bind(this)
-
+    this.getTheScore = this.getTheScore.bind(this)
   }
+
   componentDidMount() {
     const gameId = this.props.match.params.pin
-
     this.props.setGameOnStateThunk(gameId)
     this.props.listenForNewStudents(gameId);
+    this.props.getSingleStudentOnce()
   }
 
   componentWillUnmount(){
@@ -32,35 +40,29 @@ playGame(e) {
     this.props.updateGameState(gameRoomId, 'askingQuestion')
     history.push(`/teacher/${gameRoomId}/question/${firstQuestionId}`)
   }
+
+  getTheScore(userId) {
+    this.props.getSingleStudentOnce(userId)
+    console.log('props student:', this.props.singleStudent)
+  }
+
   render() {
 
-    const gamePin = this.props.match.params.pin
     let users;
     let currentStudents;
     if (this.props.currentStudents){
-      users = Object.keys(this.props.currentStudents)
+      // users = Object.keys(this.props.currentStudents)
       currentStudents = this.props.currentStudents
 
     } else {
       users = [];
     }
 
-    // gets users names
-    let currentUsers;
-    firebase.database().ref(`/gameRooms/${gamePin}/users`)
-    .on('value', snapshot => {
-      currentUsers = Object.values(snapshot.val())
-    })
+    const gamePin = this.props.match.params.pin
 
-    // puts users scores into array
-    // let usersArray = []
-    // users.map(user => {
-    //   firebase.database().ref(`users/${user}`)
-    //     .once('value', snapshot => {
-    //       usersArray.push(snapshot.val())
-    //     })
-    // })
 
+    // console.log(this.props.currentStudents)
+let userScore
     return (
       <div>
         <Container className="game-join-box">
@@ -75,15 +77,15 @@ playGame(e) {
               </th>
               <Table.Body>
             {
-              (currentUsers.map(user => {
+              (users.map(user => {
               return (
                 <Table.Row key={user}>
                   <Table.Cell >
+                    {console.log('studdddd', this.getTheScore(user))}
                     {currentStudents[user]}
                   </Table.Cell>
                 </Table.Row>
-              )
-              }))
+              )}))
             }
             </Table.Body>
             </Table>
@@ -99,9 +101,9 @@ playGame(e) {
 }
 
 const mapState = state => {
-  return { currentGame: state.currentGame, currentStudents: state.currentStudents, gameState: state.gameState }
+  return { student: state.student, currentGame: state.currentGame, currentStudents: state.currentStudents, gameState: state.gameState }
 }
 
-const mapDispatch = { setGameOnStateThunk, listenForNewStudents, stopListeningForNewStudents, updateGameState}
+const mapDispatch = { getSingleStudentOnce, setGameOnStateThunk, listenForNewStudents, stopListeningForNewStudents, updateGameState }
 
 export default connect(mapState, mapDispatch)(TeacherWaitingRoom)
