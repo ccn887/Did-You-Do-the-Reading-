@@ -24,14 +24,12 @@ router.post('/vocab', async (req, res, next) => {
     })
 
     const questions = await Promise.all(vocabWords.map(async word => {
-
       const questionObject = {};
-      console.log('LAST WORD: ', word)
-      const thesaurusInfo = await lookup(word);
 
+      const thesaurusInfo = await lookup(word);
       if (thesaurusInfo) {
 
-        console.log('THESAURUS INFO: ', word, thesaurusInfo);
+
         // this is currently hard-coding to the first part of speech
         const partOfSpeech = Object.keys(thesaurusInfo)[0];
 
@@ -47,28 +45,29 @@ router.post('/vocab', async (req, res, next) => {
             const antIndex = getRandomIndex(thesaurusInfo[partOfSpeech].ant);
             antonym = thesaurusInfo[partOfSpeech].ant[antIndex];
           }
+
           const randomWords = await getRandomWords(word);
+          if (randomWords){
+            questionObject.question = `Which word means ${word}?`;
+            questionObject.rightAnswer = synonym;
 
+            if (!antonym.length) {
+              questionObject.answers = [randomWords[0], randomWords[1], randomWords[2], synonym];
+            } else {
+              questionObject.answers = shuffle([antonym, randomWords[0], randomWords[1], synonym]);
 
+            }
+            //nice-to-haves
+            /*
+            - randomize which part of speech it uses
+            - OR add part of speech to consideration
+            - do some matching on the word and answer
+            */
+            // console.log('backend last', questionObject);
 
-          questionObject.question = `Which word means ${word}?`;
-          questionObject.rightAnswer = synonym;
-
-          if (!antonym.length) {
-            questionObject.answers = [randomWords[0], randomWords[1], randomWords[2], synonym];
-          } else {
-            questionObject.answers = shuffle([antonym, randomWords[0], randomWords[1], synonym]);
-
+            return questionObject;
           }
-          //nice-to-haves
-          /*
-          - randomize which part of speech it uses
-          - OR add part of speech to consideration
-          - do some matching on the word and answer
-          */
-          // console.log('backend last', questionObject);
 
-          return questionObject;
         }
       }
     }))
