@@ -23,10 +23,9 @@ export class TeacherWaitingRoom extends Component {
 
     this.props.setGameOnStateThunk(gameId);
     this.props.listenForNewStudents(gameId);
-    // this.props.getSingleStudentOnce()
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     const gameId = this.props.match.params.pin;
     this.props.stopListeningForNewStudents(gameId);
   }
@@ -44,16 +43,10 @@ export class TeacherWaitingRoom extends Component {
 
 
   render() {
-    console.log("Current Student", this.props.currentStudents)
 
-      // users = Object.keys(this.props.currentStudents)
-      const currentStudents = this.props.currentStudents
-
+    const currentStudents = this.props.currentStudents
     const gamePin = this.props.match.params.pin
 
-
-    // console.log(this.props.currentStudents)
-let userScore
     return (
       <div>
         <Container className="game-join-box">
@@ -67,25 +60,25 @@ let userScore
               <th className="table-header">
                 contestants:
               </th>
-              <Table.Body>
-            {
-              (currentStudents.map(user => {
-              return (
-                <Table.Row key={user}>
-                  <Table.Cell >
-                    {user.name}
-                  </Table.Cell>
-                </Table.Row>
-              )}))
-            }
-            </Table.Body>
-            </Table>
-            <Leaderboard />
+                <Table.Body>
+                  {
+                    (currentStudents.map(user => {
+                      return (
+                        <Table.Row key={user}>
+                          <Table.Cell >
+                            {user.name}
+                          </Table.Cell>
+                        </Table.Row>
+                      )
+                    }))
+                  }
+                </Table.Body>
+              </Table>
             </div>
-          : (
-            <div id="waiting-for-contestants">Waiting for contestants...</div>
-          )
-            }
+            : (
+              <div id="waiting-for-contestants">Waiting for contestants...</div>
+            )
+          }
           <Button className="ui button purple" onClick={this.playGame}>Start theQuiz!</Button>
         </Container>
       </div>

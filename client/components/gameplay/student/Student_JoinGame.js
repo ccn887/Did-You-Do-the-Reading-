@@ -35,11 +35,11 @@ export class StudentJoinGame extends Component {
     return (
       <div>
         <Form className="student-join-box">
-          <Form.Field>
+          <Form.Field >
             <label>Pin:</label>
             <input className="join-game-input" name="pin" onChange={this.handleChange} />
           </Form.Field>
-          <Form.Field>
+          <Form.Field >
             <label>Name:</label>
             <input className="join-game-input" name="name" onChange={this.handleChange} />
           </Form.Field>
