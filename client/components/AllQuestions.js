@@ -1,12 +1,9 @@
-import firebase from '../../server/firebase'
 import React, { Component } from 'react'
-import axios from 'axios'
-import { Form, TextArea, Button, Message, Icon, Container } from 'semantic-ui-react'
+import { Button, Message, Icon, Container } from 'semantic-ui-react'
 import { me, fetchQuestionSetThunk, deleteQuestionFromSetThunk, stopFetchingQuestionSetsThunk, buildNewGameRoomThunk } from '../store';
 import { connect } from 'react-redux'
 import history from '../history'
 import TeacherAddQuestion from '../components/gameplay/teacher/Teacher_AddQuestion'
-
 
 
 export class AllQuestions extends Component {
@@ -92,7 +89,7 @@ export class AllQuestions extends Component {
                               return (
                                 <div className='right-answer-flex' key={answer}>
                                   <div>{answer}</div>
-                                  <Icon color="olive" name="checkmark"></Icon>
+                                  <Icon color="olive" name="checkmark" />
                                 </div>
                               )
                             }
