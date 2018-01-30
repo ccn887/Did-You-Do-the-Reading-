@@ -15,8 +15,6 @@ export class TeacherWaitingRoom extends Component {
     const gameId = this.props.match.params.pin
 
     this.props.setGameOnStateThunk(gameId)
-
-
     this.props.listenForNewStudents(gameId);
   }
 
@@ -36,6 +34,7 @@ playGame(e) {
   }
   render() {
 
+    const gamePin = this.props.match.params.pin
     let users;
     if (this.props.currentStudents){
       users = Object.keys(this.props.currentStudents)
@@ -43,8 +42,21 @@ playGame(e) {
       users = [];
     }
 
+    // gets users names
+    let currentUsers;
+    firebase.database().ref(`/gameRooms/${gamePin}/users`)
+    .on('value', snapshot => {
+      currentUsers = Object.values(snapshot.val())
+    })
 
-    const gamePin = this.props.match.params.pin
+    // puts users scores into array
+    // let usersArray = []
+    // users.map(user => {
+    //   firebase.database().ref(`users/${user}`)
+    //     .once('value', snapshot => {
+    //       usersArray.push(snapshot.val())
+    //     })
+    // })
 
     return (
       <div>
@@ -56,18 +68,19 @@ playGame(e) {
           {users.length ?
             <Table id="contestant-table">
               <th id="table-header">
-                <Table.HeaderCell>contestants:</Table.HeaderCell>
+                contestants:
               </th>
               <Table.Body>
             {
-              (users.map( user => {
+              (currentUsers.map(user => {
               return (
                 <Table.Row key={user}>
                   <Table.Cell >
                     {user}
                   </Table.Cell>
                 </Table.Row>
-              )}))
+              )
+              }))
             }
             </Table.Body>
             </Table>
