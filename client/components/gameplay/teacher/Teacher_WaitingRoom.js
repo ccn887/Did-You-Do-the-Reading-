@@ -1,6 +1,6 @@
 import firebase from '../../../../server/firebase'
 import React, { Component } from 'react'
-import { Form, TextArea, Button } from 'semantic-ui-react'
+import { Table, Container, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import history from '../../../history'
 import { setGameOnStateThunk, listenForNewStudents, stopListeningForNewStudents, updateGameState } from '../../../store'
@@ -48,22 +48,35 @@ playGame(e) {
 
     return (
       <div>
-        <h1>Enter the Pin to Join the Game!</h1>
-        <h1>{gamePin}</h1>
-        <ul>
-        {users.length ? (users.map( user => {
-            return (
-              <li key={user}>
-                {user}
-              </li>
-            )
-        }))
-        : (
-          <div>Waiting for contestants...</div>
-        )
-          }
-        </ul>
-        <Button onClick={this.playGame}>Start theQuiz!</Button>
+        <Container className="game-join-box">
+          <h1>Enter the Pin to Join the Game!</h1>
+          <div id="game-pin-box">
+            <h1 id="game-pin">{gamePin}</h1>
+          </div>
+          {users.length ?
+            <Table id="contestant-table">
+              <th id="table-header">
+                <Table.HeaderCell>contestants:</Table.HeaderCell>
+              </th>
+              <Table.Body>
+            {
+              (users.map( user => {
+              return (
+                <Table.Row key={user}>
+                  <Table.Cell >
+                    {user}
+                  </Table.Cell>
+                </Table.Row>
+              )}))
+            }
+            </Table.Body>
+            </Table>
+          : (
+            <div id="waiting-for-contestants">Waiting for contestants...</div>
+          )
+            }
+          <Button className="ui button purple" onClick={this.playGame}>Start theQuiz!</Button>
+        </Container>
       </div>
     )
   }

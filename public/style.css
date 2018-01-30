@@ -8,8 +8,9 @@ body {
   text-align: center;
   color: #F3E9D2;
 }
-
-
+h1, h2{
+  color: #F3E9D2;
+}
 
 
 #enter-text{
@@ -19,11 +20,13 @@ body {
 
 #children-wrapper{
   background-color: #114B5F;
+  height: 100vh;
+  width: 100vw;
 }
 
 a {
   text-decoration: none;
-  color: #C6DABF !important;
+  color: #88D498 !important;
 }
 
 label {
@@ -31,7 +34,6 @@ label {
 }
 
 #app-header{
-
   background-color:#008080
 }
 
@@ -67,7 +69,44 @@ form div {
 #all-questions-container{
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  padding: 3rem 3rem;
+}
+
+.game-join-box{
+  padding: 5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+#game-pin-box{
+  background: #C6DABF;
+  padding: 1rem 1rem;
+  width: 25vw;
+  align-self: center;
+  border-radius: 10px;
+}
+
+#game-pin{
+  font-size: 4rem;
+  color: #008080;
+  text-align: center;
+}
+
+#waiting-for-contestants{
+  padding: 1rem 1rem;
+  font-size: 1.5rem;
+  color:  #C6DABF;
+}
+
+#contestant-table{
+  background-color: #F3E9D2 !important;
+  width: 30vw;
+  font-size: 1.2rem;
+}
+
+#table-header{
+  background-color: #F3E9D2 !important;
 }
 
 .two-button-flex{
