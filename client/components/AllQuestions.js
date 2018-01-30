@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Message, Icon, Container } from 'semantic-ui-react'
+import { Button, Message, Icon, Container, Form } from 'semantic-ui-react'
 import { me, fetchQuestionSetThunk, deleteQuestionFromSetThunk, stopFetchingQuestionSetsThunk, buildNewGameRoomThunk } from '../store';
 import { connect } from 'react-redux'
 import history from '../history'
@@ -89,7 +89,6 @@ export class AllQuestions extends Component {
                   </Form.Field>
                 </Form>
                 <div>
-
                 {
                   questionSet && quizArr.length && quizArr.map((question) => {
                     return (
@@ -118,11 +117,12 @@ export class AllQuestions extends Component {
                                   <div>{answer}</div>
                                 </div>
                                 )
-
                               }
-                            </div>
-                          </Message>
+                            })
+                          }
                         </div>
+                      </Message>
+                    </div>
                       )
                     })
                   }
