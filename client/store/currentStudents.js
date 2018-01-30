@@ -31,7 +31,6 @@ export const listenForNewStudents =  (gameId) => (dispatch) => {
  }
 
 
-
  export const stopListeningForNewStudents = (gameId) => (dispatch) => {
    const path = `gameRooms/${gameId}/users`
    const { ref, listener } = activeListeners[path]
