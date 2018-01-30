@@ -9,25 +9,18 @@ import MakeQuiz from '../../MakeQuiz'
 export class TeacherDashboard extends Component {
   constructor() {
     super()
-    this.state = {
-      showForm: false
-    }
-    this.playGame = this.playGame.bind(this)
-    this.showForm = this.showForm.bind(this)
 
   }
   componentDidMount() {
     this.props.getCurrentTeacherGames(this.props.user.id)
   }
 
-  showForm(e) {
-    e.preventDefault();
-    this.setState({
-      showForm: true
-    })
-  }
-
-  playGame(e) {
+makeQuiz = (e) => {
+  console.log('whyyyyyyy')
+  e.preventDefault();
+  history.push('/make-quiz')
+}
+playGame = (e) => {
     e.preventDefault();
     const pin = e.target.value
     history.push(`/teacher-waiting-room/${pin}`)
@@ -36,13 +29,11 @@ export class TeacherDashboard extends Component {
   render() {
     const user = this.props.user
     const currentTeacherGames = this.props.currentTeacherGames
-    const showForm = this.state.showForm
 
     return (
       <div>
         <h1>Welcome, {user.email} </h1>
-        <Button size="large" color="purple" onClick={this.showForm}>Make a New Game</Button>
-        {showForm && <MakeQuiz />}
+        <Button size="large" color="purple" onClick={this.makeQuiz}>Make a New Game</Button>
         <Container id="all-games-container" >
 
         <h1>Play a Previous Game: </h1>
