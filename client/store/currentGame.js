@@ -1,4 +1,4 @@
-import history from '../history'
+
 import firebase from '../../server/firebase'
 
 /* -----------------    ACTIONS     ------------------ */
