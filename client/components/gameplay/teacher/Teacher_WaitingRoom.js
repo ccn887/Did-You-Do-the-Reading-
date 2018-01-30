@@ -1,4 +1,3 @@
-import firebase from '../../../../server/firebase'
 import React, { Component } from 'react'
 import { Table, Container, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
@@ -11,12 +10,11 @@ export class TeacherWaitingRoom extends Component {
     this.playGame = this.playGame.bind(this)
 
   }
+
   componentDidMount() {
     const gameId = this.props.match.params.pin
 
-    this.props.setGameOnStateThunk(gameId)
-
-
+    this.props.setGameOnStateThunk(gameId);
     this.props.listenForNewStudents(gameId);
   }
 
@@ -25,15 +23,17 @@ export class TeacherWaitingRoom extends Component {
     this.props.stopListeningForNewStudents(gameId);
   }
 
-playGame(e) {
+  playGame(e) {
     e.preventDefault();
     const currentGame = this.props.currentGame
     const gameRoomId = this.props.match.params.pin;
     const questionsArr = Object.keys(currentGame)
     const firstQuestionId = questionsArr[0]
+
     this.props.updateGameState(gameRoomId, 'askingQuestion')
     history.push(`/teacher/${gameRoomId}/question/${firstQuestionId}`)
   }
+
   render() {
 
     let users;
@@ -41,11 +41,10 @@ playGame(e) {
     if (this.props.currentStudents){
       users = Object.keys(this.props.currentStudents)
       currentStudents = this.props.currentStudents
-
-    } else {
+    }
+    else {
       users = [];
     }
-
 
     const gamePin = this.props.match.params.pin
 
