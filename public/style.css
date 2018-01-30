@@ -117,3 +117,13 @@ form div {
 .add-new-question{
   margin: 10px 10px !important;
 }
+
+#all-games-container{
+  display: flex;
+  flex-direction: column;
+  padding: 3rem 3rem;
+}
+#game-name{
+  justify-content: space-around;
+  color: #F3E9D2 !important;
+}

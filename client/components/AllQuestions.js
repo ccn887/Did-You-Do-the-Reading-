@@ -14,12 +14,15 @@ export class AllQuestions extends Component {
     super()
     this.state = {
       showAddForm: false,
-      noQuestions: true
+      noQuestions: true,
+      quizTitle: 'Untitled Game'
     }
 
     this.saveQuiz = this.saveQuiz.bind(this)
     this.deleteQuestion = this.deleteQuestion.bind(this)
     this.showAddForm = this.showAddForm.bind(this);
+    this.handleChange = this.handleChange.bind(this)
+
   }
 
   deleteQuestion(e, id) {
@@ -29,8 +32,10 @@ export class AllQuestions extends Component {
 
   saveQuiz(e) {
     const pin = Math.floor(Math.random() * 90000) + 10000;
+    const title = this.state.quizTitle;
+    console.log('title:', title)
     e.preventDefault();
-    this.props.buildNewGameRoomThunk(this.props.questionSet, this.props.user.id, pin)
+    this.props.buildNewGameRoomThunk(this.props.questionSet, this.props.user.id, pin, title)
     history.push(`/teacher-waiting-room/${pin}`)
   }
 
@@ -38,86 +43,99 @@ export class AllQuestions extends Component {
     this.props.fetchQuestionSetThunk(this.props.match.params.questionSetId)
   }
 
-  showAddForm(){
+  showAddForm() {
     this.setState({
       showAddForm: true
     })
   }
 
-  componentWillReceiveProps(nextProps){
-    if (nextProps.questionSet){
-      this.setState({noQuestions: false})
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.questionSet) {
+      this.setState({ noQuestions: false })
     }
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.props.stopFetchingQuestionSetsThunk(this.props.match.params.questionSetId)
+  }
+
+  handleChange(e) {
+    e.preventDefault()
+    this.setState({
+      [e.target.name]: e.target.value
+    });
   }
 
   render() {
 
     let quizArr = [];
-      const questionSet = this.props.questionSet
-      if (questionSet){
-        quizArr = Object.keys(questionSet)
-      }
+    const questionSet = this.props.questionSet
+    if (questionSet) {
+      quizArr = Object.keys(questionSet)
+    }
 
     const showAddForm = this.state.showAddForm;
 
     return (
       <div>
-      <Container id="all-questions-container">
+        <Container id="all-questions-container">
           <div>
-            { this.state.noQuestions ?
+            {this.state.noQuestions ?
               <h3> that text passage generated no questions</h3>
               :
               <div>
                 <h2>edit your quiz below</h2>
+                <Form>
+                  <Form.Field>
+                    <label>Quiz Title</label>
+                    <input name="quizTitle" onChange={this.handleChange} />
+                  </Form.Field>
+                </Form>
                 <div>
-                {
-                  questionSet && quizArr.length && quizArr.map((question) => {
-                    return (
-                      <div key={question}>
-                        <Message className='question-edit-box' color='teal'>
-                          <div className='question-edit-flex'>
-                            <h3 >{questionSet[question].question} </h3>
-                            <Button onClick={(e) => { this.deleteQuestion(e, question) }}>
-                              <Icon name="trash"></Icon>
-                            </Button>
-                          </div>
-                        <div>
-                        {
-                          questionSet[question].answers.map(answer => {
-                            if (answer === questionSet[question].rightAnswer){
-                              return (
-                                <div className='right-answer-flex' key={answer}>
-                                  <div>{answer}</div>
-                                  <Icon color="olive" name="checkmark"></Icon>
-                                </div>
-                              )
-                            }
-                            else {
-                              return (
-                                <div key={answer}>
-                                  <div>{answer}</div>
-                                </div>
-                                )
+                  {
+                    questionSet && quizArr.length && quizArr.map((question) => {
+                      return (
+                        <div key={question}>
+                          <Message className='question-edit-box' color='teal'>
+                            <div className='question-edit-flex'>
+                              <h3 >{questionSet[question].question} </h3>
+                              <Button onClick={(e) => { this.deleteQuestion(e, question) }}>
+                                <Icon name="trash"></Icon>
+                              </Button>
+                            </div>
+                            <div>
+                              {
+                                questionSet[question].answers.map(answer => {
+                                  if (answer === questionSet[question].rightAnswer) {
+                                    return (
+                                      <div className='right-answer-flex' key={answer}>
+                                        <div>{answer}</div>
+                                        <Icon color="olive" name="checkmark"></Icon>
+                                      </div>
+                                    )
+                                  }
+                                  else {
+                                    return (
+                                      <div key={answer}>
+                                        <div>{answer}</div>
+                                      </div>
+                                    )
+                                  }
+                                })
                               }
-                            })
-                          }
+                            </div>
+                          </Message>
                         </div>
-                      </Message>
-                    </div>
-                    )
-                  })
-                }
-                <div className="two-button-flex">
-                  <Button color="orange" onClick={this.showAddForm}>Add Another Question</Button>
-                  <Button color="purple" onClick={this.saveQuiz}>Generate Quiz</Button>
+                      )
+                    })
+                  }
+                  <div className="two-button-flex">
+                    <Button color="orange" onClick={this.showAddForm}>Add Another Question</Button>
+                    <Button color="purple" onClick={this.saveQuiz}>Generate Quiz</Button>
+                  </div>
+                  {showAddForm && <TeacherAddQuestion match={this.props.match} />}
                 </div>
-                {showAddForm && <TeacherAddQuestion match={this.props.match} />}
               </div>
-            </div>
             }
           </div>
         </Container>
