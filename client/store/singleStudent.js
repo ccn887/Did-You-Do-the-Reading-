@@ -1,18 +1,26 @@
 import firebase from '../../server/firebase'
+import history from '../history'
+
+/* -----------------    ACTIONS     ------------------ */
 
 const ADD_TO_STUDENT_SCORE = 'ADD_TO_STUDENT_SCORE'
 const ADD_TO_STUDENT_STREAK = 'ADD_TO_STUDENT_STREAK '
 const BREAK_STREAK = 'BREAK_STREAK'
 const GET_SINGLE_STUDENT = 'GET_SINGLE_STUDENT'
 
+/* ------------   ACTION CREATORS     ------------------ */
 
 export const addToStudentScoreActionCreator = updatedStudent => ({ type: ADD_TO_STUDENT_SCORE, updatedStudent })
 export const addToStudentStreakActionCreator = updatedStudent => ({ type: ADD_TO_STUDENT_STREAK, updatedStudent })
 export const breakStudentStreakActionCreator = updatedStudent => ({ type: BREAK_STREAK, updatedStudent })
 export const getSingleStudentActionCreator = student => ({ type: GET_SINGLE_STUDENT, student })
 
+/* ------------   THUNK HELPERS    ------------------ */
+
 const database = firebase.database()
 const activeListeners = {}
+
+/* ------------       THUNK CREATORS     ------------------ */
 
 export const addToStudentScore = (studentId) => dispatch => {
   const usersRef = database.ref(`users/${studentId}/score`)
@@ -67,7 +75,24 @@ export const stopListeningForSingleStudent = (studentId) => dispatch => {
   delete activeListeners[path]
 }
 
+export const addStudentToGameThunk = (name, currentGame) => dispatch => {
+  const usersRef = firebase.database().ref('users')
+    .push({
+      name: name,
+      score: 0,
+      streak: 0,
+      currentGame: currentGame
+    })
+  const studentId = usersRef.key
+  firebase.database().ref(`gameRooms/${currentGame}/users`)
+    .child(studentId)
+    .set(name)
+    
+    history.push(`/student-waiting-room/${currentGame}/${studentId}`)
+}
 
+
+/* ------------       REDUCER     ------------------ */
 
 export default function (student = {}, action) {
   switch (action.type) {

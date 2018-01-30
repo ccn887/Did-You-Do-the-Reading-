@@ -1,9 +1,7 @@
-import firebase from '../../../../server/firebase'
 import React, { Component } from 'react'
 import { Form, Input, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import history from '../../../history'
-import { setCurrentStudent } from '../../../store'
+import { addStudentToGameThunk } from '../../../store'
 
 
 export class StudentJoinGame extends Component {
@@ -29,43 +27,36 @@ export class StudentJoinGame extends Component {
     e.preventDefault();
     const currentGame = this.state.pin
     const name = this.state.name
-    const usersRef = firebase.database().ref('users')
-      .push({
-        name: this.state.name,
-        score: 0,
-        streak: 0,
-        currentGame: currentGame
-      })
-      const studentId = usersRef.key
 
-    const gameRoomRef = firebase.database().ref(`gameRooms/${currentGame}/users`)
-      .child(studentId).set(name)
-      this.props.setCurrentStudent(usersRef.key)
-    history.push(`/student-waiting-room/${currentGame}/${studentId}`)
+    this.props.addStudentToGameThunk(name, currentGame);
   }
+
   render() {
     return (
       <div>
-        <Form>
+        <Form className="student-join-box">
           <Form.Field>
-            <label>Pin!</label>
-            <input name="pin" onChange={this.handleChange} />
+            <label>Pin:</label>
+            <input className="join-game-input" name="pin" onChange={this.handleChange} />
           </Form.Field>
           <Form.Field>
             <label>Name:</label>
-            <input name="name" onChange={this.handleChange} />
+            <input className="join-game-input" name="name" onChange={this.handleChange} />
           </Form.Field>
+        <Button color="purple" id="join-game-button" onClick={this.join}>Join the Game!</Button>
         </Form>
-        <button onClick={this.join}>Join the Game!</button>
       </div>
     )
   }
+
 }
 
 const mapState = state => {
-  return { currentGame: state.currentGame }
+  return {
+    currentGame: state.currentGame
+  }
 }
 
-const mapDispatch = {setCurrentStudent}
+const mapDispatch = { addStudentToGameThunk }
 
 export default connect(mapState, mapDispatch)(StudentJoinGame)
