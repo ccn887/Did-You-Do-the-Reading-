@@ -1,11 +1,10 @@
-import firebase from '../../server/firebase'
 import React, { Component } from 'react'
-import axios from 'axios'
 import { Form, TextArea, Button, Container } from 'semantic-ui-react'
-import history from '../history'
+import { connect } from 'react-redux'
+import { generateQuestionSetThunk } from '../store'
 
 
-export default class MakeQuiz extends Component {
+export class MakeQuiz extends Component {
   constructor() {
     super()
     this.state = {
@@ -14,42 +13,19 @@ export default class MakeQuiz extends Component {
     this.submit = this.submit.bind(this)
     this.handleChange = this.handleChange.bind(this)
   }
+
   handleChange(event) {
     this.setState({
       text: event.target.value
     })
   }
-  unique(arr) {
-    let newArr = [];
-    for (let i = 0; i < arr.length; i++) {
-      if (!newArr.includes(arr[i])) {
-        newArr.push(arr[i])
-      }
-    }
-    return newArr;
-  }
-  tokenize(text) {
-    let cleanText = text.toLowerCase().replace(/\W/g, ' ').replace(/\s+/g, ' ').trim().split(' ')
-    return this.unique(cleanText)
-  }
-  async submit(e) {
+
+
+  submit(e) {
     e.preventDefault();
     const text = this.state.text
-    try {
-      const wordsToSearch = this.tokenize(text)
-      const res = await axios.post('/api/text/vocab', wordsToSearch)
-      const questionArr = res.data
-      const questionSetRef = firebase.database().ref('questionSets');
-      let newQuestionSetRef = questionSetRef.push({})
-      questionArr.forEach(questionObj => {
-        firebase.database().ref(`questionSets/${newQuestionSetRef.key}`)
-        .push(questionObj)
-      })
-      history.push(`/${newQuestionSetRef.key}/all-questions`)
-    }
-    catch (err) {
-      console.log(err)
-    }
+
+    this.props.generateQuestionSetThunk(text);
   }
 
   render() {
@@ -63,5 +39,9 @@ export default class MakeQuiz extends Component {
       </div>
     )
   }
-
 }
+
+
+const mapDispatch = { generateQuestionSetThunk }
+
+export default connect(null, mapDispatch)(MakeQuiz);

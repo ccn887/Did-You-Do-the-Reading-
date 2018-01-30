@@ -1,5 +1,7 @@
-// import history from '../history'
+import history from '../history'
 import firebase from '../../server/firebase'
+import { tokenize } from './utils'
+import axios from 'axios'
 
 
 /* -----------------    ACTIONS     ------------------ */
@@ -17,12 +19,6 @@ export const setQuestionSetOnState = questionSet => {
   }
 }
 
-// export const deleteQuestionFromState = question => {
-//   return {
-//     type: DELETE_QUESTION_FROM_STATE,
-//     question
-//   }
-// }
 
 /* ------------       THUNK HELPERS     ------------------ */
 
@@ -30,6 +26,20 @@ const activeListeners = {}
 
 
 /* ------------       THUNK CREATORS     ------------------ */
+
+
+export const generateQuestionSetThunk = (text) => async dispatch => {
+  const res = await axios.post('/api/text/vocab', tokenize(text));
+  const questionArray = res.data;
+
+  const questionSetRef = firebase.database().ref('questionSets');
+  let newQuestionSetRef = questionSetRef.push({})
+  questionArray.forEach(questionObj => {
+    firebase.database().ref(`questionSets/${newQuestionSetRef.key}`)
+      .push(questionObj)
+    })
+    history.push(`/${newQuestionSetRef.key}/all-questions`)
+}
 
 export const fetchQuestionSetThunk = (qSetId) => dispatch => {
   const path = `questionSets/${qSetId}`
@@ -41,17 +51,17 @@ export const fetchQuestionSetThunk = (qSetId) => dispatch => {
   ref.on('value', listener)
 }
 
-export const deleteQuestionFromSetThunk = (qSetId, qestionId) => async dispatch => {
-  const questionRef = firebase.database().ref(`questionSets/${qSetId}`).child(qestionId)
-  questionRef.remove()
-  .catch((error) => console.error('error removing question: ', error))
-}
-
 export const stopFetchingQuestionSetsThunk = qSetId => dispatch => {
   const path = `questionSets/${qSetId}`
   const { ref, listener } = activeListeners[path]
   ref.off('value', listener)
   delete activeListeners[path]
+}
+
+export const deleteQuestionFromSetThunk = (qSetId, qestionId) => async dispatch => {
+  const questionRef = firebase.database().ref(`questionSets/${qSetId}`).child(qestionId)
+  questionRef.remove()
+  .catch((error) => console.error('error removing question: ', error))
 }
 
 
