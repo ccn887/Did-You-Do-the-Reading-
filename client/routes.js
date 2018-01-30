@@ -45,8 +45,9 @@ class Routes extends Component {
               isLoggedIn &&
               <Switch>
                 {/* Routes placed here are only available after logging in */}
+
                 <Route
-                path="/home"
+                exact path="/"
                 component={TeacherDashboard}
                 />
                 <Route
@@ -73,6 +74,9 @@ class Routes extends Component {
                   exact
                   path="/teacher/:pin/answer/:questionId"
                   component={TeacherAnswerReveal}
+                />
+                <Route
+                component={TeacherDashboard}
                 />
               </Switch>
             }

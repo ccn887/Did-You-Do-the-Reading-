@@ -9,7 +9,6 @@ import axios from 'axios'
 const SET_QUESTION_SET_ON_STATE = 'SET_QUESTION_SET_ON_STATE';
 
 
-
 /* ------------   ACTION CREATORS     ------------------ */
 
 export const setQuestionSetOnState = questionSet => {
@@ -37,8 +36,8 @@ export const generateQuestionSetThunk = (text) => async dispatch => {
   questionArray.forEach(questionObj => {
     firebase.database().ref(`questionSets/${newQuestionSetRef.key}`)
       .push(questionObj)
-    })
-    history.push(`/${newQuestionSetRef.key}/all-questions`)
+  })
+  history.push(`/${newQuestionSetRef.key}/all-questions`)
 }
 
 export const fetchQuestionSetThunk = (qSetId) => dispatch => {
@@ -61,15 +60,18 @@ export const stopFetchingQuestionSetsThunk = qSetId => dispatch => {
 export const deleteQuestionFromSetThunk = (qSetId, qestionId) => async dispatch => {
   const questionRef = firebase.database().ref(`questionSets/${qSetId}`).child(qestionId)
   questionRef.remove()
-  .catch((error) => console.error('error removing question: ', error))
+    .catch((error) => console.error('error removing question: ', error))
 }
 
+export const addQuestionToSetThunk = (qSetId, question) => dispatch => {
+  firebase.database().ref(`questionSets/${qSetId}`).push(question)
+}
 
 
 /* ------------       REDUCER     ------------------ */
 
-export default function (questionSet = {}, action){
-  switch (action.type){
+export default function (questionSet = {}, action) {
+  switch (action.type) {
     case SET_QUESTION_SET_ON_STATE:
       return action.questionSet;
     default:
