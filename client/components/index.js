@@ -9,6 +9,7 @@ export {Login, Signup} from './auth-form'
 export {default as MakeQuiz} from './MakeQuiz';
 export {default as AllQuestions} from './AllQuestions';
 export {default as TeacherWaitingRoom} from './gameplay/teacher/Teacher_WaitingRoom';
+export {default as TeacherDashboard} from './gameplay/teacher/Teacher_Dashboard';
 export {default as StudentJoinGame} from './gameplay/student/Student_JoinGame';
 export {default as StudentWaitingRoom} from './gameplay/student/Student_WaitingRoom';
 export {default as TeacherSingleQuestion} from './gameplay/teacher/Teacher_SingleQuestion';

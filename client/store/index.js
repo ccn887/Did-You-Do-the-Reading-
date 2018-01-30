@@ -9,6 +9,7 @@ import currentStudents from './currentStudents'
 import gameState from './gameState'
 import singleStudent from './singleStudent'
 import questionSet from './questionSet'
+import currentTeacherGames from './currentTeacherGames'
 
 
 
@@ -21,7 +22,8 @@ const reducer = combineReducers(
     currentQuestion,
     singleStudent,
     gameState,
-    questionSet
+    questionSet,
+    currentTeacherGames
   }
 )
 
@@ -39,3 +41,5 @@ export * from './currentStudents'
 export * from './gameState'
 export * from './singleStudent'
 export * from './questionSet'
+export * from './currentTeacherGames'
+
