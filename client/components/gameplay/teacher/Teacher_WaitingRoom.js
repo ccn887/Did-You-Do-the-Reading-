@@ -36,8 +36,11 @@ playGame(e) {
 
     const gamePin = this.props.match.params.pin
     let users;
+    let currentStudents;
     if (this.props.currentStudents){
       users = Object.keys(this.props.currentStudents)
+      currentStudents = this.props.currentStudents
+
     } else {
       users = [];
     }
@@ -76,7 +79,7 @@ playGame(e) {
               return (
                 <Table.Row key={user}>
                   <Table.Cell >
-                    {user}
+                    {currentStudents[user]}
                   </Table.Cell>
                 </Table.Row>
               )

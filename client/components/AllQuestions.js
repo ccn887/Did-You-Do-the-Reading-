@@ -2,7 +2,7 @@ import firebase from '../../server/firebase'
 import React, { Component } from 'react'
 import axios from 'axios'
 import { Form, TextArea, Button, Message, Icon, Container } from 'semantic-ui-react'
-import { me } from '../store';
+import { me, fetchQuestionSetThunk, deleteQuestionFromSetThunk, stopFetchingQuestionSetsThunk, buildNewGameRoomThunk } from '../store';
 import { connect } from 'react-redux'
 import history from '../history'
 import TeacherAddQuestion from '../components/gameplay/teacher/Teacher_AddQuestion'
@@ -13,82 +13,28 @@ export class AllQuestions extends Component {
   constructor() {
     super()
     this.state = {
-      currentQuiz: {},
-      teacherId: null,
-      key: null,
-      pin: '',
       showAddForm: false
     }
+
     this.saveQuiz = this.saveQuiz.bind(this)
     this.deleteQuestion = this.deleteQuestion.bind(this)
     this.showAddForm = this.showAddForm.bind(this);
-
   }
 
-  async deleteQuestion(e, id) {
+  deleteQuestion(e, id) {
     e.preventDefault()
-    try {
-      const questionSetId = this.props.match.params.questionSetId
-      const questionSetRef = await firebase.database().ref(`questionSets/${questionSetId}`).child(id)
-        .once('value', async (snapshot) => {
-          try {
-            const questionSetRef = await firebase.database().ref(`questionSets/${questionSetId}`).child(id)
-            questionSetRef.remove()
-          }
-          catch (err) {
-            console.log(err)
-          }
-        })
-    }
-    catch (err) {
-      console.log(err)
-    }
-
+    this.props.deleteQuestionFromSetThunk(this.props.match.params.questionSetId, id)
   }
 
-  async saveQuiz(e) {
-    e.preventDefault();
+  saveQuiz(e) {
     const pin = Math.floor(Math.random() * 90000) + 10000;
-    const quiz = this.state.currentQuiz
-    const teacherId = this.props.user.id
-    try {
-      const gameRoomRef = firebase.database().ref('gameRooms');
-      let newGameRoomRef = gameRoomRef.child(pin).set({
-        quiz: quiz,
-        teacherId: teacherId,
-        pin: pin,
-        gameState: 'waitingRoom'
-      })
-      history.push(`/teacher-waiting-room/${pin}`)
-
-    }
-    catch (err) {
-      console.log(err)
-    }
+    e.preventDefault();
+    this.props.buildNewGameRoomThunk(this.props.questionSet, this.props.user.id, pin)
+    history.push(`/teacher-waiting-room/${pin}`)
   }
 
-  async componentDidMount() {
-    let currentQuiz
-    try {
-      const questionSetId = this.props.match.params.questionSetId
-      const questionSetRef = await firebase.database().ref(`questionSets/${questionSetId}`)
-        .on('value', async  (snapshot) => {
-          try {
-            currentQuiz = await snapshot.val()
-
-            this.setState({
-              currentQuiz: currentQuiz,
-            })
-          }
-          catch (err) {
-            console.log(err)
-          }
-        })
-    }
-    catch (err) {
-      console.log(err)
-    }
-
+  componentDidMount() {
+    this.props.fetchQuestionSetThunk(this.props.match.params.questionSetId)
   }
 
   showAddForm(){
@@ -97,9 +43,14 @@ export class AllQuestions extends Component {
     })
   }
 
+  componentWillUnmount(){
+    this.props.stopFetchingQuestionSetsThunk(this.props.match.params.questionSetId)
+  }
+
   render() {
-    const quiz = this.state.currentQuiz
-    const quizArr = Object.keys(quiz)
+    const questionSet = this.props.questionSet
+    const quizArr = Object.keys(questionSet)
+
     const showAddForm = this.state.showAddForm;
 
     return (
@@ -108,20 +59,20 @@ export class AllQuestions extends Component {
         <h2>edit your quiz below</h2>
         {
           quizArr.length ?
-            (quiz && quizArr.map((question) => {
+            (questionSet && quizArr.map((question) => {
 
               return (
                 <div key={question}>
                   <Message className='question-edit-box' color='teal'>
                     <div className='question-edit-flex'>
-                      <h3 >{quiz[question].question} </h3>
+                      <h3 >{questionSet[question].question} </h3>
                       <Button onClick={(e) => { this.deleteQuestion(e, question) }}>
                         <Icon name="trash"></Icon>
                       </Button>
                     </div>
                     <div>
-                      {quiz[question].answers.map(answer => {
-                        if(answer === quiz[question].rightAnswer){
+                      {questionSet[question].answers.map(answer => {
+                        if(answer === questionSet[question].rightAnswer){
                           return (
                             <div className='right-answer-flex' key={answer}>
                               <div>{answer}</div>
@@ -157,9 +108,18 @@ export class AllQuestions extends Component {
 }
 
 const mapState = state => {
-  return { user: state.user }
+  return {
+    user: state.user,
+    questionSet: state.questionSet
+  }
 }
 
-const mapDispatch = { me }
+const mapDispatch = {
+  me,
+  fetchQuestionSetThunk,
+  deleteQuestionFromSetThunk,
+  stopFetchingQuestionSetsThunk,
+  buildNewGameRoomThunk
+}
 
 export default connect(mapState, mapDispatch)(AllQuestions)
