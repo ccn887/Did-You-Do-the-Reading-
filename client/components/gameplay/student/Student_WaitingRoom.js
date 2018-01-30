@@ -21,7 +21,7 @@ export class StudentWaitingRoom extends Component {
     this.props.listenForNewStudents(gameId);
     this.props.listenForGameStateChange(gameId);
 
-  
+
 }
 
 componentWillReceiveProps(nextProps){
@@ -53,7 +53,7 @@ componentWillReceiveProps(nextProps){
 
   render() {
     const users = Object.keys(this.props.currentStudents)
-
+    const currentStudents = this.props.currentStudents
     return (
       <div>
         <h1>Waiting for the Game to Start!</h1>
@@ -61,7 +61,7 @@ componentWillReceiveProps(nextProps){
           {users.length && users.map(user => {
             return (
               <li key={user}>
-                {user}
+                {currentStudents[user]}
               </li>
             )
           })

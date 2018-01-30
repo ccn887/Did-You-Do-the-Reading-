@@ -37,8 +37,11 @@ playGame(e) {
   render() {
 
     let users;
+    let currentStudents;
     if (this.props.currentStudents){
       users = Object.keys(this.props.currentStudents)
+      currentStudents = this.props.currentStudents
+
     } else {
       users = [];
     }
@@ -56,7 +59,7 @@ playGame(e) {
           {users.length ?
             <Table id="contestant-table">
               <th id="table-header">
-                <Table.HeaderCell>contestants:</Table.HeaderCell>
+                contestants:
               </th>
               <Table.Body>
             {
@@ -64,7 +67,7 @@ playGame(e) {
               return (
                 <Table.Row key={user}>
                   <Table.Cell >
-                    {user}
+                    {currentStudents[user]}
                   </Table.Cell>
                 </Table.Row>
               )}))
