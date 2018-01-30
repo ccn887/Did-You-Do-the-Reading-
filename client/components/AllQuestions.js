@@ -14,36 +14,10 @@ export class AllQuestions extends Component {
       noQuestions: true,
       quizTitle: 'Untitled Game'
     }
-
-    this.saveQuiz = this.saveQuiz.bind(this)
-    this.deleteQuestion = this.deleteQuestion.bind(this)
-    this.showAddForm = this.showAddForm.bind(this);
-    this.handleChange = this.handleChange.bind(this)
-
-  }
-
-  deleteQuestion(e, id) {
-    e.preventDefault()
-    this.props.deleteQuestionFromSetThunk(this.props.match.params.questionSetId, id)
-  }
-
-  saveQuiz(e) {
-    const pin = Math.floor(Math.random() * 90000) + 10000;
-    const title = this.state.quizTitle;
-    console.log('title:', title)
-    e.preventDefault();
-    this.props.buildNewGameRoomThunk(this.props.questionSet, this.props.user.id, pin, title)
-    history.push(`/teacher-waiting-room/${pin}`)
   }
 
   componentDidMount() {
     this.props.fetchQuestionSetThunk(this.props.match.params.questionSetId)
-  }
-
-  showAddForm() {
-    this.setState({
-      showAddForm: true
-    })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -56,11 +30,36 @@ export class AllQuestions extends Component {
     this.props.stopFetchingQuestionSetsThunk(this.props.match.params.questionSetId)
   }
 
-  handleChange(e) {
+  deleteQuestion = (e, id) => {
+    e.preventDefault()
+    this.props.deleteQuestionFromSetThunk(this.props.match.params.questionSetId, id)
+  }
+
+  saveQuiz = (e) => {
+    const pin = Math.floor(Math.random() * 90000) + 10000;
+    const title = this.state.quizTitle;
+    console.log('title:', title)
+    e.preventDefault();
+    this.props.buildNewGameRoomThunk(this.props.questionSet, this.props.user.id, pin, title)
+    history.push(`/teacher-waiting-room/${pin}`)
+  }
+
+  showAddForm = () => {
+    this.setState({
+      showAddForm: true
+    })
+  }
+
+  handleChange = (e) => {
     e.preventDefault()
     this.setState({
       [e.target.name]: e.target.value
     });
+  }
+
+  goBack = (e) => {
+    e.preventDefault()
+    history.push(`/make-quiz`)
   }
 
   render() {
@@ -78,7 +77,10 @@ export class AllQuestions extends Component {
         <Container id="all-questions-container">
           <div>
             {this.state.noQuestions ?
-              <h3> that text passage generated no questions</h3>
+              <div>
+                <h3> that text passage generated no questions</h3>
+                <Button color="teal" onClick={this.goBack}>Generate Quiz With New Text</Button>
+              </div>
               :
               <div>
                 <h2>edit your quiz below</h2>
