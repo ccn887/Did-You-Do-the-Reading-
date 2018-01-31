@@ -40,7 +40,7 @@ export class Leaderboard extends Component {
       return (
         <div>
           <h2>Leaderboard</h2>
-          <Table basic='very' celled collapsing id="leaderboard-display">
+          <Table basic="very" celled collapsing id="leaderboard-display">
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>Contestant</Table.HeaderCell>
