@@ -12,7 +12,7 @@ export class TeacherAnswerReveal extends Component {
     super()
     this.state = {
       gameRoomId: '',
-      questionId: ''
+      questionId: '',
     }
 
     this.nextQuestion = this.nextQuestion.bind(this)
@@ -22,9 +22,7 @@ export class TeacherAnswerReveal extends Component {
   componentDidMount() {
     this.props.setGameOnStateThunk(this.props.match.params.pin)
     this.props.setCurrentQuestionThunk(this.props.match.params.questionId, this.props.match.params.pin)
-    const gameId = this.props.match.params.pin
-    this.props.setGameOnStateThunk(gameId);
-    this.props.listenForNewStudents(gameId);
+    this.props.listenForNewStudents(this.props.match.params.pin);
   }
 
   componentWillReceiveProps(nextProps){
@@ -32,6 +30,7 @@ export class TeacherAnswerReveal extends Component {
       gameRoomId: this.props.match.params.pin,
       questionId: this.props.match.params.questionId
     })
+    console.log('props here:' ,this.props)
   }
 
   nextQuestion() {
@@ -77,9 +76,13 @@ export class TeacherAnswerReveal extends Component {
           <Button className="ui button purple" onClick={this.endGame}> End Game</Button> :
           <Button className="ui button teal" onClick={this.nextQuestion}> Next Question</Button>
         }
-        {/* commented out while fixing bugs
+        {
+          this.props.currentStudents.length > 0 ?
           <Leaderboard />
-          */}
+            :
+              <div>NOPE</div>
+          }
+
       </div>
     )
   }
@@ -90,7 +93,6 @@ const mapState = state => {
   return {
     currentGame: state.currentGame,
     currentQuestion: state.currentQuestion,
-    student: state.student,
     currentStudents: state.currentStudents,
   }
 }
