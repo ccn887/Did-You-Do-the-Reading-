@@ -681,7 +681,6 @@ Calvinize v. To teach or imbue with the doctrines of Calvinism.
 cameo n. Any small engraved or carved work in relief.
 campaign n. A complete series of connected military operations.
 Canaanite n. A member of one of the three tribes that dwelt in the land of Canaan, or western Palestine.
-canary adj. Of a bright but delicate yellow.
 candid adj. Straightforward.
 candor n. The quality of frankness or outspokenness.
 canine adj. Characteristic of a dog.
@@ -2099,8 +2098,6 @@ harmonious adj. Concordant in sound.
 havoc n. Devastation.
 hawthorn n. A thorny shrub much used in England for hedges.
 hazard n. Risk.
-head first adv. Precipitately, as in diving.
-head foremost adv. Precipitately, as in diving.
 heartrending adj. Very depressing.
 heathenish adj. Irreligious.
 heedless adj. Thoughtless.
