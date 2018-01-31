@@ -2,13 +2,15 @@ const router = require('express').Router();
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const { WordList } = require('../db/models');
-const { lookup, getRandomIndex, getRandomWords, shuffle } = require('./utils');
+const { lookup, getRandomIndex, getRandomWords, shuffle, pullFromDb, replaceDuplicates } = require('./utils');
 
 
 module.exports = router;
 
 router.post('/vocab', async (req, res, next) => {
   const textArray = req.body;
+
+  const notAllowedWords = ['jew', 'jews', 'nazi', 'jackass', 'shit', 'faggot']
 
   try {
     const response = await WordList.findAll({
@@ -46,17 +48,29 @@ router.post('/vocab', async (req, res, next) => {
             antonym = thesaurusInfo[partOfSpeech].ant[antIndex];
           }
 
-          const randomWords = await getRandomWords(word);
-          if (randomWords){
+          const firstRandomWords = await getRandomWords(word);
+          if (firstRandomWords){
+
+            const randomWords = firstRandomWords.map(randWord => {
+              if (notAllowedWords.includes(randWord)){
+                return pullFromDb();
+              }
+              else {
+                return randWord;
+              }
+            })
+
             questionObject.question = `Which word means ${word}?`;
             questionObject.rightAnswer = synonym;
 
             if (!antonym.length) {
-              questionObject.answers = [randomWords[0], randomWords[1], randomWords[2], synonym];
+              questionObject.answers = shuffle([randomWords[0], randomWords[1], randomWords[2], synonym]);
             } else {
               questionObject.answers = shuffle([antonym, randomWords[0], randomWords[1], synonym]);
-
             }
+
+            // questionObject.answers = replaceDuplicates(questionObject.answers);
+            
             //nice-to-haves
             /*
             - randomize which part of speech it uses

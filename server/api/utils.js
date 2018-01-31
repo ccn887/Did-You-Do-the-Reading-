@@ -1,4 +1,6 @@
 const axios = require('axios');
+const Sequelize = require('sequelize');
+const { WordList } = require('../db/models');
 
 const API_KEY = process.env.WORDS_API_KEY;
 const API_KEY_BACKUP = process.env.BACKUP_WORDS_API_KEY;
@@ -7,7 +9,7 @@ const API_KEY_BACKUP = process.env.BACKUP_WORDS_API_KEY;
 
 
 const lookup = async(word) => {
-  
+
   try {
     const thesaurus = await axios.get(`http://words.bighugelabs.com/api/2/${API_KEY}/${word}/json`);
     return thesaurus.data;
@@ -74,5 +76,26 @@ const shuffle = (originalArray) =>{
   return array;
 }
 
+const pullFromDb = async() => {
+  const id = Math.floor(Math.random() * Math.floor(5000))
+  const newWord = await WordList.findById(id);
+  return newWord;
+}
 
-module.exports = {lookup, getRandomIndex, getRandomWords, shuffle}
+
+const replaceDuplicates = (arr) => {
+  console.log('ARRAY BEING SEARCHED', arr)
+  const fixedArr = arr.map( (word, index) => {
+    arr.forEach( async (secondWord, secondIndex) => {
+      if (word === secondWord && index !== secondIndex) {
+        return pullFromDb();
+      }
+      else return secondWord;
+    })
+  });
+  console.log('ARRAY BEFORE RETURNING', fixedArr)
+  return fixedArr;
+}
+
+
+module.exports = {lookup, getRandomIndex, getRandomWords, shuffle, pullFromDb, replaceDuplicates}
