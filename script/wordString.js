@@ -3242,7 +3242,6 @@ odious adj. Hateful.
 odium n. A feeling of extreme repugnance, or of dislike and disgust.
 odoriferous adj. Having or diffusing an odor or scent, especially an agreeable one.
 odorous adj. Having an odor, especially a fragrant one.
-off adj. Farther or more distant.
 offhand adv. Without preparation.
 officiate v. To act as an officer or leader.
 officious adj. Intermeddling with what is not one's concern.

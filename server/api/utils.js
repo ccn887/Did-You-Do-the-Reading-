@@ -12,42 +12,54 @@ const getRandomIndex = (arr) => {
 }
 
 
-const parseThesaurusData = (thesaurusInfo, word) => {
+const parseThesaurusData = (thesaurusInfo, wordObj) => {
   if (thesaurusInfo){
-    const partOfSpeech = Object.keys(thesaurusInfo)[0];
+    let word = wordObj.word;
+
+    let partOfSpeech;
+    if (wordObj.partOfSpeech === 'none'){
+      partOfSpeech = Object.keys(thesaurusInfo)[0];
+    }
+    else {
+      partOfSpeech = wordObj.partOfSpeech;
+    }
 
     if (thesaurusInfo[partOfSpeech].syn) {
       let synIndex = getRandomIndex(thesaurusInfo[partOfSpeech].syn)
+
       let synonym = thesaurusInfo[partOfSpeech].syn[synIndex];
 
       if (word.includes(synonym) || synonym.includes(word)){
         if (thesaurusInfo[partOfSpeech].syn.length > 1){
-          synonym = thesaurusInfo[partOfSpeech].syn[synIndex + 1 % thesaurusInfo[partOfSpeech].syn.length]
+          synonym = thesaurusInfo[partOfSpeech].syn[(synIndex + 2) % thesaurusInfo[partOfSpeech].syn.length]
         }
       }
 
-      let antonym = '';
+      let antonym;
 
       if (thesaurusInfo[partOfSpeech].ant) {
         const antIndex = getRandomIndex(thesaurusInfo[partOfSpeech].ant);
         antonym = thesaurusInfo[partOfSpeech].ant[antIndex];
       }
-      return [synonym, antonym];
+
+      if (synonym){
+        if(antonym){
+          return [synonym, antonym];
+        }
+        return [synonym]
+      }
     }
     else {
       return [];
     }
   }
-
-
 }
 
 
-const lookup = async(word) => {
-
+const lookup = async(wordObj) => {
   try {
-    const thesaurus = await axios.get(`http://words.bighugelabs.com/api/2/${API_KEY}/${word}/json`);
-    return parseThesaurusData(thesaurus.data, word);
+    const thesaurus = await axios.get(`http://words.bighugelabs.com/api/2/${API_KEY}/${wordObj.word}/json`);
+    return parseThesaurusData(thesaurus.data, wordObj);
 
   }
   catch (err){
@@ -57,7 +69,7 @@ const lookup = async(word) => {
         console.log('FIRST API KEY IS EXPIRED')
       try {
         const backupThesaurus = await axios.get(`http://words.bighugelabs.com/api/2/${API_KEY_BACKUP}/${word}/json`)
-        return parseThesaurusData(backupThesaurus.data, word)
+        return parseThesaurusData(backupThesaurus.data, wordObj)
       }
       catch (secondErr){
         console.error('both our api keys are expired...', secondErr)
@@ -82,17 +94,17 @@ const getRandomWords = async(word, num) => {
     const objArray = response.data;
 
     const firstIndex = getRandomIndex(objArray.slice(0));
-    const firstWord = objArray[firstIndex].word || '';
+    const firstWord = objArray[firstIndex].word.toLowerCase() || '';
 
     const secondIndex = getRandomIndex(objArray.slice(0));
-    let secondWord = objArray[secondIndex].word || '';
+    let secondWord = objArray[secondIndex].word.toLowerCase() || '';
 
     if (secondWord === firstWord){
       secondWord = await pullFromDb();
     }
 
     const thirdIndex = getRandomIndex(objArray.slice(0));
-    let thirdWord = objArray[thirdIndex].word || '';
+    let thirdWord = objArray[thirdIndex].word.toLowerCase() || '';
 
     if (thirdWord === firstWord || thirdWord === secondWord){
       thirdWord = await pullFromDb();
