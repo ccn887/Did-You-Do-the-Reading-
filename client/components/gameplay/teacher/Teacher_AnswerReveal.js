@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { setGameOnStateThunk, setCurrentQuestionThunk, updateGameState } from '../../../store'
+import { setGameOnStateThunk, setCurrentQuestionThunk, updateGameState, listenForNewStudents, stopListeningForNewStudents } from '../../../store'
 import history from '../../../history'
 import { Button } from 'semantic-ui-react'
+import Leaderboard from '../../Leaderboard'
 
 
 
@@ -21,6 +22,9 @@ export class TeacherAnswerReveal extends Component {
   componentDidMount() {
     this.props.setGameOnStateThunk(this.props.match.params.pin)
     this.props.setCurrentQuestionThunk(this.props.match.params.questionId, this.props.match.params.pin)
+    const gameId = this.props.match.params.pin
+    this.props.setGameOnStateThunk(gameId);
+    this.props.listenForNewStudents(gameId);
   }
 
   componentWillReceiveProps(nextProps){
@@ -70,9 +74,12 @@ export class TeacherAnswerReveal extends Component {
         <h1>{rightAnswer}</h1>
         {
           lastQuestion ?
-          <Button className="ui button purple" onClick={this.endGame}> End Game</Button>:
+          <Button className="ui button purple" onClick={this.endGame}> End Game</Button> :
           <Button className="ui button teal" onClick={this.nextQuestion}> Next Question</Button>
         }
+        {/* commented out while fixing bugs
+          <Leaderboard />
+          */}
       </div>
     )
   }
@@ -82,10 +89,12 @@ export class TeacherAnswerReveal extends Component {
 const mapState = state => {
   return {
     currentGame: state.currentGame,
-    currentQuestion: state.currentQuestion
+    currentQuestion: state.currentQuestion,
+    student: state.student,
+    currentStudents: state.currentStudents,
   }
 }
 
-const mapDispatch = { setGameOnStateThunk, setCurrentQuestionThunk, updateGameState }
+const mapDispatch = { setGameOnStateThunk, setCurrentQuestionThunk, updateGameState, stopListeningForNewStudents, listenForNewStudents }
 
 export default connect(mapState, mapDispatch)(TeacherAnswerReveal)

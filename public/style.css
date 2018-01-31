@@ -132,7 +132,8 @@ form div {
   flex-direction: column;
   padding: 3rem 3rem;
 }
-#game-name{
+
+#game-name {
   justify-content: space-around;
   color: #F3E9D2 !important;
 }
@@ -154,6 +155,8 @@ form div {
 
 #leaderboard-username {
   color: black;
+  width: 13rem;
+  overflow-wrap: break-word;
 }
 
 #leaderboard-streak {

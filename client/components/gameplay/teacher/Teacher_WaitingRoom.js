@@ -75,11 +75,11 @@ export class TeacherWaitingRoom extends Component {
                 </Table.Body>
               </Table>
             </div>
-            : (
-              <div id="waiting-for-contestants">Waiting for contestants...</div>
-            )
-          }
-          <Button className="ui button purple" onClick={this.playGame}>Start theQuiz!</Button>
+          : (
+            <div id="waiting-for-contestants">Waiting for contestants...</div>
+          )
+            }
+          <Button className="ui button purple" onClick={this.playGame}>Start the Quiz!</Button>
         </Container>
       </div>
     )
