@@ -6,13 +6,49 @@ const API_KEY = process.env.WORDS_API_KEY;
 const API_KEY_BACKUP = process.env.BACKUP_WORDS_API_KEY;
 
 
+const getRandomIndex = (arr) => {
+  const end = arr.length
+  return Math.floor(Math.random() * Math.floor(end));
+}
+
+
+const parseThesaurusData = (thesaurusInfo, word) => {
+  if (thesaurusInfo){
+    const partOfSpeech = Object.keys(thesaurusInfo)[0];
+
+    if (thesaurusInfo[partOfSpeech].syn) {
+      let synIndex = getRandomIndex(thesaurusInfo[partOfSpeech].syn)
+      let synonym = thesaurusInfo[partOfSpeech].syn[synIndex];
+
+      if (word.includes(synonym) || synonym.includes(word)){
+        if (thesaurusInfo[partOfSpeech].syn.length > 1){
+          synonym = thesaurusInfo[partOfSpeech].syn[synIndex + 1 % thesaurusInfo[partOfSpeech].syn.length]
+        }
+      }
+
+      let antonym = '';
+
+      if (thesaurusInfo[partOfSpeech].ant) {
+        const antIndex = getRandomIndex(thesaurusInfo[partOfSpeech].ant);
+        antonym = thesaurusInfo[partOfSpeech].ant[antIndex];
+      }
+      return [synonym, antonym];
+    }
+    else {
+      return [];
+    }
+  }
+
+
+}
 
 
 const lookup = async(word) => {
 
   try {
     const thesaurus = await axios.get(`http://words.bighugelabs.com/api/2/${API_KEY}/${word}/json`);
-    return thesaurus.data;
+    return parseThesaurusData(thesaurus.data, word);
+
   }
   catch (err){
     console.error('error from bighugelabs api: ', err.response.status, err.response.statusText);
@@ -21,7 +57,7 @@ const lookup = async(word) => {
         console.log('FIRST API KEY IS EXPIRED')
       try {
         const backupThesaurus = await axios.get(`http://words.bighugelabs.com/api/2/${API_KEY_BACKUP}/${word}/json`)
-        return backupThesaurus.data
+        return parseThesaurusData(backupThesaurus.data, word)
       }
       catch (secondErr){
         console.error('both our api keys are expired...', secondErr)
@@ -32,23 +68,35 @@ const lookup = async(word) => {
   }
 }
 
-const getRandomIndex = (arr) => {
-  const end = arr.length
-  return Math.floor(Math.random() * Math.floor(end));
+
+const pullFromDb = async() => {
+  const id = Math.floor(Math.random() * Math.floor(5000))
+  const newWord = await WordList.findById(id);
+  return newWord.word;
 }
+
 
 const getRandomWords = async(word, num) => {
   try {
     const response = await axios.get(`http://api.datamuse.com/words?rel_trg=${word}`);
     const objArray = response.data;
 
-
     const firstIndex = getRandomIndex(objArray.slice(0));
-    const secondIndex = getRandomIndex(objArray.slice(0));
     const firstWord = objArray[firstIndex].word || '';
-    const secondWord = objArray[secondIndex].word || '';
+
+    const secondIndex = getRandomIndex(objArray.slice(0));
+    let secondWord = objArray[secondIndex].word || '';
+
+    if (secondWord === firstWord){
+      secondWord = await pullFromDb();
+    }
+
     const thirdIndex = getRandomIndex(objArray.slice(0));
-    const thirdWord = objArray[thirdIndex].word;
+    let thirdWord = objArray[thirdIndex].word || '';
+
+    if (thirdWord === firstWord || thirdWord === secondWord){
+      thirdWord = await pullFromDb();
+    }
     return [firstWord, secondWord, thirdWord];
   }
   catch (err){
@@ -76,26 +124,21 @@ const shuffle = (originalArray) =>{
   return array;
 }
 
-const pullFromDb = async() => {
-  const id = Math.floor(Math.random() * Math.floor(5000))
-  const newWord = await WordList.findById(id);
-  return newWord;
-}
 
 
-const replaceDuplicates = (arr) => {
-  console.log('ARRAY BEING SEARCHED', arr)
-  const fixedArr = arr.map( (word, index) => {
-    arr.forEach( async (secondWord, secondIndex) => {
-      if (word === secondWord && index !== secondIndex) {
-        return pullFromDb();
-      }
-      else return secondWord;
-    })
-  });
-  console.log('ARRAY BEFORE RETURNING', fixedArr)
-  return fixedArr;
-}
+//
+// const replaceDuplicates = (arr) => {
+//   console.log('ARRAY BEING SEARCHED', arr)
+//   arr.forEach( (word, index) => {
+//     arr.forEach((secondWord, secondIndex) => {
+//       if (word === secondWord && index !== secondIndex) {
+//         secondWord = pullFromDb();
+//       }
+//     })
+//   });
+//   console.log('ARRAY BEFORE RETURNING', arr)
+//   return arr;
+// }
 
 
-module.exports = {lookup, getRandomIndex, getRandomWords, shuffle, pullFromDb, replaceDuplicates}
+module.exports = {lookup, getRandomIndex, getRandomWords, shuffle, pullFromDb }

@@ -2,7 +2,7 @@ const router = require('express').Router();
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const { WordList } = require('../db/models');
-const { lookup, getRandomIndex, getRandomWords, shuffle, pullFromDb, replaceDuplicates } = require('./utils');
+const { lookup, getRandomIndex, getRandomWords, shuffle, pullFromDb } = require('./utils');
 
 
 module.exports = router;
@@ -10,7 +10,7 @@ module.exports = router;
 router.post('/vocab', async (req, res, next) => {
   const textArray = req.body;
 
-  const notAllowedWords = ['jew', 'jews', 'nazi', 'jackass', 'shit', 'faggot']
+  const notAllowedWords = ['jew', 'jews', 'nazi', 'jackass', 'shit', 'faggot', 'balls']
 
   try {
     const response = await WordList.findAll({
@@ -25,69 +25,53 @@ router.post('/vocab', async (req, res, next) => {
       return entry.word
     })
 
+    if (vocabWords.length >= 30) {
+      vocabWords.splice(0, 30)
+    }
+
     const questions = await Promise.all(vocabWords.map(async word => {
       const questionObject = {};
 
-      const thesaurusInfo = await lookup(word);
-      if (thesaurusInfo) {
+      const synAntArray = await lookup(word);
+      if (synAntArray && synAntArray.length) {
 
+        const synonym = synAntArray[0];
 
-        // this is currently hard-coding to the first part of speech
-        const partOfSpeech = Object.keys(thesaurusInfo)[0];
+        const firstRandomWords = await getRandomWords(word);
 
+        if (firstRandomWords){
+          const randomWords = firstRandomWords.map(randWord => {
+            if (notAllowedWords.includes(randWord)){
+              return pullFromDb();
+            }
+            else {
+              return randWord;
+            }
+          })
 
-        if (thesaurusInfo[partOfSpeech].syn) {
-          const synIndex = getRandomIndex(thesaurusInfo[partOfSpeech].syn)
-          const synonym = thesaurusInfo[partOfSpeech].syn[synIndex];
+          questionObject.question = `Which word means ${word}?`;
 
+          questionObject.rightAnswer = synonym;
 
-          let antonym = '';
-
-          if (thesaurusInfo[partOfSpeech].ant) {
-            const antIndex = getRandomIndex(thesaurusInfo[partOfSpeech].ant);
-            antonym = thesaurusInfo[partOfSpeech].ant[antIndex];
+          if (!synAntArray[1]) {
+            questionObject.answers = shuffle([randomWords[0], randomWords[1], randomWords[2], synonym]);
+          } else {
+            const antonym = synAntArray[1];
+            questionObject.answers = shuffle([antonym, randomWords[0], randomWords[1], synonym]);
           }
 
-          const firstRandomWords = await getRandomWords(word);
-          if (firstRandomWords){
 
-            const randomWords = firstRandomWords.map(randWord => {
-              if (notAllowedWords.includes(randWord)){
-                return pullFromDb();
-              }
-              else {
-                return randWord;
-              }
-            })
-
-            questionObject.question = `Which word means ${word}?`;
-            questionObject.rightAnswer = synonym;
-
-            if (!antonym.length) {
-              questionObject.answers = shuffle([randomWords[0], randomWords[1], randomWords[2], synonym]);
-            } else {
-              questionObject.answers = shuffle([antonym, randomWords[0], randomWords[1], synonym]);
-            }
-
-            // questionObject.answers = replaceDuplicates(questionObject.answers);
-            
             //nice-to-haves
             /*
             - randomize which part of speech it uses
             - OR add part of speech to consideration
-            - do some matching on the word and answer
             */
             // console.log('backend last', questionObject);
-
-            return questionObject;
           }
-
         }
-      }
-    }))
-
+      return questionObject;
+    }));
     res.json(questions);
-
   }
   catch (error) {
     next(error)
