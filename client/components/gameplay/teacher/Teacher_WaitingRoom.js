@@ -25,7 +25,7 @@ export class TeacherWaitingRoom extends Component {
     this.props.listenForNewStudents(gameId);
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     const gameId = this.props.match.params.pin;
     this.props.stopListeningForNewStudents(gameId);
   }
@@ -56,24 +56,24 @@ export class TeacherWaitingRoom extends Component {
           </div>
           {currentStudents.length ?
             <div>
-            <Table id="contestant-table">
-              <th id="table-header">
+            <Table className="contestant-table">
+              <th className="table-header">
                 contestants:
               </th>
-              <Table.Body>
-            {
-              (currentStudents.map(user => {
-              return (
-                <Table.Row key={user}>
-                  <Table.Cell >
-                    {user.name}
-                  </Table.Cell>
-                </Table.Row>
-              )}))
-            }
-            </Table.Body>
-            </Table>
-            <Leaderboard />
+                <Table.Body>
+                  {
+                    (currentStudents.map(user => {
+                      return (
+                        <Table.Row key={user}>
+                          <Table.Cell >
+                            {user.name}
+                          </Table.Cell>
+                        </Table.Row>
+                      )
+                    }))
+                  }
+                </Table.Body>
+              </Table>
             </div>
           : (
             <div id="waiting-for-contestants">Waiting for contestants...</div>

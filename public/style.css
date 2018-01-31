@@ -82,7 +82,7 @@ form div {
 }
 
 .game-join-box{
-  padding: 5rem;
+  padding: 5rem 5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -108,13 +108,13 @@ form div {
   color:  #C6DABF;
 }
 
-#contestant-table{
+.contestant-table{
   background-color: #F3E9D2 !important;
-  width: 30vw;
+  width: 30vw !important;
   font-size: 1.2rem;
 }
 
-#table-header{
+.table-header{
   background-color: #F3E9D2 !important;
 }
 
