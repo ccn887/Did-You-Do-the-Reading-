@@ -21,6 +21,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/language": "^1.1.0",
     "axios": "^0.15.3",
     "babel-polyfill": "^6.26.0",
     "body-parser": "^1.16.1",

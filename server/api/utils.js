@@ -2,12 +2,12 @@ const axios = require('axios');
 
 const API_KEY = process.env.WORDS_API_KEY;
 const API_KEY_BACKUP = process.env.BACKUP_WORDS_API_KEY;
-
+const GOOGLE_NAT_LANG_API_KEY = process.env.GOOGLE_NATURAL_LANGUAGE_API_KEY
 
 
 
 const lookup = async(word) => {
-  
+
   try {
     const thesaurus = await axios.get(`http://words.bighugelabs.com/api/2/${API_KEY}/${word}/json`);
     return thesaurus.data;
@@ -74,5 +74,27 @@ const shuffle = (originalArray) =>{
   return array;
 }
 
+const findSentiment = async(text)=> {
+  try{
+    const sentiment = await axios.post(`https://language.googleapis.com/v1/documents:analyzeSentiment?key=${GOOGLE_NAT_LANG_API_KEY}`, text)
+  return sentiment
+  }
+  catch (err){
+    console.log(err)
+  }
+}
 
-module.exports = {lookup, getRandomIndex, getRandomWords, shuffle}
+
+
+const findEntities = async (quoteStr) => {
+  try{
+    const entities = await axios.post(`https://language.googleapis.com/v1/documents:analyzeEntities?key=${GOOGLE_NAT_LANG_API_KEY}`, quoteStr)
+
+    return entities
+  }
+  catch (err){
+    console.log(err)
+  }
+}
+
+module.exports = {lookup, getRandomIndex, getRandomWords, shuffle, findSentiment, findEntities}
