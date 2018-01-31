@@ -10,7 +10,7 @@ module.exports = router;
 router.post('/vocab', async (req, res, next) => {
   const textArray = req.body;
 
-  const notAllowedWords = ['jew', 'jews', 'nazi', 'jackass', 'shit', 'faggot', 'balls']
+  const notAllowedWords = ['jew', 'jews', 'nazi', 'jackass', 'shit', 'faggot', 'balls', 'jesus']
 
   try {
     const response = await WordList.findAll({
@@ -21,23 +21,25 @@ router.post('/vocab', async (req, res, next) => {
       }
     });
 
+    //this is an array of objects now
     const vocabWords = response.map(entry => {
-      return entry.word
+      return {word: entry.word, partOfSpeech: entry.partOfSpeech}
     })
 
     if (vocabWords.length >= 30) {
       vocabWords.splice(0, 30)
     }
 
-    const questions = await Promise.all(vocabWords.map(async word => {
+    const questions = await Promise.all(vocabWords.map(async wordObj => {
       const questionObject = {};
 
-      const synAntArray = await lookup(word);
+      const synAntArray = await lookup(wordObj);
       if (synAntArray && synAntArray.length) {
-
+        console.log('synonym and antonym array: ', synAntArray)
         const synonym = synAntArray[0];
+        console.log('synonym fro api:', synonym)
+        const firstRandomWords = await getRandomWords(wordObj.word);
 
-        const firstRandomWords = await getRandomWords(word);
 
         if (firstRandomWords){
           const randomWords = firstRandomWords.map(randWord => {
@@ -49,7 +51,7 @@ router.post('/vocab', async (req, res, next) => {
             }
           })
 
-          questionObject.question = `Which word means ${word}?`;
+          questionObject.question = `Which word means ${wordObj.word}?`;
 
           questionObject.rightAnswer = synonym;
 
@@ -67,9 +69,11 @@ router.post('/vocab', async (req, res, next) => {
             - OR add part of speech to consideration
             */
             // console.log('backend last', questionObject);
-          }
+
+
+          return questionObject;
         }
-      return questionObject;
+      }
     }));
     res.json(questions);
   }
