@@ -22,6 +22,9 @@ export class TeacherAnswerReveal extends Component {
   componentDidMount() {
     this.props.setGameOnStateThunk(this.props.match.params.pin)
     this.props.setCurrentQuestionThunk(this.props.match.params.questionId, this.props.match.params.pin)
+    const gameId = this.props.match.params.pin
+    this.props.setGameOnStateThunk(gameId);
+    this.props.listenForNewStudents(gameId);
   }
 
   componentWillReceiveProps(nextProps){
@@ -74,7 +77,9 @@ export class TeacherAnswerReveal extends Component {
           <Button className="ui button purple" onClick={this.endGame}> End Game</Button> :
           <Button className="ui button teal" onClick={this.nextQuestion}> Next Question</Button>
         }
-        <Leaderboard />
+        {/* commented out while fixing bugs
+          <Leaderboard />
+          */}
       </div>
     )
   }
