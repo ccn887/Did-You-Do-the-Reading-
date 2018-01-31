@@ -20,7 +20,6 @@ export class TeacherWaitingRoom extends Component {
 
   componentDidMount() {
     const gameId = this.props.match.params.pin
-
     this.props.setGameOnStateThunk(gameId);
     this.props.listenForNewStudents(gameId);
   }

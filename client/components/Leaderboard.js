@@ -14,23 +14,18 @@ import {
 export class Leaderboard extends Component {
   constructor() {
     super();
-
   }
 
   componentDidMount() {
     const gameId = Number(this.props.currentStudents.currentGame)
-
-    this.props.setGameOnStateThunk(gameId);
     this.props.listenForNewStudents(gameId);
-    // this.props.getSingleStudentOnce()
+
   }
 
   componentWillUnmount(){
     const gameId = Number(this.props.currentStudents.currentGame)
     this.props.stopListeningForNewStudents(gameId);
   }
-
-
 
   render() {
 
