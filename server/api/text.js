@@ -21,7 +21,6 @@ router.post('/vocab', async (req, res, next) => {
       }
     });
 
-    //this is an array of objects now
     const vocabWords = response.map(entry => {
       return {word: entry.word, partOfSpeech: entry.partOfSpeech}
     })
@@ -62,14 +61,17 @@ router.post('/vocab', async (req, res, next) => {
             questionObject.answers = shuffle([antonym, randomWords[0], randomWords[1], synonym]);
           }
 
+          if (randomWords.includes(wordObj.word)){
+            const replaceIdx = randomWords.indexOf(wordObj.word)
+            const replacementWord = await pullFromDb();
+            randomWords.splice(replaceIdx, 1, replacementWord);
+          }
 
-            //nice-to-haves
-            /*
-            - randomize which part of speech it uses
-            - OR add part of speech to consideration
-            */
-            // console.log('backend last', questionObject);
-
+          if (randomWords.includes(synonym)){
+            const replaceIdx = randomWords.indexOf(synonym)
+            const replacementWord = await pullFromDb();
+            randomWords.splice(replaceIdx, 1, replacementWord);
+          }
 
           return questionObject;
         }

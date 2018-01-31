@@ -27,7 +27,7 @@ const parseThesaurusData = (thesaurusInfo, wordObj) => {
     if (thesaurusInfo[partOfSpeech].syn) {
       let synIndex = getRandomIndex(thesaurusInfo[partOfSpeech].syn)
 
-      let synonym = thesaurusInfo[partOfSpeech].syn[synIndex];
+      let synonym = thesaurusInfo[partOfSpeech].syn[synIndex].toLowerCase();
 
       if (word.includes(synonym) || synonym.includes(word)){
         if (thesaurusInfo[partOfSpeech].syn.length > 1){
@@ -39,7 +39,7 @@ const parseThesaurusData = (thesaurusInfo, wordObj) => {
 
       if (thesaurusInfo[partOfSpeech].ant) {
         const antIndex = getRandomIndex(thesaurusInfo[partOfSpeech].ant);
-        antonym = thesaurusInfo[partOfSpeech].ant[antIndex];
+        antonym = thesaurusInfo[partOfSpeech].ant[antIndex].toLowerCase();
       }
 
       if (synonym){
