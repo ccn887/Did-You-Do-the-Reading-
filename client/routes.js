@@ -9,8 +9,9 @@ import { Main, Login, Signup,
   StudentWaitingRoom, TeacherSingleQuestion,
   StudentAnswerReveal, StudentSingleQuestion,
   TeacherAnswerReveal, TeacherDashboard, Home,
-  Leaderboard} from './components'
-import { me } from './store'
+  Leaderboard, FirebaseAuth} from './components'
+import { me, setFirebaseUserOnState } from './store'
+import firebase from '../server/firebase'
 
 
 /**
@@ -18,7 +19,26 @@ import { me } from './store'
  */
 class Routes extends Component {
   componentDidMount() {
+
+    const auth = firebase.auth();
+
+
     this.props.loadInitialData()
+
+    this.unListen = auth.onAuthStateChanged(user => {
+      if (user){
+        //do something
+        this.props.setFbUserOnState(user)
+      }
+      else {
+        //do something else
+        console.log('YOURE NOT LOGGED IN FOOL')
+      }
+    })
+  }
+
+  componentWillUnmount(){
+    this.unListen();
   }
 
   render() {
@@ -46,6 +66,11 @@ class Routes extends Component {
               exact
               path="/:pin/waiting/:questionId/:studentId"
               component={StudentAnswerReveal}
+            />
+            <Route
+              exact
+              path="/student/login"
+              component={FirebaseAuth}
             />
 
             {
@@ -116,6 +141,9 @@ const mapDispatch = (dispatch) => {
   return {
     loadInitialData() {
       dispatch(me())
+    },
+    setFbUserOnState(user) {
+      dispatch(setFirebaseUserOnState(user))
     }
   }
 }
