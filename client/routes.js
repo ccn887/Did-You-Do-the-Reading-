@@ -9,9 +9,8 @@ import { Main, Login, Signup,
   StudentWaitingRoom, TeacherSingleQuestion,
   StudentAnswerReveal, StudentSingleQuestion,
   TeacherAnswerReveal, TeacherDashboard, Home,
-  Leaderboard} from './components'
+  Leaderboard, StudentGameOver} from './components'
 import { me } from './store'
-
 
 /**
  * COMPONENT
@@ -89,6 +88,12 @@ class Routes extends Component {
                 />
                 <Route
                 component={TeacherDashboard}
+                />
+
+                <Route
+                  exact
+                  path="/student/:pin/gameOver"
+                  component={StudentGameOver}
                 />
               </Switch>
             }
