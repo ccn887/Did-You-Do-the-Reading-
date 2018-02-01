@@ -17,4 +17,5 @@ export {default as TeacherAnswerReveal} from './gameplay/teacher/Teacher_AnswerR
 export {default as StudentSingleQuestion} from './gameplay/student/Student_SingleQuestion';
 export {default as StudentAnswerReveal} from './gameplay/student/Student_AnswerReveal';
 export {default as Leaderboard} from './Leaderboard'
+export {default as FirebaseAuth} from './firebaseAuth'
 export {default as Home} from './Home';

@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Form, Input, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { addStudentToGameThunk } from '../../../store'
+import firebase from '../../../../server/firebase'
+import history from '../../../history'
 
 
 export class StudentJoinGame extends Component {
@@ -12,26 +14,34 @@ export class StudentJoinGame extends Component {
       name: '',
       pin: ''
     }
-    this.handleChange = this.handleChange.bind(this)
-    this.join = this.join.bind(this)
-
   }
-  handleChange(e) {
+
+
+  handleChange = (e) => {
     e.preventDefault()
     this.setState({
       [e.target.name]: e.target.value
     });
   }
 
-  join(e) {
+  join = (e) => {
     e.preventDefault();
     const currentGame = this.state.pin
     const name = this.state.name
+    const uid = this.props.firebaseUser.uid
+    console.log("user joining game: ", name, uid)
+    this.props.addStudentToGameThunk(name, currentGame, uid);
+  }
 
-    this.props.addStudentToGameThunk(name, currentGame);
+  logout = (evt) => {
+    evt.preventDefault();
+    firebase.auth().signOut();
+    history.push(`/student/login`)
   }
 
   render() {
+    console.log('Firebase User from FB: ', firebase.auth().currentUser)
+    console.log('firebase user from store', this.props.firebaseUser)
     return (
       <div id="join-game-container">
         <Form className="student-join-box">
@@ -45,6 +55,10 @@ export class StudentJoinGame extends Component {
           </Form.Field>
         <Button color="purple" inverted id="join-game-button" onClick={this.join}>Join the Game!</Button>
         </Form>
+        {
+          this.props.firebaseUser.uid &&
+            <Button color="orange" onClick={this.logout}>Log Out</Button>
+        }
       </div>
     )
   }
@@ -53,7 +67,8 @@ export class StudentJoinGame extends Component {
 
 const mapState = state => {
   return {
-    currentGame: state.currentGame
+    currentGame: state.currentGame,
+    firebaseUser: state.firebaseUser
   }
 }
 
