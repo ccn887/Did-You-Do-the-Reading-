@@ -9,10 +9,9 @@ import { Main, Login, Signup,
   StudentWaitingRoom, TeacherSingleQuestion,
   StudentAnswerReveal, StudentSingleQuestion,
   TeacherAnswerReveal, TeacherDashboard, Home,
-  Leaderboard, FirebaseAuth} from './components'
+  Leaderboard, FirebaseAuth, StudentGameOver} from './components'
 import { me, setFirebaseUserOnState } from './store'
 import firebase from '../server/firebase'
-
 
 /**
  * COMPONENT
@@ -113,8 +112,14 @@ class Routes extends Component {
                   component={Leaderboard}
                 />
                 <Route
+                  exact
+                  path="/student/:pin/gameOver"
+                  component={StudentGameOver}
+                />
+                <Route
                 component={TeacherDashboard}
                 />
+
               </Switch>
             }
             {/* Displays our Login component as a fallback */}

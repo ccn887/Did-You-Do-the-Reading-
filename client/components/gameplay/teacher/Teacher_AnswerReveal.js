@@ -6,7 +6,6 @@ import { Button } from 'semantic-ui-react'
 import Leaderboard from '../../Leaderboard'
 
 
-
 export class TeacherAnswerReveal extends Component {
   constructor() {
     super()
@@ -30,7 +29,7 @@ export class TeacherAnswerReveal extends Component {
       gameRoomId: this.props.match.params.pin,
       questionId: this.props.match.params.questionId
     })
-    console.log('props here:' ,this.props)
+
   }
 
   nextQuestion() {
