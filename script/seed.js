@@ -17,14 +17,35 @@ const {wordString} = require('./wordString')
 const dictArray = wordString.split('\n');
 
 
-const wordArray = dictArray.map(line => {
+const partOfSpeechToString  = (partOfSpeech) => {
+  switch (partOfSpeech){
+    case 'n.':
+      return 'noun'
+    case 'adj.':
+      return 'adjective'
+    case 'v.':
+      return 'verb'
+    case 'adv.':
+      return 'adverb'
+    case 'conj.':
+      return 'conjunction'
+    default:
+      return 'none'
+    }
+}
+
+
+const wordObjArray  = dictArray.map(line => {
+  const wordObj = {};
   var splitLine = line.split(' ');
-  return splitLine[0];
+  wordObj.word = splitLine[0];
+  let partOfSpeech = splitLine[1];
+
+  wordObj.partOfSpeech = partOfSpeechToString(partOfSpeech);
+
+  return wordObj;
 })
 
-const wordObjArray = wordArray.map( element => {
-  return {word: element}
-})
 
 
 

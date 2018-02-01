@@ -10,6 +10,7 @@ import gameState from './gameState'
 import singleStudent from './singleStudent'
 import questionSet from './questionSet'
 import currentTeacherGames from './currentTeacherGames'
+import firebaseUser from './firebaseUser'
 
 
 
@@ -23,7 +24,8 @@ const reducer = combineReducers(
     singleStudent,
     gameState,
     questionSet,
-    currentTeacherGames
+    currentTeacherGames,
+    firebaseUser
   }
 )
 
@@ -42,4 +44,4 @@ export * from './gameState'
 export * from './singleStudent'
 export * from './questionSet'
 export * from './currentTeacherGames'
-
+export * from  './firebaseUser'

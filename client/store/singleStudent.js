@@ -22,7 +22,95 @@ export const getSingleStudentOnceActionCreator = student => ({ type: GET_STUDENT
 const database = firebase.database()
 const activeListeners = {}
 
+
+// Tests to see if /users/<userId> has any data.
+// function checkIfUserExists(uid) {
+//   const usersRef = firebase.database().ref('users');
+//   usersRef.child('users').orderByChild('uid').equalTo(uid)
+//     .once('value', function(snapshot) {
+//       var exists = (snapshot.val() !== null);
+//       userExistsCallback(uid, exists);
+//     });
+// }
+
+
+
+function userExistsCallback(uid, exists, currentGame) {
+  if (exists) {
+    console.log('user exists!')
+    //change game pin for user
+    //change name for user
+    //push that user into gameRoom
+  } else {
+    console.log('user does not exists!')
+    //make new user
+    //push that user into gameRoom
+    const usersRef = firebase.database().ref('users')
+      .push({
+        name: name,
+        score: 0,
+        streak: 0,
+        currentGame: currentGame,
+        uid: uid
+      })
+    const studentId = usersRef.key
+  }
+}
+
+
+
 /* ------------       THUNK CREATORS     ------------------ */
+
+export const addStudentToGameThunk = (name, currentGame, uid) => dispatch => {
+
+  const usersRef = firebase.database().ref('users');
+  usersRef.orderByChild('uid').equalTo(uid)
+    .once('value', function(snapshot) {
+      //if the user exists
+      if (snapshot.val() !== null){
+        console.log('user exists!')
+        const userId = Object.keys(snapshot.val())[0]
+        //find and update user
+        firebase.database().ref(`users/${userId}`)
+          .update({currentGame: currentGame, name: name})
+        //add user to gameroom
+        firebase.database().ref(`gameRooms/${currentGame}/users`)
+          .push(userId)
+
+          const gameHistoryRef = firebase.database().ref(`gameHistoryList`);
+          gameHistoryRef.child(userId).set({
+            gamePin: currentGame,
+            date: Date.now()
+          })
+        history.push(`/student-waiting-room/${currentGame}/${userId}`)
+      }
+      else{
+        //if user does not exist
+        console.log('user does not exists!')
+        //make the new user
+        const newUserRef = firebase.database().ref('users')
+          .push({
+            name: name,
+            score: 0,
+            streak: 0,
+            currentGame: currentGame,
+            uid: uid
+          })
+        const studentId = newUserRef.key
+        //add the new user to the gameroom
+        firebase.database().ref(`gameRooms/${currentGame}/users`)
+          .push(studentId)
+
+        const gameHistoryRef = firebase.database().ref(`gameHistoryList`);
+        gameHistoryRef.child(studentId).set({
+          gamePin: currentGame,
+          date: Date.now()
+        })
+        history.push(`/student-waiting-room/${currentGame}/${studentId}`)
+      }
+    });
+}
+
 
 export const addToStudentScore = (studentId) => dispatch => {
   const usersRef = database.ref(`users/${studentId}/score`)
@@ -90,20 +178,8 @@ export const stopListeningForSingleStudent = (studentId) => dispatch => {
   delete activeListeners[path]
 }
 
-export const addStudentToGameThunk = (name, currentGame) => dispatch => {
-  const usersRef = firebase.database().ref('users')
-    .push({
-      name: name,
-      score: 0,
-      streak: 0,
-      currentGame: currentGame
-    })
-  const studentId = usersRef.key
-  firebase.database().ref(`gameRooms/${currentGame}/users`)
-    .push(studentId)
 
-    history.push(`/student-waiting-room/${currentGame}/${studentId}`)
-}
+
 
 
 /* ------------       REDUCER     ------------------ */
