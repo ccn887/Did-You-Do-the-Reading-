@@ -43,13 +43,21 @@ label {
 }
 
 #app-header{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  flex-direction: column;
   background-color:#008080
+
 }
+
+
 
 nav a {
   display: inline-block;
   margin: 1em;
 }
+
 
 form div {
   margin: 1em;
@@ -138,19 +146,48 @@ form div {
   color: #F3E9D2 !important;
 }
 
+#join-game-container{
+  display: flex;
+  justify-content: center;
+
+}
+
 .student-join-box{
   display: flex;
   flex-direction: column;
-  padding: 5rem 5rem;
+  padding: 5rem;
   justify-content: space-around;
 }
 
-.join-game-input{
-  width: 120px !important;
+
+.join-game-input {
+  font-weight: bold !important;
+  font-size: 20px !important;
+  width: 180px !important;
+  text-align: center;
+  height: 70px;
+}
+
+.join-labels {
+  color: white !important;
+}
+
+#join-pin {
+  font-size: 40px !important;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+#join-name {
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
 
 #join-game-button{
-  width: 120px !important;
+  width: 180px !important;
+  height: 50px;
 }
 
 #leaderboard-username {
@@ -174,4 +211,42 @@ form div {
 #leaderboard-display {
   background: #F2E9D5;
   width: 80%;
+}
+
+/* ICONS */
+
+.userSelectMenu {
+  display: flex;
+  justify-content: space-around;
+  margin: 4rem;
+  padding-left: 15em;
+  padding-right: 15em;
+  align-items: flex-end;
+}
+
+.studentButton {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 20%;
+}
+
+
+#logo {
+  width: 40%;
+  padding: 1rem;
+}
+
+#student_icon {
+  display: flex;
+  width: 100%;
+  padding-bottom: 2rem;
+  min-width: 50%;
+}
+
+#teacher_icon {
+  display: flex;
+  width: 100%;
+  padding-bottom: 2rem;
+  min-width: 50%;
 }

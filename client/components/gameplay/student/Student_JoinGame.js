@@ -33,17 +33,17 @@ export class StudentJoinGame extends Component {
 
   render() {
     return (
-      <div>
+      <div id="join-game-container">
         <Form className="student-join-box">
-          <Form.Field >
-            <label>Pin:</label>
-            <input className="join-game-input" name="pin" onChange={this.handleChange} />
+          <Form.Field>
+            <label className="join-labels">Pin:</label>
+            <input type="text" id="join-pin" className="join-game-input" name="pin" maxLength="5" onChange={this.handleChange} />
           </Form.Field>
           <Form.Field >
-            <label>Name:</label>
-            <input className="join-game-input" name="name" onChange={this.handleChange} />
+            <label className="join-labels">Name:</label>
+            <input className="join-game-input" id="join-name" name="name" maxLength="20" onChange={this.handleChange} />
           </Form.Field>
-        <Button color="purple" id="join-game-button" onClick={this.join}>Join the Game!</Button>
+        <Button color="purple" inverted id="join-game-button" onClick={this.join}>Join the Game!</Button>
         </Form>
       </div>
     )
