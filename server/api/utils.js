@@ -4,7 +4,7 @@ const { WordList } = require('../db/models');
 
 const API_KEY = process.env.WORDS_API_KEY;
 const API_KEY_BACKUP = process.env.BACKUP_WORDS_API_KEY;
-const GOOGLE_NAT_LANG_API_KEY = process.env.GOOGLE_NATURAL_LANGUAGE_API_KEY
+
 
 const getRandomIndex = (arr) => {
   const end = arr.length
@@ -56,9 +56,7 @@ const parseThesaurusData = (thesaurusInfo, wordObj) => {
 }
 
 
-
 const lookup = async(wordObj) => {
-
   try {
     const thesaurus = await axios.get(`http://words.bighugelabs.com/api/2/${API_KEY}/${wordObj.word}/json`);
     return parseThesaurusData(thesaurus.data, wordObj);
@@ -138,32 +136,21 @@ const shuffle = (originalArray) =>{
   return array;
 }
 
-const findSentiment = async(text)=> {
-  try{
-    const sentiment = await axios.post(`https://language.googleapis.com/v1/documents:analyzeSentiment?key=${GOOGLE_NAT_LANG_API_KEY}`, text)
-  return sentiment
-  }
-  catch (err){
-    console.log(err)
-  }
-}
 
 
-
-const findEntities = async (quoteStr) => {
-  try{
-    const entities = await axios.post(`https://language.googleapis.com/v1/documents:analyzeEntities?key=${GOOGLE_NAT_LANG_API_KEY}`, quoteStr)
-
-    return entities
-  }
-  catch (err){
-    console.log(err)
-  }
-}
-
-
-
+//
+// const replaceDuplicates = (arr) => {
+//   console.log('ARRAY BEING SEARCHED', arr)
+//   arr.forEach( (word, index) => {
+//     arr.forEach((secondWord, secondIndex) => {
+//       if (word === secondWord && index !== secondIndex) {
+//         secondWord = pullFromDb();
+//       }
+//     })
+//   });
+//   console.log('ARRAY BEFORE RETURNING', arr)
+//   return arr;
+// }
 
 
 module.exports = {lookup, getRandomIndex, getRandomWords, shuffle, pullFromDb }
-
