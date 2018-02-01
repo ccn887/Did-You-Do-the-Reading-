@@ -9,15 +9,35 @@ import { Main, Login, Signup,
   StudentWaitingRoom, TeacherSingleQuestion,
   StudentAnswerReveal, StudentSingleQuestion,
   TeacherAnswerReveal, TeacherDashboard, Home,
-  Leaderboard, StudentGameOver} from './components'
-import { me } from './store'
+  Leaderboard, FirebaseAuth, StudentGameOver} from './components'
+import { me, setFirebaseUserOnState } from './store'
+import firebase from '../server/firebase'
 
 /**
  * COMPONENT
  */
 class Routes extends Component {
   componentDidMount() {
+
+    const auth = firebase.auth();
+
+
     this.props.loadInitialData()
+
+    this.unListen = auth.onAuthStateChanged(user => {
+      if (user){
+        //do something
+        this.props.setFbUserOnState(user)
+      }
+      else {
+        //do something else
+        console.log('YOURE NOT LOGGED IN FOOL')
+      }
+    })
+  }
+
+  componentWillUnmount(){
+    this.unListen();
   }
 
   render() {
@@ -45,6 +65,11 @@ class Routes extends Component {
               exact
               path="/:pin/waiting/:questionId/:studentId"
               component={StudentAnswerReveal}
+            />
+            <Route
+              exact
+              path="/student/login"
+              component={FirebaseAuth}
             />
 
             {
@@ -87,14 +112,14 @@ class Routes extends Component {
                   component={Leaderboard}
                 />
                 <Route
-                component={TeacherDashboard}
-                />
-
-                <Route
                   exact
                   path="/student/:pin/gameOver"
                   component={StudentGameOver}
                 />
+                <Route
+                component={TeacherDashboard}
+                />
+
               </Switch>
             }
             {/* Displays our Login component as a fallback */}
@@ -121,6 +146,9 @@ const mapDispatch = (dispatch) => {
   return {
     loadInitialData() {
       dispatch(me())
+    },
+    setFbUserOnState(user) {
+      dispatch(setFirebaseUserOnState(user))
     }
   }
 }
