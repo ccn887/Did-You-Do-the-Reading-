@@ -66,6 +66,7 @@ try{
 
 const quotations = findQuotations(text)
     const peopleResult = await findPeople(text)
+console.log('ARETHEYINPORDER', peopleResult)
     const placesResult = findPlaces(text)
     const question = quotations.map(quote => {
       return quoteQuestions(text,  quote.text, peopleResult )

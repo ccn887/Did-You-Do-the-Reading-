@@ -3,6 +3,7 @@ const GOOGLE_NAT_LANG_API_KEY = process.env.GOOGLE_NATURAL_LANGUAGE_API_KEY
 const nlp = require('compromise')
 const language = require('@google-cloud/language')
 const client = new language.LanguageServiceClient();
+const { shuffle } = require('./utils')
 
 
 
@@ -13,6 +14,7 @@ function quoteQuestions(txt, quote, people) {
   const qLength = quote.length
   const startIndex = lowTxt.indexOf(lowQuote) + qLength + 1
   let residue = ''
+  let wrongAnswers;
 
   for (let i = startIndex; i < lowTxt.length; i++) {
     if (lowTxt[i - 1] === ".") {
@@ -26,13 +28,36 @@ function quoteQuestions(txt, quote, people) {
   const peopleFiltered = people.filter(item => {
     return normalized.includes(item.name.toLowerCase())
   })
+
   if (peopleFiltered.length === 1) {
     let question = `Who said, "` + quote + `"?`
     let rightAnswer = peopleFiltered[0]
     sendQuoteObj.question = question
-    sendQuoteObj.rightAnswer = rightAnswer
+    sendQuoteObj.rightAnswer = rightAnswer.name
   }
-   return sendQuoteObj
+  if (peopleFiltered.length === 1) {
+    wrongAnswers = people.map(personObj => {
+      return personObj.name
+    }).filter(person => {
+      return person !== sendQuoteObj.rightAnswer
+    })
+  }
+  let namesOnly = []
+  if (wrongAnswers) {
+    for (let i = 0; i < wrongAnswers.length; i++) {
+      if (wrongAnswers[i].charCodeAt(0) < 97) {
+        namesOnly.push(wrongAnswers[i])
+      }
+      console.log(wrongAnswers[i])
+    }
+
+    let wrongArr = namesOnly.slice(0, 3)
+    wrongArr.push(sendQuoteObj.rightAnswer)
+    let answers = shuffle(wrongArr)
+    sendQuoteObj.answers = answers
+  }
+
+  return sendQuoteObj
 
 }
 
