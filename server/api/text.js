@@ -34,9 +34,7 @@ router.post('/vocab', async (req, res, next) => {
 
       const synAntArray = await lookup(wordObj);
       if (synAntArray && synAntArray.length) {
-        console.log('synonym and antonym array: ', synAntArray)
         const synonym = synAntArray[0];
-        console.log('synonym fro api:', synonym)
         const firstRandomWords = await getRandomWords(wordObj.word);
 
 

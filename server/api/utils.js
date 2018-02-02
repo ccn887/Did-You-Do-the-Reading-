@@ -65,8 +65,8 @@ const lookup = async(wordObj) => {
   catch (err){
     console.error('error from bighugelabs api: ', err.response.status, err.response.statusText);
 
-    if (err.response.status === 500 && err.response.statusText === 'Usage Exceeded'){
-        console.log('FIRST API KEY IS EXPIRED')
+    if (err.response && err.response.status === 500 && err.response.statusText === 'Usage Exceeded'){
+        console.error('FIRST API KEY IS EXPIRED')
       try {
         const backupThesaurus = await axios.get(`http://words.bighugelabs.com/api/2/${API_KEY_BACKUP}/${word}/json`)
         return parseThesaurusData(backupThesaurus.data, wordObj)
