@@ -8,6 +8,7 @@ const { shuffle } = require('./utils')
 
 
 function quoteQuestions(txt, quote, people) {
+
   var sendQuoteObj = {}
   const lowQuote = quote.toLowerCase()
   const lowTxt = txt.toLowerCase()
@@ -30,7 +31,7 @@ function quoteQuestions(txt, quote, people) {
   })
 
   if (peopleFiltered.length === 1) {
-    let question = `Who said, "` + quote + `"?`
+    let question = `Who said, ` + quote + `?`
     let rightAnswer = peopleFiltered[0]
     sendQuoteObj.question = question
     sendQuoteObj.rightAnswer = rightAnswer.name
@@ -72,6 +73,7 @@ const findSentiment = async (text) => {
 }
 
 const findPeople = async (text) => {
+
   const document = {
     content: text,
     type: 'PLAIN_TEXT',
@@ -107,9 +109,9 @@ const findPlaces = (quoteStr) => {
 }
 
 const findQuotations = (quoteStr) => {
+
   const doc = nlp(quoteStr)
   const quotations = doc.quotations()
-  console.log('quotations', quotations.data)
   return quotations.data()
 }
 
