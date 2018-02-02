@@ -20,20 +20,25 @@ export class MakeQuiz extends Component {
     })
   }
 
+  handleClick1 = () => this.setState({ active: !this.state.active })
+  handleClick2 = () => this.setState({ active2: !this.state.active2 })
 
   submit(e) {
     e.preventDefault();
     const text = this.state.text
-
     this.props.generateQuestionSetThunk(text);
   }
 
   render() {
+    const active = this.state.active
+    const active2 = this.state.active2
     return (
       <div>
         <Container>
           <h3>enter text to generate quiz questions</h3>
           <Form.TextArea id="enter-text" onChange={this.handleChange}  />
+          <Button toggle active={active} onClick={this.handleClick1}> Include Vocabulary Questions </Button>
+          <Button toggle active={active2} onClick={this.handleClick2}> Include Quote Attribution Questions </Button>
           <Button type="submit" onClick={this.submit}> Generate Quiz </Button>
         </Container>
       </div>
