@@ -15,15 +15,20 @@ export class TeacherDashboard extends Component {
     this.props.getCurrentTeacherGames(this.props.user.id)
   }
 
-makeQuiz = (e) => {
-  console.log('whyyyyyyy')
-  e.preventDefault();
-  history.push('/make-quiz')
-}
-playGame = (e) => {
+  makeQuiz = (e) => {
+    console.log('whyyyyyyy')
+    e.preventDefault();
+    history.push('/make-quiz')
+  }
+  playGame = (e) => {
     e.preventDefault();
     const pin = e.target.value
     history.push(`/teacher-waiting-room/${pin}`)
+  }
+
+  goToGraphs = (evt) => {
+    evt.preventDefault();
+    history.push(`/teacher/graphs`)
   }
 
   render() {
@@ -34,6 +39,7 @@ playGame = (e) => {
       <div>
         <h1>Welcome, {user.email} </h1>
         <Button size="large" color="purple" onClick={this.makeQuiz}>Make a New Game</Button>
+        <Button size="large" color="orange" onClick={this.goToGraphs}>Look At Some Graphs</Button>
         <Container id="all-games-container" >
 
         <h1>Play a Previous Game: </h1>

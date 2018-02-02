@@ -9,7 +9,7 @@ import { Main, Login, Signup,
   StudentWaitingRoom, TeacherSingleQuestion,
   StudentAnswerReveal, StudentSingleQuestion,
   TeacherAnswerReveal, TeacherDashboard, Home,
-  Leaderboard, FirebaseAuth, StudentGameOver} from './components'
+  Leaderboard, FirebaseAuth, StudentGameOver, TeacherGraphs} from './components'
 import { me, setFirebaseUserOnState } from './store'
 import firebase from '../server/firebase'
 
@@ -68,6 +68,11 @@ class Routes extends Component {
             />
             <Route
               exact
+              path="/student/:pin/gameOver"
+              component={StudentGameOver}
+            />
+            <Route
+              exact
               path="/student/login"
               component={FirebaseAuth}
             />
@@ -113,8 +118,8 @@ class Routes extends Component {
                 />
                 <Route
                   exact
-                  path="/student/:pin/gameOver"
-                  component={StudentGameOver}
+                  path="/teacher/graphs"
+                  component={TeacherGraphs}
                 />
                 <Route
                 component={TeacherDashboard}

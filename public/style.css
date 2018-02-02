@@ -268,3 +268,25 @@ form div {
 #join-logout-button-wrapper{
   padding: 30px 30px;
 }
+
+#graphsContainer{
+  background-color: #C6DABF;
+  width: 55vw;
+}
+
+.graph-title{
+  color: #008080;
+  text-align: center;
+}
+
+#graph-page-box{
+  display: flex;
+  justify-content: space-between;
+    padding: 30px;
+}
+
+#graph-menu{
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
