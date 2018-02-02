@@ -264,3 +264,7 @@ form div {
   filter: drop-shadow(0px 0px 10px #fff);
   cursor:pointer;
 }
+
+#join-logout-button-wrapper{
+  padding: 30px 30px;
+}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { setGameOnStateThunk, listenForGameStateChange, stopListeningForGameState, getSingleStudentListener, stopListeningForSingleStudent } from '../../../store'
+import { setGameOnStateThunk, listenForGameStateChange, storeStudentGameHistory, stopListeningForGameState, getSingleStudentListener, stopListeningForSingleStudent } from '../../../store'
 import { connect } from 'react-redux'
 import history from '../../../history'
 
@@ -31,12 +31,13 @@ export class StudentAnswerReveal extends Component {
       this.nextQuestion();
     }
     if (nextProps.gameState === 'gameOver') {
+      this.props.storeStudentGameHistory(this.state.studentId, this.state.gameRoomId, this.props.singleStudent.score)
       history.push(`/${this.state.gameRoomId}/gameOver/${this.state.studentId}`)
     }
   }
 
   componentWillUnmount() {
-    this.props.getSingleStudentListener(this.props.match.params.studentId)
+    this.props.stopListeningForSingleStudent(this.props.match.params.studentId)
     this.props.stopListeningForGameState(this.props.match.params.pin);
   }
 
@@ -75,6 +76,6 @@ const mapState = state => {
     singleStudent: state.singleStudent
   }
 }
-const mapDispatch = { setGameOnStateThunk, listenForGameStateChange, stopListeningForGameState, getSingleStudentListener, stopListeningForSingleStudent }
+const mapDispatch = { setGameOnStateThunk, listenForGameStateChange, stopListeningForGameState, getSingleStudentListener, stopListeningForSingleStudent, storeStudentGameHistory }
 
 export default connect(mapState, mapDispatch)(StudentAnswerReveal)

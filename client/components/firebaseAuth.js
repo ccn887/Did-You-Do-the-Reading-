@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Form, Input, Button, Container } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { logInStudentThunk, signUpStudentThunk } from '../store'
+import firebase from '../../server/firebase'
+import history from '../history'
 
 
 export class FirebaseAuth extends Component {
@@ -36,22 +38,35 @@ export class FirebaseAuth extends Component {
     this.props.signUpStudentThunk(this.state.email, this.state.password);
   }
 
+  logout = (evt) => {
+    evt.preventDefault();
+    firebase.auth().signOut();
+    history.push(`/`)
+  }
+
   render(){
 
     return(
       <Container>
-        <Form>
-          <Form.Field>
-            <label>Email</label>
-            <input onChange={this.inputEmail} placeholder='email' />
-          </Form.Field>
-          <Form.Field>
-            <label>Password</label>
-            <input onChange={this.inputPassword} placeholder='password' />
-          </Form.Field>
-          <Button onClick={this.login}>Log In</Button>
-          <Button onClick={this.signup}>Sign Up</Button>
-        </Form>
+        {
+          this.props.firebaseUser.uid ?
+          <Container>
+            <Button onClick={() => history.push(`/join`)}>Join A Game</Button>
+            <Button onClick={this.logout}>Log Out</Button>
+          </Container> :
+          <Form>
+            <Form.Field>
+              <label>Email</label>
+              <input onChange={this.inputEmail} placeholder='email' />
+            </Form.Field>
+            <Form.Field>
+              <label>Password</label>
+              <input onChange={this.inputPassword} placeholder='password' />
+            </Form.Field>
+            <Button onClick={this.login}>Log In</Button>
+            <Button onClick={this.signup}>Sign Up</Button>
+          </Form>
+        }
       </Container>
 
     )
