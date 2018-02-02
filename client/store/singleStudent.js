@@ -79,6 +79,11 @@ export const addToStudentScore = (studentId) => dispatch => {
     })
 }
 
+export const resetStudentScore = studentId => dispatch => {
+  database.ref(`users/${studentId}/`)
+    .update({score: 0})
+}
+
 
 export const addToStudentStreak = (studentId) => dispatch => {
   const usersRefStreak = database.ref(`users/${studentId}/streak`)
@@ -131,8 +136,6 @@ export const stopListeningForSingleStudent = (studentId) => dispatch => {
 }
 
 export const storeStudentGameHistory = (studentId, gamePin, score) => dispatch => {
-
-
   const gameHistoryRef = firebase.database().ref(`gameHistoryList`);
   gameHistoryRef.child(studentId).push({
       gamePin: gamePin,

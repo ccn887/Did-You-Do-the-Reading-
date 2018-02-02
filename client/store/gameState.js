@@ -41,6 +41,8 @@ export const stopListeningForGameState = gameId => dispatch => {
 export const updateGameState = (gameId, newGameState) => dispatch => {
   database.ref(`gameRooms/${gameId}/gameState`)
     .set(newGameState)
+  database.ref(`gameRooms/${gameId}/users`)
+    .remove()
   dispatch(getGameState(newGameState));
 }
 

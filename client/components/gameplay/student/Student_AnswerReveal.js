@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import { setGameOnStateThunk, listenForGameStateChange, storeStudentGameHistory, stopListeningForGameState, getSingleStudentListener, stopListeningForSingleStudent } from '../../../store'
+import { setGameOnStateThunk, listenForGameStateChange, storeStudentGameHistory,
+  stopListeningForGameState, getSingleStudentListener, stopListeningForSingleStudent,
+  resetStudentScore } from '../../../store'
 import { connect } from 'react-redux'
 import history from '../../../history'
 
@@ -32,6 +34,7 @@ export class StudentAnswerReveal extends Component {
     }
     if (nextProps.gameState === 'gameOver') {
       this.props.storeStudentGameHistory(this.state.studentId, this.state.gameRoomId, this.props.singleStudent.score)
+      this.props.resetStudentScore(this.state.studentId)
       history.push(`/${this.state.gameRoomId}/gameOver/${this.state.studentId}`)
     }
   }
@@ -76,6 +79,14 @@ const mapState = state => {
     singleStudent: state.singleStudent
   }
 }
-const mapDispatch = { setGameOnStateThunk, listenForGameStateChange, stopListeningForGameState, getSingleStudentListener, stopListeningForSingleStudent, storeStudentGameHistory }
+const mapDispatch = {
+  setGameOnStateThunk,
+  listenForGameStateChange,
+  stopListeningForGameState,
+  getSingleStudentListener,
+  stopListeningForSingleStudent,
+  storeStudentGameHistory,
+  resetStudentScore
+}
 
 export default connect(mapState, mapDispatch)(StudentAnswerReveal)
