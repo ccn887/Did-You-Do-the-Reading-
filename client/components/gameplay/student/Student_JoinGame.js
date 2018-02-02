@@ -54,11 +54,13 @@ export class StudentJoinGame extends Component {
             <input className="join-game-input" id="join-name" name="name" maxLength="20" onChange={this.handleChange} />
           </Form.Field>
         <Button color="purple" inverted id="join-game-button" onClick={this.join}>Join the Game!</Button>
-        </Form>
         {
           this.props.firebaseUser.uid &&
-            <Button color="orange" onClick={this.logout}>Log Out</Button>
+          <div id="join-logout-button-wrapper">
+            <Button id="join-logout-button" inverted color="orange" onClick={this.logout}>Log Out</Button>
+          </div>
         }
+        </Form>
       </div>
     )
   }

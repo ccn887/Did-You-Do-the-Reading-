@@ -5,7 +5,7 @@ import axios from 'axios'
 
 export default class Home extends Component {
 
-  /*
+
     constructor() {
     super();
     this.state = {
@@ -14,6 +14,7 @@ export default class Home extends Component {
     }
   }
 
+  /*
   componentDidMount (){
     let context = new AudioContext();
     axios.get('audio/click.mp3')
@@ -33,17 +34,18 @@ export default class Home extends Component {
     source.connect(context.destination);       // connect the source to the context's destination (the speakers)
     source.start(0);
   }
+  */
 
   navigate(e){
     e.preventDefault();
-    e.target.value === 'student' ? history.push('/join') : history.push('/login')
+    e.target.value === 'student' ? history.push('/student/login') : history.push('/login')
   }
 
-  pushJoin(){
-    history.push('/join')
-  }
+  // pushJoin(){
+  //   history.push('/join')
+  // }
 
-  */
+
 
   render(){
 

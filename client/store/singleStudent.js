@@ -23,39 +23,6 @@ const database = firebase.database()
 const activeListeners = {}
 
 
-// Tests to see if /users/<userId> has any data.
-// function checkIfUserExists(uid) {
-//   const usersRef = firebase.database().ref('users');
-//   usersRef.child('users').orderByChild('uid').equalTo(uid)
-//     .once('value', function(snapshot) {
-//       var exists = (snapshot.val() !== null);
-//       userExistsCallback(uid, exists);
-//     });
-// }
-
-
-
-function userExistsCallback(uid, exists, currentGame) {
-  if (exists) {
-    console.log('user exists!')
-    //change game pin for user
-    //change name for user
-    //push that user into gameRoom
-  } else {
-    console.log('user does not exists!')
-    //make new user
-    //push that user into gameRoom
-    const usersRef = firebase.database().ref('users')
-      .push({
-        name: name,
-        score: 0,
-        streak: 0,
-        currentGame: currentGame,
-        uid: uid
-      })
-    const studentId = usersRef.key
-  }
-}
 
 
 
@@ -77,16 +44,10 @@ export const addStudentToGameThunk = (name, currentGame, uid) => dispatch => {
         firebase.database().ref(`gameRooms/${currentGame}/users`)
           .push(userId)
 
-          const gameHistoryRef = firebase.database().ref(`gameHistoryList`);
-          gameHistoryRef.child(userId).set({
-            gamePin: currentGame,
-            date: Date.now()
-          })
         history.push(`/student-waiting-room/${currentGame}/${userId}`)
       }
-      else{
+      else {
         //if user does not exist
-        console.log('user does not exists!')
         //make the new user
         const newUserRef = firebase.database().ref('users')
           .push({
@@ -101,11 +62,6 @@ export const addStudentToGameThunk = (name, currentGame, uid) => dispatch => {
         firebase.database().ref(`gameRooms/${currentGame}/users`)
           .push(studentId)
 
-        const gameHistoryRef = firebase.database().ref(`gameHistoryList`);
-        gameHistoryRef.child(studentId).set({
-          gamePin: currentGame,
-          date: Date.now()
-        })
         history.push(`/student-waiting-room/${currentGame}/${studentId}`)
       }
     });
@@ -127,7 +83,6 @@ export const addToStudentScore = (studentId) => dispatch => {
 export const addToStudentStreak = (studentId) => dispatch => {
   const usersRefStreak = database.ref(`users/${studentId}/streak`)
     .transaction(function (streak) {
-      console.log('reducer streak', streak)
       return streak + 1
     })
   const updatedUserRef = database.ref(`users/${studentId}`)
@@ -160,10 +115,7 @@ export const getSingleStudentListener = (studentId) => dispatch => {
 export const getSingleStudentOnce = (studentId) => dispatch => {
   const path = `users/${studentId}/`
   const ref = database.ref(path)
-  // console.log('this should be the students ID: ', studentId)
-  // console.log('path: ', path)
   const listener = (snapshot) => {
-    console.log('snapshot to be sent back: ', snapshot.val())
     dispatch(getSingleStudentOnceActionCreator(snapshot.val()))
   }
   activeListeners[path] = { ref, listener }
@@ -176,6 +128,17 @@ export const stopListeningForSingleStudent = (studentId) => dispatch => {
   const { ref, listener } = activeListeners[path]
   ref.off('value', listener)
   delete activeListeners[path]
+}
+
+export const storeStudentGameHistory = (studentId, gamePin, score) => dispatch => {
+
+
+  const gameHistoryRef = firebase.database().ref(`gameHistoryList`);
+  gameHistoryRef.child(studentId).push({
+      gamePin: gamePin,
+      date: Date.now(),
+      score: score
+  })
 }
 
 
