@@ -44,11 +44,6 @@ export const addStudentToGameThunk = (name, currentGame, uid) => dispatch => {
         firebase.database().ref(`gameRooms/${currentGame}/users`)
           .push(userId)
 
-          const gameHistoryRef = firebase.database().ref(`gameHistoryList`);
-          gameHistoryRef.child(userId).push({
-              gamePin: currentGame,
-              date: Date.now()
-          })
         history.push(`/student-waiting-room/${currentGame}/${userId}`)
       }
       else {
@@ -67,11 +62,6 @@ export const addStudentToGameThunk = (name, currentGame, uid) => dispatch => {
         firebase.database().ref(`gameRooms/${currentGame}/users`)
           .push(studentId)
 
-        const gameHistoryRef = firebase.database().ref(`gameHistoryList`);
-        gameHistoryRef.child(studentId).push({
-            gamePin: currentGame,
-            date: Date.now()
-        })
         history.push(`/student-waiting-room/${currentGame}/${studentId}`)
       }
     });
@@ -142,16 +132,13 @@ export const stopListeningForSingleStudent = (studentId) => dispatch => {
 
 export const storeStudentGameHistory = (studentId, gamePin, score) => dispatch => {
 
-  const userGameListRef = database.ref(`gameHistoryList/${studentId}`)
-  userGameListRef.orderByChild('gamePin').equalTo(gamePin)
-    .once('value', snapshot => {
-      console.log('game to update: ', snapshot.val())
-      const gameToUpdate = Object.keys(snapshot.val())[0]
-      firebase.database().ref(`gameHistoryList/${studentId}/${gameToUpdate}`)
-        .update({score: score})
-    })
-  
 
+  const gameHistoryRef = firebase.database().ref(`gameHistoryList`);
+  gameHistoryRef.child(studentId).push({
+      gamePin: gamePin,
+      date: Date.now(),
+      score: score
+  })
 }
 
 
