@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { VictoryLine, VictoryChart, VictoryAxis, VictoryTheme } from 'victory';
-import { Container } from 'semantic-ui-react'
+import { NavLink } from 'react-router-dom'
+import { Container, Button } from 'semantic-ui-react'
 import AllStudentsGraph from './AllStudentsGraph'
+import SingleStudentGraph from './SingleStudentGraph'
 import { fetchAllStudentsWithScoreData } from '../../../store'
 
 
@@ -12,7 +14,8 @@ export class TeacherGraphs extends Component {
   constructor(){
     super()
     this.state = {
-      studentIds: []
+      graphToRender: 'all',
+      allStudentButtonActive: true
     }
   }
 
@@ -31,24 +34,44 @@ export class TeacherGraphs extends Component {
 
   }
 
+  switchGraph = evt => {
+    evt.preventDefault();
+    this.setState({graphToRender: evt.target.value})
+  }
+
   render(){
-    this.props.allStudentsGraphData && console.log(Object.keys(this.props.allStudentsGraphData))
     const ids = this.state.studentIds
     const data = this.props.allStudentsGraphData
-    console.log('IDS', ids)
+    const graphToRender = this.state.graphToRender
+
     return (
       <Container id="graph-page-box">
         <Container id="graphsContainer">
-
-          <AllStudentsGraph data={data} studentIds={ids} />
-
+          {
+            ids && ids.length &&
+            graphToRender === 'all' ?
+            <AllStudentsGraph data={data} studentIds={ids} />
+            : ids && ids.length && graphToRender !== 'all' &&
+            <SingleStudentGraph data={data[graphToRender]} studentId={graphToRender} />
+          }
         </Container>
         <div id="graph-menu">
+          <Button
+            onClick={this.switchGraph}
+            active={graphToRender === 'all'}
+            value="all">
+            All Students
+          </Button>
           <h2>Individual Student Graphs:</h2>
           {
-            ids.length && ids.map(id => {
+            ids && ids.length && ids.map(id => {
               return (
-                <h2 key={id}>{id}</h2>
+                <Button
+                  onClick={this.switchGraph}
+                  key={id} value={id}
+                  active={graphToRender === id}>
+                  {id}
+                </Button>
               )
             })
           }

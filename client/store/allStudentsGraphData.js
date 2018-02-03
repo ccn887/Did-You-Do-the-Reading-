@@ -39,14 +39,15 @@ export const fetchAllStudentsWithScoreData = () => dispatch => {
       const studentIdArray = Object.keys(idSnap.val())
       try {
         await Promise.all(studentIdArray.map(studentId => {
-          console.log('student id: ', typeof studentId)
           return database.ref(`gameHistoryList/${studentId}`)
             .once('value')
             .then(historySnap => {
               const studentGameListObj = historySnap.val();
               if (studentGameListObj){
                 const gameHistoryArray = Object.values(studentGameListObj)
-                allData[studentId] = gameHistoryArray;
+                allData[studentId] = gameHistoryArray.filter(historyInstance => {
+                  return historyInstance.score && historyInstance.date && true
+                })
               }
             })
         }))
