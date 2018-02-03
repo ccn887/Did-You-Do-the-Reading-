@@ -27,8 +27,10 @@ export default function AllStudentsGraph(props){
     <Container>
     <h1 className="graph-title">All Students Scores </h1>
         <VictoryChart domainPadding={20} theme={VictoryTheme.grayscale}>
-          <VictoryAxis label="Time (ms)" />
-          <VictoryAxis dependentAxis/>
+          <VictoryAxis label="days"
+            tickValues={[43, 44, 45, 46, 47]} />
+          <VictoryAxis dependentAxis
+            tickValues={[50, 60, 70, 80, 90, 100]} />
 
           {
             idArray && idArray.map(studentId => {

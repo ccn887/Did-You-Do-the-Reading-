@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { setGameOnStateThunk, listenForGameStateChange, storeStudentGameHistory,
   stopListeningForGameState, getSingleStudentListener, stopListeningForSingleStudent,
-  resetStudentScore } from '../../../store'
+  resetStudentScore, fetchTotalQuestions } from '../../../store'
 import { connect } from 'react-redux'
 import history from '../../../history'
 
@@ -20,6 +20,7 @@ export class StudentAnswerReveal extends Component {
     this.props.getSingleStudentListener(this.props.match.params.studentId)
     this.props.setGameOnStateThunk(this.props.match.params.pin)
     this.props.listenForGameStateChange(this.props.match.params.pin);
+    this.props.fetchTotalQuestions(this.props.match.params.pin)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -33,9 +34,18 @@ export class StudentAnswerReveal extends Component {
       this.nextQuestion();
     }
     if (nextProps.gameState === 'gameOver') {
-      this.props.storeStudentGameHistory(this.state.studentId, this.state.gameRoomId, this.props.singleStudent.score)
-      this.props.resetStudentScore(this.state.studentId)
-      history.push(`/${this.state.gameRoomId}/gameOver/${this.state.studentId}`)
+      const sId = this.state.studentId
+      const gId = this.state.gameRoomId
+      const score =  Math.floor((+this.props.singleStudent.score / +this.props.totalQuestions) * 100)
+      console.log("raw score: ", this.props.singleStudent.score )
+      console.log("type of raw score: ", typeof this.props.singleStudent.score )
+      console.log("number of questions: ", this.props.totalQuestions )
+      console.log("type of number of questions: ", typeof this.props.totalQuestions )
+      console.log("raw percentage score: ", (+this.props.singleStudent.score / +this.props.totalQuestions))
+      console.log('that times 100: ', (+this.props.singleStudent.score / +this.props.totalQuestions) * 100)
+      this.props.storeStudentGameHistory(sId, gId, score)
+      this.props.resetStudentScore(sId)
+      history.push(`/${gId}/gameOver/${sId}`)
     }
   }
 
@@ -76,7 +86,8 @@ const mapState = state => {
     currentGame: state.currentGame,
     currentQuestion: state.currentQuestion,
     gameState: state.gameState,
-    singleStudent: state.singleStudent
+    singleStudent: state.singleStudent,
+    totalQuestions: state.totalQuestions
   }
 }
 const mapDispatch = {
@@ -86,7 +97,8 @@ const mapDispatch = {
   getSingleStudentListener,
   stopListeningForSingleStudent,
   storeStudentGameHistory,
-  resetStudentScore
+  resetStudentScore,
+  fetchTotalQuestions
 }
 
 export default connect(mapState, mapDispatch)(StudentAnswerReveal)
