@@ -8,7 +8,6 @@ const { shuffle } = require('./utils')
 
 
 function quoteQuestions(txt, quote, people) {
-
   var sendQuoteObj = {}
   const lowQuote = quote.toLowerCase()
   const lowTxt = txt.toLowerCase()
@@ -25,6 +24,7 @@ function quoteQuestions(txt, quote, people) {
     }
     residue += lowTxt[i]
   }
+
   const normalized = residue.replace(/\./g, '')
   const peopleFiltered = people.filter(item => {
     return normalized.includes(item.name.toLowerCase())
@@ -49,7 +49,6 @@ function quoteQuestions(txt, quote, people) {
       if (wrongAnswers[i].charCodeAt(0) < 97) {
         namesOnly.push(wrongAnswers[i])
       }
-      console.log(wrongAnswers[i])
     }
 
     let wrongArr = namesOnly.slice(0, 3)
