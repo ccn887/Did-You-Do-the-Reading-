@@ -31,7 +31,7 @@ function quoteQuestions(txt, quote, people) {
   })
 
   if (peopleFiltered.length === 1) {
-    let question = `Who said, ` + quote + `?`
+    let question = `Who said, ` + quote.slice(0,-2) + `"?`
     let rightAnswer = peopleFiltered[0]
     sendQuoteObj.question = question
     sendQuoteObj.rightAnswer = rightAnswer.name

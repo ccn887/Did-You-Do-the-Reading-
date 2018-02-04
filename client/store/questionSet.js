@@ -28,13 +28,14 @@ const activeListeners = {}
 
 
 export const generateQuestionSetThunk = (text) => async dispatch => {
-
+ console.log('generating question set!')
   let res = await axios.post('/api/text/vocab', tokenize(text));
   let questionArray = res.data;
-
    let res2 = await axios.post('/api/quoteText/quoteQuestion', {content: text } );
     let questionArray2 = res2.data
-  let finalQuestionArray = questionArray.concat(questionArray2)
+    let res3 = await axios.post('/api/quoteText/whoDidItQuestion', {content: text } );
+    let questionArray3 = res3.data
+  let finalQuestionArray = questionArray.concat(questionArray2).concat(questionArray3)
   const questionSetRef = firebase.database().ref('questionSets');
   let newQuestionSetRef = questionSetRef.push({})
   finalQuestionArray.forEach(questionObj => {
