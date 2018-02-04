@@ -123,11 +123,7 @@ const findPlaces = (quoteStr) => {
   return placesArr
 }
 const findSubjVerb = async (text) => {
-  console.log('WHYYYYYYYY')
-  // const document = {
-  //   content: text,
-  //   type: 'PLAIN_TEXT',
-  // };
+
   try {
     const doc = nlp(text)
     const person = doc.match('#Person #Verb')
@@ -135,8 +131,8 @@ const findSubjVerb = async (text) => {
     const newPronoun = pronoun.data()
     const newPerson = person.data()
 
-    const goodNouns = newPerson.map(personage =>{
-      if(newPronoun.includes(personage)){
+    const goodNouns = newPerson.map(personage => {
+      if (newPronoun.includes(personage)) {
         return null
       } return personage
     })
@@ -156,9 +152,9 @@ const findSimiles = (text) => {
   const similesLike = doc.match('like (a|an|the) #Noun')
   const similesAs = doc.match('as (a|an|the) #Noun')
 
-const like =   similesLike.data()
-const asSim = similesAs.data()
-const simArr = asSim.concat(like)
+  const like = similesLike.data()
+  const asSim = similesAs.data()
+  const simArr = asSim.concat(like)
   return simArr
 }
 
