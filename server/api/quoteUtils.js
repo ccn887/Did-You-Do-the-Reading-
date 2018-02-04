@@ -98,6 +98,22 @@ const findPeople = async (text) => {
     console.error('ERROR:', err);
   }
 }
+const findSyntax = async (text) => {
+
+  const document = {
+    content: text,
+    type: 'PLAIN_TEXT',
+  };
+  try {
+    const doc = nlp(text)
+    const sentences = doc.sentences()
+    return sentences.data()
+
+  }
+  catch (err) {
+    console.error('ERROR:', err);
+  }
+}
 
 const findPlaces = (quoteStr) => {
   const doc = nlp(quoteStr)
@@ -105,6 +121,41 @@ const findPlaces = (quoteStr) => {
   places.sort('alpha')
   const placesArr = places.out('array')
   return placesArr
+}
+const findSubjVerb = async (text) => {
+
+  try {
+    const doc = nlp(text)
+    const person = doc.match('#Person #Verb')
+    const pronoun = doc.match('#Pronoun #Verb')
+    const newPronoun = pronoun.data()
+    const newPerson = person.data()
+
+    const goodNouns = newPerson.map(personage => {
+      if (newPronoun.includes(personage)) {
+        return null
+      } return personage
+    })
+
+    // const place = doc.match('#Place')
+
+    return goodNouns
+
+  }
+  catch (err) {
+    console.error('ERROR:', err);
+  }
+
+}
+const findSimiles = (text) => {
+  const doc = nlp(text)
+  const similesLike = doc.match('like (a|an|the) #Noun')
+  const similesAs = doc.match('as (a|an|the) #Noun')
+
+  const like = similesLike.data()
+  const asSim = similesAs.data()
+  const simArr = asSim.concat(like)
+  return simArr
 }
 
 const findQuotations = (quoteStr) => {
@@ -114,4 +165,5 @@ const findQuotations = (quoteStr) => {
   return quotations.data()
 }
 
-module.exports = { findSentiment, findPlaces, findPeople, findQuotations, quoteQuestions }
+
+module.exports = { findSentiment, findPlaces, findPeople, findQuotations, findSimiles, quoteQuestions, findSyntax, findSubjVerb }
