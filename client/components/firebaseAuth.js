@@ -12,23 +12,32 @@ export class FirebaseAuth extends Component {
     super()
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      loginError: false
+    }
+  }
+
+  componentWillReceiveProps(nextProps){
+    if (nextProps.firebaseUser.code || nextProps.firebaseUser.message){
+      this.setState({ loginError: true})
+    }
+    else {
+      this.setState({ loginError: false })
     }
   }
 
   inputEmail = (evt) => {
-    console.log(evt.target.value)
     this.setState({email: evt.target.value})
   }
 
   inputPassword = (evt) => {
-    console.log(evt.target.value)
     this.setState({password: evt.target.value})
   }
 
   login = (evt) => {
     evt.preventDefault();
-    this.props.logInStudentThunk(this.state.email, this.state.password);
+    this.props.logInStudentThunk(this.state.email, this.state.password)
+
   }
 
   signup = (evt) => {
@@ -71,6 +80,7 @@ export class FirebaseAuth extends Component {
             </Form.Field>
             <Button onClick={this.login}>Log In</Button>
             <Button onClick={this.signup}>Sign Up</Button>
+            {this.state.loginError && <div>incorrect email or password</div> }
           </Form>
         }
       </Container>
