@@ -21,12 +21,12 @@ router.post('/vocab', async (req, res, next) => {
       }
     });
 
-    const vocabWords = response.map(entry => {
+    let vocabWords = response.map(entry => {
       return {word: entry.word, partOfSpeech: entry.partOfSpeech}
     })
 
-    if (vocabWords.length >= 30) {
-      vocabWords.splice(0, 30)
+    if (vocabWords.length >= 20) {
+      vocabWords = vocabWords.slice(0, 20);
     }
 
     const questions = await Promise.all(vocabWords.map(async wordObj => {

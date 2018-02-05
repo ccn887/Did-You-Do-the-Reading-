@@ -12,7 +12,17 @@ export class FirebaseAuth extends Component {
     super()
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      loginError: false
+    }
+  }
+
+  componentWillReceiveProps(nextProps){
+    if (nextProps.firebaseUser.code || nextProps.firebaseUser.message){
+      this.setState({ loginError: true})
+    }
+    else {
+      this.setState({ loginError: false })
     }
   }
 
@@ -74,6 +84,7 @@ export class FirebaseAuth extends Component {
               </div>
             </center>
             <Button color="yellow" onClick={this.signup}>Sign Up</Button>
+            {this.state.loginError && <div>incorrect email or password</div> }
           </Form>
         }
     </div>
