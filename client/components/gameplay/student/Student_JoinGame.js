@@ -12,10 +12,16 @@ export class StudentJoinGame extends Component {
     this.state = {
       currentGame: '',
       name: '',
-      pin: ''
+      pin: '',
+      activeUser: true
     }
   }
 
+  componentWillReceiveProps (nextProps) {
+    if (!nextProps.firebaseUser.uid){
+      this.setState({activeUser: false})
+    }
+  }
 
   handleChange = (e) => {
     e.preventDefault()
@@ -39,28 +45,40 @@ export class StudentJoinGame extends Component {
     history.push(`/student/login`)
   }
 
+  goToLogin = (evt) => {
+    evt.preventDefault();
+    history.push(`/student/login`)
+  }
+
+
   render() {
     console.log('Firebase User from FB: ', firebase.auth().currentUser)
     console.log('firebase user from store', this.props.firebaseUser)
     return (
       <div id="join-game-container">
-        <Form className="student-join-box">
-          <Form.Field>
-            <label className="join-labels">Pin:</label>
-            <input type="text" id="join-pin" className="join-game-input" name="pin" maxLength="5" onChange={this.handleChange} />
-          </Form.Field>
-          <Form.Field >
-            <label className="join-labels">Name:</label>
-            <input className="join-game-input" id="join-name" name="name" maxLength="20" onChange={this.handleChange} />
-          </Form.Field>
-        <Button color="purple" inverted id="join-game-button" onClick={this.join}>Join the Game!</Button>
         {
-          this.props.firebaseUser.uid &&
-          <div id="join-logout-button-wrapper">
-            <Button id="join-logout-button" inverted color="orange" onClick={this.logout}>Log Out</Button>
+          this.state.activeUser
+          ?
+          <Form className="student-join-box">
+            <Form.Field>
+              <label className="join-labels">Pin:</label>
+              <input type="text" id="join-pin" className="join-game-input" name="pin" maxLength="5" onChange={this.handleChange} />
+            </Form.Field>
+            <Form.Field >
+              <label className="join-labels">Name:</label>
+              <input className="join-game-input" id="join-name" name="name" maxLength="20" onChange={this.handleChange} />
+            </Form.Field>
+          <Button color="purple" inverted id="join-game-button" onClick={this.join}>Join the Game!</Button>
+            <div id="join-logout-button-wrapper">
+              <Button id="join-logout-button" inverted color="orange" onClick={this.logout}>Log Out</Button>
+            </div>
+          </Form>
+          :
+          <div>
+            <h2>You must log in to join a game!</h2>
+            <Button onClick={this.goToLogin}>Go To Login</Button>
           </div>
         }
-        </Form>
       </div>
     )
   }

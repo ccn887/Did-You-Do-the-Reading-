@@ -7,7 +7,9 @@ import firebase from '../../server/firebase'
 
 const SET_FIREBASE_USER_ON_STATE = 'SET_FIREBASE_USER_ON_STATE';
 
-const REMOVE_FIREBASE_USER_FROM_STATE = 'REMOVE_FIREBASE_USER_FROM_STATE'
+const REMOVE_FIREBASE_USER_FROM_STATE = 'REMOVE_FIREBASE_USER_FROM_STATE';
+
+const SET_ERR_ON_STATE = 'SET_ERR_ON_STATE'
 
 
 /* ------------   ACTION CREATORS     ------------------ */
@@ -26,6 +28,13 @@ export const removeFirebaseUserFromState = () => {
   }
 }
 
+export const setErrorMessageOnState = err => {
+  return {
+    type: SET_ERR_ON_STATE,
+    err
+  }
+}
+
 /* ------------       THUNK CREATORS     ------------------ */
 
 export const logInStudentThunk = (email, password) => dispatch => {
@@ -35,9 +44,12 @@ export const logInStudentThunk = (email, password) => dispatch => {
       return firebase.auth().signInWithEmailAndPassword(email, password);
     })
     .then(userPromise => dispatch(setFirebaseUserOnState(userPromise)))
-    .catch(err => console.error(err));
-
-  history.push('/join')
+    .then( () =>   history.push('/join'))
+    .catch(err => {
+      console.error(err)
+      console.log(Object.keys(err))
+      dispatch(setErrorMessageOnState(err))
+    })
 }
 
 export const signUpStudentThunk = (email, password) => dispatch => {
@@ -62,6 +74,8 @@ export default function (user = {}, action){
       return action.user
     case REMOVE_FIREBASE_USER_FROM_STATE:
       return action.user
+    case SET_ERR_ON_STATE:
+      return action.err
     default:
       return user;
   }
