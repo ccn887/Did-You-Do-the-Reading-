@@ -38,14 +38,12 @@ export default class Home extends Component {
 
   navigate(e){
     e.preventDefault();
-    e.target.value === 'student' ? history.push('/student/login') : history.push('/login')
+    e.target.value === 'student' ? history.push('/student/login') : history.push('/teacherlogin')
   }
 
-  // pushJoin(){
-  //   history.push('/join')
-  // }
-
-
+  pushJoin(){
+    history.push('/student/login')
+  }
 
   render(){
 

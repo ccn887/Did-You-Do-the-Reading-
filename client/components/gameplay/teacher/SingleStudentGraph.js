@@ -3,6 +3,7 @@ import { VictoryLine, VictoryChart, VictoryAxis, VictoryTheme } from 'victory';
 import { Container } from 'semantic-ui-react'
 
 
+
 export default function SingleStudentGraph(props){
   const data = props.data
 

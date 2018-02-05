@@ -6,6 +6,7 @@ import { Container, Button } from 'semantic-ui-react'
 import AllStudentsGraph from './AllStudentsGraph'
 import SingleStudentGraph from './SingleStudentGraph'
 import { fetchAllStudentsWithScoreData } from '../../../store'
+import Navbar from '../../Navbar'
 
 
 export class TeacherGraphs extends Component {
@@ -45,6 +46,10 @@ export class TeacherGraphs extends Component {
     const graphToRender = this.state.graphToRender
 
     return (
+      <div>
+      <div className="Teacher-Navbar">
+        <Navbar />
+      </div>
       <Container id="graph-page-box">
         <Container id="graphsContainer">
           {
@@ -77,6 +82,7 @@ export class TeacherGraphs extends Component {
           }
         </div>
       </Container>
+      </div>
     )
   }
 

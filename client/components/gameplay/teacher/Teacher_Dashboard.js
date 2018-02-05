@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import history from '../../../history'
 import { setGameOnStateThunk, buildNewGameRoomThunk, getCurrentTeacherGames } from '../../../store'
 import MakeQuiz from '../../MakeQuiz'
+import Navbar from '../../Navbar'
 
 export class TeacherDashboard extends Component {
   constructor() {
@@ -31,12 +32,14 @@ export class TeacherDashboard extends Component {
     history.push(`/teacher/graphs`)
   }
 
+
   render() {
     const user = this.props.user
     const currentTeacherGames = this.props.currentTeacherGames
 
     return (
       <div>
+        <Navbar />
         <h1>Welcome, {user.email} </h1>
         <Button size="large" color="purple" onClick={this.makeQuiz}>Make a New Game</Button>
         <Button size="large" color="orange" onClick={this.goToGraphs}>Look At Some Graphs</Button>
@@ -65,10 +68,16 @@ export class TeacherDashboard extends Component {
 const mapState = state => {
   return {
     user: state.user,
-    currentTeacherGames: state.currentTeacherGames
+    currentTeacherGames: state.currentTeacherGames,
+    isLoggedIn: !!state.user.id
   }
 }
 
-const mapDispatch = { setGameOnStateThunk, buildNewGameRoomThunk, getCurrentTeacherGames }
+
+const mapDispatch = {
+    setGameOnStateThunk,
+    buildNewGameRoomThunk,
+    getCurrentTeacherGames,
+}
 
 export default connect(mapState, mapDispatch)(TeacherDashboard)

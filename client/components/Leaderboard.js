@@ -72,7 +72,7 @@ export class Leaderboard extends Component {
         )
     } else {
       return (
-        <h2>nope</h2>
+        <h2>No current users to display</h2>
       )
     }
 
