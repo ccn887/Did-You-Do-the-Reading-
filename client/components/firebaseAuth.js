@@ -43,7 +43,7 @@ export class FirebaseAuth extends Component {
 
     this.props.resetStudentScore(studentId);
     this.props.breakStudentStreak(studentId);
-    
+
     firebase.auth().signOut();
     history.push(`/`)
   }
@@ -53,11 +53,13 @@ export class FirebaseAuth extends Component {
     return(
       <Container>
         {
-          this.props.firebaseUser.uid ?
+          this.props.firebaseUser.uid
+          ?
           <Container>
             <Button onClick={() => history.push(`/join`)}>Join A Game</Button>
             <Button onClick={this.logout}>Log Out</Button>
-          </Container> :
+          </Container>
+          :
           <Form>
             <Form.Field>
               <label>Email</label>

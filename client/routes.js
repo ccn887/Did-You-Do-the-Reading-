@@ -9,8 +9,9 @@ import { Main, Login, Signup,
   StudentWaitingRoom, TeacherSingleQuestion,
   StudentAnswerReveal, StudentSingleQuestion,
   TeacherAnswerReveal, TeacherDashboard, Home,
-  Leaderboard, FirebaseAuth, StudentGameOver, TeacherGraphs} from './components'
-import { me, setFirebaseUserOnState } from './store'
+  Leaderboard, FirebaseAuth, StudentGameOver,
+  TeacherGraphs } from './components'
+import { me, setFirebaseUserOnState, removeFirebaseUserFromState } from './store'
 import firebase from '../server/firebase'
 
 /**
@@ -31,6 +32,7 @@ class Routes extends Component {
       }
       else {
         //do something else
+        this.props.removeFbUser();
         console.log('YOURE NOT LOGGED IN FOOL')
       }
     })
@@ -154,6 +156,9 @@ const mapDispatch = (dispatch) => {
     },
     setFbUserOnState(user) {
       dispatch(setFirebaseUserOnState(user))
+    },
+    removeFbUser(){
+      dispatch(removeFirebaseUserFromState())
     }
   }
 }
