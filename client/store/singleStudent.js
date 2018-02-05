@@ -26,12 +26,7 @@ const activeListeners = {}
 /* ------------       THUNK CREATORS     ------------------ */
 
 export const addStudentToGameThunk = (name, currentGame, uid) => dispatch => {
-  // firebase.database().ref(`gameRooms/${currentGame}`)
-  //   .once('value', gamePinSnap => {
-  //     if (!gamePinSnap.val()){
-  //       console.log('NOT A VALID GAME CODE')
-  //     }
-  //   })
+
 
 
   const usersRef = firebase.database().ref('users');
