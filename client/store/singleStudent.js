@@ -26,6 +26,13 @@ const activeListeners = {}
 /* ------------       THUNK CREATORS     ------------------ */
 
 export const addStudentToGameThunk = (name, currentGame, uid) => dispatch => {
+  // firebase.database().ref(`gameRooms/${currentGame}`)
+  //   .once('value', gamePinSnap => {
+  //     if (!gamePinSnap.val()){
+  //       console.log('NOT A VALID GAME CODE')
+  //     }
+  //   })
+
 
   const usersRef = firebase.database().ref('users');
   usersRef.orderByChild('uid').equalTo(uid)
@@ -37,6 +44,7 @@ export const addStudentToGameThunk = (name, currentGame, uid) => dispatch => {
         //find and update user
         firebase.database().ref(`users/${userId}`)
           .update({currentGame: currentGame, name: name})
+
         //add user to gameroom
         firebase.database().ref(`gameRooms/${currentGame}/users`)
           .push(userId)
