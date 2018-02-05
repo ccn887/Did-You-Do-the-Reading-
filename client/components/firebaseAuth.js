@@ -84,6 +84,7 @@ export class FirebaseAuth extends Component {
               </div>
             </center>
             <Button color="orange" onClick={this.signup}>Sign Up</Button>
+            {this.state.loginError && <div>incorrect email or password</div> }
           </Form>
         }
     </div>

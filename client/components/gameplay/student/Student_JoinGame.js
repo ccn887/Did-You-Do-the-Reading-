@@ -13,7 +13,8 @@ export class StudentJoinGame extends Component {
       currentGame: '',
       name: '',
       pin: '',
-      activeUser: true
+      activeUser: true,
+      wrongPin: false
     }
   }
 
@@ -36,7 +37,17 @@ export class StudentJoinGame extends Component {
     const name = this.state.name
     const uid = this.props.firebaseUser.uid
     console.log("user joining game: ", name, uid)
-    this.props.addStudentToGameThunk(name, currentGame, uid);
+
+    firebase.database().ref(`gameRooms/${currentGame}`)
+      .once('value', gamePinSnap => {
+        if (!gamePinSnap.val()){
+          console.log('NOT A VALID GAME CODE')
+          this.setState({wrongPin: true})
+        }
+        else {
+          this.props.addStudentToGameThunk(name, currentGame, uid);
+        }
+      })
   }
 
   logout = (evt) => {
@@ -68,6 +79,7 @@ export class StudentJoinGame extends Component {
               <label className="join-labels">Name:</label>
               <input className="join-game-input" id="join-name" name="name" maxLength="20" onChange={this.handleChange} />
             </Form.Field>
+            {this.state.wrongPin && <h2>Invalid Game Pin</h2>}
           <Button color="purple" inverted id="join-game-button" onClick={this.join}>Join the Game!</Button>
             <div id="join-logout-button-wrapper">
               <Button id="join-logout-button" inverted color="orange" onClick={this.logout}>Log Out</Button>
