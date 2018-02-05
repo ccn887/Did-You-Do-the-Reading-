@@ -316,3 +316,52 @@ form div {
 label .white-text{
   color: white;
 }
+
+#timer-box{
+  background: #88D498;
+  width: 15rem;
+  height: 15rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#time-remaining{
+  color: #C6DABF
+}
+
+#timer{
+  color: #008080;
+  text-align: center;
+  font-size: 6rem;
+  font-family: 'Peralta', cursive;
+}
+
+#question-box{
+  width: 45rem;
+}
+
+#teacher-single-question{
+  color: #008080;
+}
+
+.teacher-single-answer{
+  border-color: #008080;
+  background: #F3E9D2;
+}
+
+.answer-box{
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 1rem 1rem;
+}
+
+.teacher-single-answer{
+  width: 20rem !important;
+  height: 4rem;
+  font-size: 1.5rem;
+  color: #008080;
+
+}
