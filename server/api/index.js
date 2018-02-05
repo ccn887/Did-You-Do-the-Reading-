@@ -4,6 +4,7 @@ module.exports = router
 router.use('/users', require('./users'))
 
 router.use('/text', require('./text'))
+router.use('/keywordText', require('./keywordText'))
 
 router.use('/quoteText', require('./quoteText'))
 router.use((req, res, next) => {
