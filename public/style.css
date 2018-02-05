@@ -313,6 +313,6 @@ form div {
   color: white;
 }
 
-label .white-text{
-  color: white;
+label.white-text{
+  color: white !important;
 }

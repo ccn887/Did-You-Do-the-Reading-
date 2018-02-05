@@ -77,13 +77,13 @@ export class FirebaseAuth extends Component {
               <label className="white-text" >Password</label>
               <input onChange={this.inputPassword} type="password" placeholder='password' />
             </Form.Field>
-            <Button color="pink" onClick={this.login}>Log In</Button>
+            <Button color="purple" onClick={this.login}>Log In</Button>
             <center>
               <div className="white-text">
                 - or -
               </div>
             </center>
-            <Button color="yellow" onClick={this.signup}>Sign Up</Button>
+            <Button color="orange" onClick={this.signup}>Sign Up</Button>
             {this.state.loginError && <div>incorrect email or password</div> }
           </Form>
         }
