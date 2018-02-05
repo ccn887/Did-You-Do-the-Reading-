@@ -316,3 +316,7 @@ form div {
 label.white-text{
   color: white !important;
 }
+
+.warning{
+  color: #ffa500
+}
