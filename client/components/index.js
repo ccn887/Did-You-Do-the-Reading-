@@ -20,3 +20,6 @@ export {default as Leaderboard} from './Leaderboard'
 export {default as FirebaseAuth} from './firebaseAuth'
 export {default as TeacherGraphs} from './gameplay/teacher/Teacher_Graphs'
 export {default as Home} from './Home';
+export {default as Navbar} from './Navbar'
+export {default as TeacherLogin} from './Teacher_login'
+export {default as TeacherGameLimbo} from './gameplay/teacher/Teacher_GameLimbo'

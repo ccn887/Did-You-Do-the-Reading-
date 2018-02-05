@@ -3,14 +3,28 @@ import { connect } from 'react-redux'
 import { Route, Switch, Router } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import history from './history'
-import { Main, Login, Signup,
-  UserHome, MakeQuiz, AllQuestions,
-  TeacherWaitingRoom, StudentJoinGame,
-  StudentWaitingRoom, TeacherSingleQuestion,
-  StudentAnswerReveal, StudentSingleQuestion,
-  TeacherAnswerReveal, TeacherDashboard, Home,
-  Leaderboard, FirebaseAuth, StudentGameOver,
-  TeacherGraphs } from './components'
+import {
+  Main,
+  Login,
+  Signup,
+  UserHome,
+  MakeQuiz,
+  AllQuestions,
+  StudentJoinGame,
+  StudentGameOver,
+  StudentWaitingRoom,
+  StudentAnswerReveal,
+  StudentSingleQuestion,
+  TeacherAnswerReveal,
+  TeacherDashboard,
+  TeacherWaitingRoom,
+  TeacherSingleQuestion,
+  TeacherGraphs,
+  TeacherGameLimbo,
+  TeacherLogin,
+  Home,
+  Leaderboard,
+  FirebaseAuth} from './components'
 import { me, setFirebaseUserOnState, removeFirebaseUserFromState } from './store'
 import firebase from '../server/firebase'
 
@@ -52,6 +66,7 @@ class Routes extends Component {
             {/* Routes placed here are available to all visitors */}
             <Route exact path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
+            <Route exact path="/teacherlogin" component={TeacherLogin} />
             <Route path="/join" component={StudentJoinGame} />
             <Route
               exact
@@ -116,7 +131,7 @@ class Routes extends Component {
                 <Route
                   exact
                   path="/teacher/:pin/gameOver"
-                  component={Leaderboard}
+                  component={TeacherGameLimbo}
                 />
                 <Route
                   exact

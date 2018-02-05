@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Form, TextArea, Button, Container } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { generateQuestionSetThunk } from '../store'
+import Navbar from './Navbar'
 
 
 export class MakeQuiz extends Component {
@@ -34,6 +35,7 @@ export class MakeQuiz extends Component {
     const active2 = this.state.active2
     return (
       <div>
+        <Navbar />
         <Container>
           <h3>enter text to generate quiz questions</h3>
           <Form.TextArea id="enter-text" onChange={this.handleChange}  />

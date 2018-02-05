@@ -51,13 +51,10 @@ label {
 
 }
 
-
-
 nav a {
   display: inline-block;
   margin: 1em;
 }
-
 
 form div {
   margin: 1em;
@@ -212,7 +209,6 @@ form div {
   background: #F2E9D5;
   width: 80%;
 }
-
 /* ICONS */
 
 .userSelectMenu {
@@ -259,6 +255,13 @@ form div {
   transition: drop-shadow .1s ease;
 }
 
+#teacher-game-over {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
 #teacher_icon:hover {
   -webkit-filter: drop-shadow(0px 0px 10px #fff );
   filter: drop-shadow(0px 0px 10px #fff);
@@ -270,22 +273,24 @@ form div {
 }
 
 #graphsContainer{
+  display: flex;
+  flex-direction: column;
   background-color: #C6DABF;
   width: 55vw;
 }
 
-.graph-title{
+.graph-title {
   color: #008080;
   text-align: center;
 }
 
-#graph-page-box{
+#graph-page-box {
   display: flex;
   justify-content: space-between;
-    padding: 30px;
+  padding: 30px;
 }
 
-#graph-menu{
+#graph-menu {
   display: flex;
   flex-direction: column;
   padding: 10px;
