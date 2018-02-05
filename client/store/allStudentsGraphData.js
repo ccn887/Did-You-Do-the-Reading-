@@ -45,7 +45,13 @@ export const fetchAllStudentsWithScoreData = () => dispatch => {
               const studentGameListObj = historySnap.val();
               if (studentGameListObj){
                 const gameHistoryArray = Object.values(studentGameListObj)
-                allData[studentId] = gameHistoryArray.filter(historyInstance => {
+                const dayGameHistoryArray = gameHistoryArray.map(gameHistoryInstance => {
+                  return {
+                    date: (Math.floor(gameHistoryInstance.date / 86400000 - 17520 )),
+                    score: gameHistoryInstance.score
+                  }
+                })
+                allData[studentId] = dayGameHistoryArray.filter(historyInstance => {
                   return historyInstance.score && historyInstance.date && true
                 })
               }

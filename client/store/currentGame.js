@@ -19,6 +19,7 @@ export const setGameOnStateThunk = id => dispatch => {
       });
   }
 
+
 export const buildNewGameRoomThunk = (quiz, teacherId, pin, title) => dispatch => {
   const gameRoomRef = firebase.database().ref('gameRooms');
   gameRoomRef.child(pin).set({
@@ -26,7 +27,8 @@ export const buildNewGameRoomThunk = (quiz, teacherId, pin, title) => dispatch =
     teacherId: teacherId,
     pin: pin,
     gameState: 'waitingRoom',
-    quizTitle: title
+    quizTitle: title,
+    totalQuestions: Object.keys(quiz).length
   })
 }
 
@@ -36,7 +38,7 @@ export const buildNewGameRoomThunk = (quiz, teacherId, pin, title) => dispatch =
 export default function (currentGame = {}, action) {
   switch (action.type) {
     case SET_GAME_ON_STATE:
-    return action.game
+      return action.game
     default:
       return currentGame
   }
