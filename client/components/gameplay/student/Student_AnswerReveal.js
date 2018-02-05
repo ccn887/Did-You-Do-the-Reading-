@@ -37,12 +37,6 @@ export class StudentAnswerReveal extends Component {
       const sId = this.state.studentId
       const gId = this.state.gameRoomId
       const score =  Math.floor((+this.props.singleStudent.score / +this.props.totalQuestions) * 100)
-      console.log("raw score: ", this.props.singleStudent.score )
-      console.log("type of raw score: ", typeof this.props.singleStudent.score )
-      console.log("number of questions: ", this.props.totalQuestions )
-      console.log("type of number of questions: ", typeof this.props.totalQuestions )
-      console.log("raw percentage score: ", (+this.props.singleStudent.score / +this.props.totalQuestions))
-      console.log('that times 100: ', (+this.props.singleStudent.score / +this.props.totalQuestions) * 100)
       this.props.storeStudentGameHistory(sId, gId, score)
       this.props.resetStudentScore(sId)
       history.push(`/${gId}/gameOver/${sId}`)
