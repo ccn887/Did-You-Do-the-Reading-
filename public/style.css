@@ -152,7 +152,7 @@ form div {
 .student-join-box{
   display: flex;
   flex-direction: column;
-  padding: 5rem;
+  padding: 3rem;
   justify-content: space-around;
 }
 
@@ -209,6 +209,8 @@ form div {
   background: #F2E9D5;
   width: 80%;
 }
+
+
 /* ICONS */
 
 .userSelectMenu {
@@ -294,4 +296,23 @@ form div {
   display: flex;
   flex-direction: column;
   padding: 10px;
+}
+
+#student-portal {
+  display: flex;
+  justify-content: center;
+  padding: 3rem;
+}
+
+#student-signup {
+  display: flex;
+  flex-direction: column;
+}
+
+.white-text{
+  color: white;
+}
+
+label .white-text{
+  color: white;
 }
