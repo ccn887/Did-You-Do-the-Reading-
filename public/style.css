@@ -309,6 +309,24 @@ form div {
   flex-direction: column;
 }
 
+#teacher-portal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#teacher-buttons {
+  display: flex;
+  justify-content: center;
+  padding: 3rem;
+}
+
+#teacher-signup {
+  display: flex;
+  flex-direction: column;
+}
+
 .white-text{
   color: white;
 }
