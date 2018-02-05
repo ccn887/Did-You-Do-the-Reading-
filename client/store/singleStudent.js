@@ -27,6 +27,8 @@ const activeListeners = {}
 
 export const addStudentToGameThunk = (name, currentGame, uid) => dispatch => {
 
+
+
   const usersRef = firebase.database().ref('users');
   usersRef.orderByChild('uid').equalTo(uid)
     .once('value', function(snapshot) {
@@ -37,6 +39,7 @@ export const addStudentToGameThunk = (name, currentGame, uid) => dispatch => {
         //find and update user
         firebase.database().ref(`users/${userId}`)
           .update({currentGame: currentGame, name: name})
+
         //add user to gameroom
         firebase.database().ref(`gameRooms/${currentGame}/users`)
           .push(userId)
