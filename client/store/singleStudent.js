@@ -23,9 +23,6 @@ const database = firebase.database()
 const activeListeners = {}
 
 
-
-
-
 /* ------------       THUNK CREATORS     ------------------ */
 
 export const addStudentToGameThunk = (name, currentGame, uid) => dispatch => {
@@ -137,6 +134,7 @@ export const stopListeningForSingleStudent = (studentId) => dispatch => {
 
 export const storeStudentGameHistory = (studentId, gamePin, score) => dispatch => {
   const gameHistoryRef = firebase.database().ref(`gameHistoryList`);
+
   gameHistoryRef.child(studentId).push({
       gamePin: gamePin,
       date: Date.now(),
