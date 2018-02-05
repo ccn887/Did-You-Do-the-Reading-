@@ -15,6 +15,10 @@ export class MakeQuiz extends Component {
     this.handleChange = this.handleChange.bind(this)
   }
 
+  componentWillUnmount() {
+    console.log('I AM UNMOUNTED')
+  }
+
   handleChange(event) {
     this.setState({
       text: event.target.value
