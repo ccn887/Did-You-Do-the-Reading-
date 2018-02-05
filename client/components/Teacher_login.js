@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Login, Signup } from '../components';
 import {Button} from 'semantic-ui-react'
 import history from '../history'
+import { Link } from 'react-router-dom'
 
 export default class TeacherLogin extends Component {
 
@@ -13,9 +14,12 @@ export default class TeacherLogin extends Component {
 
 render() {
   return (
-    <div>
-      <Button value ="login" onClick={this.handleClick}> Log In </Button>
-      <Button onClick={this.handleClick}> Sign Up </Button>
+    <div id="teacher-buttons">
+      <Button color="purple" value ="login" onClick={this.handleClick}> Log In </Button>
+      <Button color="orange" onClick={this.handleClick}> Sign Up </Button>
+        <div>
+          <Link to="/home"> <Button color="black">Back</Button> </Link>
+        </div>
     </div>
     )
   }
