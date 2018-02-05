@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Card, Button } from 'semantic-ui-react'
 import history from '../../../history'
-import { setGameOnStateThunk, setCurrentQuestionThunk, listenForGameStateChange, stopListeningForGameState, addToStudentStreak, breakStudentStreak, addToStudentScore } from '../../../store'
+import { setGameOnStateThunk, setCurrentQuestionThunk, listenForGameStateChange, stopListeningForGameState, addToStudentStreak, breakStudentStreak, addToStudentScore, determineQuestionNumber } from '../../../store'
 import { connect } from 'react-redux'
 
 
@@ -18,9 +18,12 @@ export class StudentSingleQuestion extends Component {
     const gameRoomId = this.props.match.params.pin;
     const questionId = this.props.match.params.questionId;
 
+
     this.props.setGameOnStateThunk(gameRoomId)
     this.props.setCurrentQuestionThunk(questionId, gameRoomId)
     this.props.listenForGameStateChange(gameRoomId)
+
+    this.props.determineQuestionNumber(questionId, this.props.currentGame)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -69,6 +72,7 @@ export class StudentSingleQuestion extends Component {
       <div>
         <div>
           <div>
+            <h2>Question {this.props.questionCounter}/{this.props.totalQuestions}</h2>
             <Card>
               <h1 id="student-single-question">{currentQuestion && currentQuestion.question}</h1>
             </Card>
@@ -88,10 +92,12 @@ const mapState = state => {
     currentGame: state.currentGame,
     currentQuestion: state.currentQuestion,
     currentStudent: state.currentStudent,
-    gameState: state.gameState
+    gameState: state.gameState,
+    questionCounter: state.questionCounter,
+    totalQuestions: state.totalQuestions
   }
 }
 
-const mapDispatch = { setGameOnStateThunk, setCurrentQuestionThunk, listenForGameStateChange, stopListeningForGameState, addToStudentStreak, breakStudentStreak, addToStudentScore }
+const mapDispatch = { setGameOnStateThunk, setCurrentQuestionThunk, listenForGameStateChange, stopListeningForGameState, addToStudentStreak, breakStudentStreak, addToStudentScore, determineQuestionNumber }
 
 export default connect(mapState, mapDispatch)(StudentSingleQuestion)
