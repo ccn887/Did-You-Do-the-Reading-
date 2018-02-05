@@ -17,18 +17,16 @@ export class FirebaseAuth extends Component {
   }
 
   inputEmail = (evt) => {
-    console.log(evt.target.value)
     this.setState({email: evt.target.value})
   }
 
   inputPassword = (evt) => {
-    console.log(evt.target.value)
     this.setState({password: evt.target.value})
   }
 
   login = (evt) => {
     evt.preventDefault();
-    this.props.logInStudentThunk(this.state.email, this.state.password);
+    this.props.logInStudentThunk(this.state.email, this.state.password)
   }
 
   signup = (evt) => {
@@ -50,31 +48,35 @@ export class FirebaseAuth extends Component {
 
   render(){
 
-    return(
-      <Container>
+    return (
+      <div id="student-portal">
         {
           this.props.firebaseUser.uid
           ?
-          <Container>
+          <div>
             <Button onClick={() => history.push(`/join`)}>Join A Game</Button>
             <Button onClick={this.logout}>Log Out</Button>
-          </Container>
+          </div>
           :
-          <Form>
+          <Form id="student-signup">
             <Form.Field>
-              <label>Email</label>
+              <label className="white-text">Email</label>
               <input onChange={this.inputEmail} placeholder='email' />
             </Form.Field>
             <Form.Field>
-              <label>Password</label>
-              <input onChange={this.inputPassword} placeholder='password' />
+              <label className="white-text" >Password</label>
+              <input onChange={this.inputPassword} type="password" placeholder='password' />
             </Form.Field>
-            <Button onClick={this.login}>Log In</Button>
-            <Button onClick={this.signup}>Sign Up</Button>
+            <Button color="pink" onClick={this.login}>Log In</Button>
+            <center>
+              <div className="white-text">
+                - or -
+              </div>
+            </center>
+            <Button color="yellow" onClick={this.signup}>Sign Up</Button>
           </Form>
         }
-      </Container>
-
+    </div>
     )
   }
 
