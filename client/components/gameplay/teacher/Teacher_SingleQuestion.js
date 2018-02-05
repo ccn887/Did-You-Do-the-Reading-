@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Card } from 'semantic-ui-react'
 import history from '../../../history'
-import { setGameOnStateThunk, setCurrentQuestionThunk, updateGameState } from '../../../store'
+import { setGameOnStateThunk, setCurrentQuestionThunk, updateGameState, fetchTotalQuestions, determineQuestionNumber } from '../../../store'
 import { connect } from 'react-redux'
 
 
@@ -14,15 +14,17 @@ export class TeacherSingleQuestion extends Component {
       counter: 20,
       nextQuestionId: null
     }
-    this.tick = this.tick.bind(this);
-    this.gameChangeState = this.gameChangeState.bind(this);
   }
 
   componentDidMount() {
     const gameRoomId = this.props.match.params.pin;
     const questionId = this.props.match.params.questionId;
+
+    this.props.determineQuestionNumber(questionId, this.props.currentGame)
+
     this.props.setGameOnStateThunk(gameRoomId)
     this.props.setCurrentQuestionThunk(questionId, gameRoomId)
+    this.props.fetchTotalQuestions(gameRoomId)
 
     this.timer = setInterval(this.tick, 1000);
   }
@@ -32,7 +34,7 @@ export class TeacherSingleQuestion extends Component {
     this.setState({counter: 20, nextQuestionId: null})
   }
 
-  tick() {
+  tick = () => {
     if (this.state.counter === 0) {
       this.setState({ counter: 20 })
     } else {
@@ -40,7 +42,7 @@ export class TeacherSingleQuestion extends Component {
     }
   }
 
-  gameChangeState() {
+  gameChangeState = () => {
     const gameRoomId = this.props.match.params.pin;
     const questionId = this.props.match.params.questionId;
     this.props.updateGameState(gameRoomId, 'answeringQuestion');
@@ -64,6 +66,7 @@ export class TeacherSingleQuestion extends Component {
         <div>
           <div>
             <div>
+              <h2>Question {this.props.questionCounter}/{this.props.totalQuestions}</h2>
               <Card>
                 <h1 id="teacher-single-question">{currentQuestion && currentQuestion.question}</h1>
               </Card>
@@ -89,9 +92,11 @@ const mapState = state => {
   return {
     currentGame: state.currentGame,
     currentQuestion: state.currentQuestion,
-    gameState: state.gameState
+    gameState: state.gameState,
+    totalQuestions: state.totalQuestions,
+    questionCounter: state.questionCounter
   }
 }
-const mapDispatch = { setGameOnStateThunk, setCurrentQuestionThunk, updateGameState }
+const mapDispatch = { setGameOnStateThunk, setCurrentQuestionThunk, updateGameState, fetchTotalQuestions, determineQuestionNumber }
 
 export default connect(mapState, mapDispatch)(TeacherSingleQuestion)

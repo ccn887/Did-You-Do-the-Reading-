@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { setGameOnStateThunk, listenForGameStateChange, storeStudentGameHistory,
   stopListeningForGameState, getSingleStudentListener, stopListeningForSingleStudent,
-  resetStudentScore, fetchTotalQuestions } from '../../../store'
+  resetStudentScore, fetchTotalQuestions, breakStudentStreak } from '../../../store'
 import { connect } from 'react-redux'
 import history from '../../../history'
 
@@ -37,8 +37,11 @@ export class StudentAnswerReveal extends Component {
       const sId = this.state.studentId
       const gId = this.state.gameRoomId
       const score =  Math.floor((+this.props.singleStudent.score / +this.props.totalQuestions) * 100)
-      this.props.storeStudentGameHistory(sId, gId, score)
+      if (score >= 0 && score <= 100){
+        this.props.storeStudentGameHistory(sId, gId, score)
+      }
       this.props.resetStudentScore(sId)
+      this.props.breakStudentStreak(sId)
       history.push(`/${gId}/gameOver/${sId}`)
     }
   }
@@ -92,7 +95,8 @@ const mapDispatch = {
   stopListeningForSingleStudent,
   storeStudentGameHistory,
   resetStudentScore,
-  fetchTotalQuestions
+  fetchTotalQuestions,
+  breakStudentStreak
 }
 
 export default connect(mapState, mapDispatch)(StudentAnswerReveal)
