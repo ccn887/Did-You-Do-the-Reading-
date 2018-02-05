@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Form, Input, Button, Container } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { logInStudentThunk, signUpStudentThunk } from '../store'
+import { logInStudentThunk, signUpStudentThunk, resetStudentScore, breakStudentStreak} from '../store'
 import firebase from '../../server/firebase'
 import history from '../history'
 
@@ -28,7 +28,6 @@ export class FirebaseAuth extends Component {
 
   login = (evt) => {
     evt.preventDefault();
-    console.log('you clicked login!')
     this.props.logInStudentThunk(this.state.email, this.state.password);
   }
 
@@ -40,6 +39,11 @@ export class FirebaseAuth extends Component {
 
   logout = (evt) => {
     evt.preventDefault();
+    const studentId = this.props.firebaseUser.uid
+
+    this.props.resetStudentScore(studentId);
+    this.props.breakStudentStreak(studentId);
+    
     firebase.auth().signOut();
     history.push(`/`)
   }
@@ -76,7 +80,7 @@ export class FirebaseAuth extends Component {
 }
 
 
-const mapDispatch = {logInStudentThunk, signUpStudentThunk}
+const mapDispatch = {logInStudentThunk, signUpStudentThunk, resetStudentScore, breakStudentStreak}
 
 const mapState = state => {
   return {
