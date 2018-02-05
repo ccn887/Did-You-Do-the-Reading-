@@ -36,6 +36,7 @@ export class TeacherWaitingRoom extends Component {
     const questionsArr = Object.keys(currentGame)
     const firstQuestionId = questionsArr[0]
 
+
     this.props.updateGameState(gameRoomId, 'askingQuestion')
     history.push(`/teacher/${gameRoomId}/question/${firstQuestionId}`)
   }
