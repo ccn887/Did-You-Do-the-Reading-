@@ -1,6 +1,7 @@
 import React from 'react'
 import { VictoryLine, VictoryChart, VictoryAxis, VictoryTheme } from 'victory';
 import { Container } from 'semantic-ui-react'
+import  HeaderSmall  from '../../HeaderSmall'
 
 
 export default function AllStudentsGraph(props){

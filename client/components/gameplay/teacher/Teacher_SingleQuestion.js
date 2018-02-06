@@ -3,6 +3,7 @@ import { Card, Message } from 'semantic-ui-react'
 import history from '../../../history'
 import { setGameOnStateThunk, setCurrentQuestionThunk, updateGameState, fetchTotalQuestions, determineQuestionNumber } from '../../../store'
 import { connect } from 'react-redux'
+import HeaderSmall  from '../../HeaderSmall'
 
 
 
@@ -64,6 +65,8 @@ export class TeacherSingleQuestion extends Component {
 
       return (
         <div>
+          <HeaderSmall />
+          <hr />
           <div>
             <div>
               <h2>Question {this.props.questionCounter}/{this.props.totalQuestions}</h2>

@@ -7,6 +7,7 @@ import AllStudentsGraph from './AllStudentsGraph'
 import SingleStudentGraph from './SingleStudentGraph'
 import { fetchAllStudentsWithScoreData } from '../../../store'
 import Navbar from '../../Navbar'
+import  HeaderSmall  from '../../HeaderSmall'
 
 
 export class TeacherGraphs extends Component {
@@ -52,6 +53,7 @@ export class TeacherGraphs extends Component {
 
     return (
       <div>
+        <HeaderSmall />
       <div className="Teacher-Navbar">
         <Navbar />
       </div>

@@ -3,6 +3,7 @@ import { Login, Signup } from '../components';
 import {Button} from 'semantic-ui-react'
 import history from '../history'
 import { Link } from 'react-router-dom'
+import Header from './Header'
 
 export default class TeacherLogin extends Component {
 
@@ -22,6 +23,10 @@ export default class TeacherLogin extends Component {
 
 render() {
   return (
+    <div>
+    <center>
+      <Header />
+    </center>
     <div id="teacher-login-zone">
       <div id="teacher-buttons">
         <h2>Teachers Only</h2>
@@ -43,6 +48,7 @@ render() {
           value="back"
           onClick={this.handleClick}>Back</Button>
       </div>
+    </div>
     </div>
     )
   }

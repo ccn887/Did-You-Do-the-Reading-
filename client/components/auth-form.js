@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import {auth} from '../store'
 import { Form, Input, Button, Container } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
+import Header from './Header'
 
 /**
  * COMPONENT
@@ -12,6 +13,10 @@ const AuthForm = (props) => {
   const {name, displayName, handleSubmit, error} = props
 
   return (
+    <div>
+    <center>
+      <Header />
+    </center>
     <div id="teacher-portal">
       <Form id="teacher-signup" onSubmit={handleSubmit} name={name}>
         <div>
@@ -29,6 +34,7 @@ const AuthForm = (props) => {
       <div>
         <Link to="/teacherlogin"> <Button color="black">Back</Button> </Link>
       </div>
+    </div>
     </div>
   )
 }

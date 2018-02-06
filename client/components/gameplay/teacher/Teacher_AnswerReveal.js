@@ -4,6 +4,7 @@ import { setGameOnStateThunk, setCurrentQuestionThunk, updateGameState, listenFo
 import history from '../../../history'
 import { Button } from 'semantic-ui-react'
 import Leaderboard from '../../Leaderboard'
+import HeaderSmall  from '../../HeaderSmall'
 
 
 export class TeacherAnswerReveal extends Component {
@@ -53,6 +54,7 @@ export class TeacherAnswerReveal extends Component {
 
   render() {
 
+
     const currentGame = this.props.currentGame
     const questionsArr = Object.keys(currentGame)
     const currentQuestionId = this.props.match.params.questionId
@@ -68,20 +70,31 @@ export class TeacherAnswerReveal extends Component {
     const rightAnswer = this.props.currentQuestion.rightAnswer || ''
     return (
       <div>
-        <h1>{currentQuestion}</h1>
-        <h1>{rightAnswer}</h1>
-        {
-          lastQuestion ?
-          <Button className="ui button purple" onClick={this.endGame}> End Game</Button> :
-          <Button className="ui button teal" onClick={this.nextQuestion}> Next Question</Button>
-        }
-        {
-          this.props.currentStudents.length > 0 ?
-          <Leaderboard />
-            :
-              <div>NOPE</div>
+        <HeaderSmall />
+        <hr />
+        <div className="answer-reveal-wrapper">
+          <div id="current-question">{currentQuestion}</div>
+          <h1>correct answer: </h1>
+          <div id="current-answer">{rightAnswer}</div>
+          {
+            lastQuestion ?
+            <Button className="ui button purple" onClick={this.endGame}> End Game</Button> :
+            <Button className="ui button teal" onClick={this.nextQuestion}> Next Question</Button>
           }
+          <br />
+          {
+            this.props.currentStudents.length > 0 ?
+            <Leaderboard />
+              :
+              <div>
+                <center>
+                <h1>Leaderboard</h1>
+                <h4>No current players to display</h4>
+              </center>
+              </div>
+            }
 
+        </div>
       </div>
     )
   }
