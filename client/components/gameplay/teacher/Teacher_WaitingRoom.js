@@ -60,7 +60,6 @@ export class TeacherWaitingRoom extends Component {
             <h1 id="game-pin">{gamePin}</h1>
           </div>
           {currentStudents.length ?
-            <div>
             <Table className="contestant-table">
               <th className="table-header">
                 contestants:
@@ -79,7 +78,6 @@ export class TeacherWaitingRoom extends Component {
                   }
                 </Table.Body>
               </Table>
-            </div>
           : (
             <div id="waiting-for-contestants">Waiting for contestants...</div>
           )
