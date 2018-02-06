@@ -25,7 +25,7 @@ const activeListeners = {}
 
 /* ------------       THUNK CREATORS     ------------------ */
 
-export const addStudentToGameThunk = (name, currentGame, uid) => dispatch => {
+export const addStudentToGameThunk = (name, currentGame, uid, email) => dispatch => {
 
 
 
@@ -36,7 +36,7 @@ export const addStudentToGameThunk = (name, currentGame, uid) => dispatch => {
       if (snapshot.val() !== null){
         console.log('user exists!')
         const userId = Object.keys(snapshot.val())[0]
-        //find and update user
+        // update user
         firebase.database().ref(`users/${userId}`)
           .update({currentGame: currentGame, name: name})
 
@@ -55,7 +55,8 @@ export const addStudentToGameThunk = (name, currentGame, uid) => dispatch => {
             score: 0,
             streak: 0,
             currentGame: currentGame,
-            uid: uid
+            uid: uid,
+            email: email
           })
         const studentId = newUserRef.key
         //add the new user to the gameroom

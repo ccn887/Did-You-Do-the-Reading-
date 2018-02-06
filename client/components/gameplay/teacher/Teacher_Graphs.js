@@ -43,7 +43,12 @@ export class TeacherGraphs extends Component {
   render(){
     const ids = this.state.studentIds
     const data = this.props.allStudentsGraphData
+    const emails = Object.values(data).map(dataInstance => {
+      return dataInstance.email
+    })
     const graphToRender = this.state.graphToRender
+
+    console.log('emails', emails)
 
     return (
       <div>
@@ -69,13 +74,13 @@ export class TeacherGraphs extends Component {
           </Button>
           <h2>Individual Student Graphs:</h2>
           {
-            ids && ids.length && ids.map(id => {
+            ids && ids.length && ids.map((id, index) => {
               return (
                 <Button
                   onClick={this.switchGraph}
                   key={id} value={id}
                   active={graphToRender === id}>
-                  {id}
+                  {emails[index]}
                 </Button>
               )
             })
