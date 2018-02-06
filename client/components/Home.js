@@ -49,7 +49,7 @@ export default class Home extends Component {
   render(){
 
     return (
-      <div>
+      <div id="homeview">
         <center>
           <Header />
         </center>

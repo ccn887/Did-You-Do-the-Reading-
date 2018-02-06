@@ -36,7 +36,7 @@ label {
   display: block;
 }
 
-#back-for-students{
+#back-for-students {
   display: flex;
   justify-content: center;
 }
@@ -47,6 +47,12 @@ label {
   width: 100%;
   flex-direction: column;
 }
+
+/* #homeview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+} */
 
 .headerwithlogo{
   cursor:pointer;
@@ -115,6 +121,7 @@ form div {
   width: 25vw;
   align-self: center;
   border-radius: 10px;
+  margin-bottom: 2rem;
 }
 
 #game-pin{
@@ -154,6 +161,7 @@ form div {
   width: 135px;
   z-index: 9;
 }
+
 
 
 #question-edit-button{
@@ -232,24 +240,24 @@ form div {
 .userSelectMenu {
   display: flex;
   justify-content: space-around;
-  margin: 4rem;
+  align-items: flex-end;
+  margin-top: 5rem;
   padding-left: 10rem;
   padding-right: 10rem;
-  align-items: flex-end;
 }
 
 .studentButton {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 20%;
+  width: 17%;
 }
 
-
 #logo {
-  width: 40%;
+  width: 30%;
   padding: 1rem;
   padding-top: 3rem;
+  max-width: 30%;
 }
 
 #logo-small {
@@ -544,6 +552,99 @@ label.white-text{
 
 }
 
-#all-questions-flex{
+#all-questions-flex {
   display: flex;
+
+}
+
+
+
+@media only screen and (max-width: 890px) {
+
+  #logo {
+    width: 80%;
+    padding: 1rem;
+    padding-top: 3rem;
+    max-width: 80%;
+  }
+
+  #logo-small {
+    width: 40%;
+    height: 40%;
+    padding: 1rem;
+    padding-left: 1rem;
+  }
+
+  #homeview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .userSelectMenu {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    margin: 2rem;
+    padding: 0;
+    width: 80%;
+    max-width: 80%;
+  }
+
+  #teacher_icon {
+    width: 50px;
+  }
+
+  #student_icon {
+    width: 50px;
+  }
+
+  .studentButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+  }
+
+  #main-wrapper{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #114B5F;
+    background: linear-gradient(to top, #114B5F, #008080);
+    min-height: 100;
+  }
+
+  .Nav-style {
+    display: flex;
+    padding-left: 1rem;
+    border-bottom: solid;
+    border-color: black;
+    background: linear-gradient(to right, #114B5F, #008080);
+    margin-bottom: 1rem;
+  }
+
+  #game-pin-box{
+    background: #C6DABF;
+    padding: 1rem 1rem;
+    width: 50%;
+    align-self: center;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+  }
+
+  #game-pin{
+    font-size: 4rem;
+    color: #008080;
+    text-align: center;
+  }
+
+  .contestant-table{
+    background-color: #F3E9D2 !important;
+    width: 80% !important;
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+  }
+  
 }
