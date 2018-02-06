@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { Button, Message, Icon, Container, Form } from 'semantic-ui-react'
-import { me, fetchQuestionSetThunk, deleteQuestionFromSetThunk, stopFetchingQuestionSetsThunk, buildNewGameRoomThunk } from '../store';
+import { me, fetchQuestionSetThunk, deleteQuestionFromSetThunk, stopFetchingQuestionSetsThunk, buildNewGameRoomThunk, editQuestionToSetThunk } from '../store';
 import { connect } from 'react-redux'
 import history from '../history'
 import TeacherAddQuestion from '../components/gameplay/teacher/Teacher_AddQuestion'
+import TeacherEditQuestion from '../components/gameplay/teacher/Teacher_EditQuestion'
 
 
 export class AllQuestions extends Component {
@@ -12,7 +13,9 @@ export class AllQuestions extends Component {
     this.state = {
       showAddForm: false,
       noQuestions: true,
-      quizTitle: 'Untitled Game'
+      quizTitle: 'Untitled Game',
+      showEditForm: false,
+
     }
   }
 
@@ -30,24 +33,46 @@ export class AllQuestions extends Component {
     this.props.stopFetchingQuestionSetsThunk(this.props.match.params.questionSetId)
   }
 
+  componentDidUpdate() {
+    window.scrollTo(0,0);
+  }
+
   deleteQuestion = (e, id) => {
     e.preventDefault()
     this.props.deleteQuestionFromSetThunk(this.props.match.params.questionSetId, id)
   }
 
+
+
   saveQuiz = (e) => {
     const pin = Math.floor(Math.random() * 90000) + 10000;
     const title = this.state.quizTitle;
-    console.log('title:', title)
     e.preventDefault();
     this.props.buildNewGameRoomThunk(this.props.questionSet, this.props.user.id, pin, title)
     history.push(`/teacher-waiting-room/${pin}`)
   }
 
+  // updateQuestion = (e, id) => {
+  //   e.preventDefault()
+  //   this.
+  // }
   showAddForm = () => {
     this.setState({
       showAddForm: true
     })
+  }
+
+  showEditForm = () => {
+    if (this.state.showEditForm === false) {
+      this.setState({
+        showEditForm: true
+      })
+    }
+    else {
+      this.setState({
+        showEditForm: false
+      })
+    }
   }
 
   handleChange = (e) => {
@@ -71,6 +96,7 @@ export class AllQuestions extends Component {
     }
 
     const showAddForm = this.state.showAddForm;
+    const showEditForm = this.state.showEditForm;
 
     return (
       <div>
@@ -91,46 +117,50 @@ export class AllQuestions extends Component {
                   </Form.Field>
                 </Form>
                 <div>
-                {
-                  questionSet && quizArr.length && quizArr.map((question) => {
-                    return (
-                      <div key={question}>
-                        <Message className='question-edit-box' color='teal'>
-                          <div className='question-edit-flex'>
-                            <h3 >{questionSet[question].question} </h3>
-                            <Button onClick={(e) => { this.deleteQuestion(e, question) }}>
-                              <Icon name="trash"></Icon>
-                            </Button>
-                          </div>
-                        <div>
-                        {
-                          questionSet[question].answers.map(answer => {
-                            if (answer === questionSet[question].rightAnswer){
-                              return (
-                                <div className='right-answer-flex' key={answer}>
-                                  <div>{answer}</div>
-                                  <Icon color="olive" name="checkmark" />
-                                </div>
-                              )
-                            }
-                            else {
-                              return (
-                                <div key={answer}>
-                                  <div>{answer}</div>
-                                </div>
-                                )
+                  {
+                    questionSet && quizArr.length && quizArr.map((question) => {
+                      return (
+                        <div key={question}>
+                          <Message className='question-edit-box' color='teal'>
+                            <div className='question-edit-flex'>
+                              <h3 >{questionSet[question].question} </h3>
+
+                              <Button onClick={(e) => { this.deleteQuestion(e, question) }}>
+                                <Icon name="trash"></Icon>
+                              </Button>
+                            </div>
+                            <div>
+                              {
+                                questionSet[question].answers.map(answer => {
+                                  if (answer === questionSet[question].rightAnswer) {
+                                    return (
+                                      <div className='right-answer-flex' key={answer}>
+                                        <div>{answer}</div>
+                                        <Icon color="olive" name="checkmark" />
+                                      </div>
+                                    )
+                                  }
+                                  else {
+                                    return (
+                                      <div key={answer}>
+                                        <div>{answer}</div>
+                                      </div>
+                                    )
+                                  }
+                                })
                               }
-                            })
-                          }
+                              {showEditForm && <TeacherEditQuestion questionId={question} questionObj={questionSet[question]} questionSetId={this.props.match.params.questionSetId} showEditState={this.state.showEditForm} />}
+                            </div>
+                          </Message>
+
                         </div>
-                      </Message>
-                    </div>
                       )
                     })
                   }
                   <div className="two-button-flex">
                     <Button color="orange" onClick={this.showAddForm}>Add Another Question</Button>
                     <Button color="purple" onClick={this.saveQuiz}>Generate Quiz</Button>
+                    <Button color="red" onClick={this.showEditForm}>Edit Questions</Button>
                   </div>
                   {showAddForm && <TeacherAddQuestion match={this.props.match} />}
                 </div>
@@ -142,7 +172,6 @@ export class AllQuestions extends Component {
     )
   }
 }
-
 
 const mapState = state => {
   return {
@@ -156,7 +185,8 @@ const mapDispatch = {
   fetchQuestionSetThunk,
   deleteQuestionFromSetThunk,
   stopFetchingQuestionSetsThunk,
-  buildNewGameRoomThunk
+  buildNewGameRoomThunk,
+  editQuestionToSetThunk,
 }
 
 export default connect(mapState, mapDispatch)(AllQuestions)
