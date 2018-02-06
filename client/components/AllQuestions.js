@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import history from '../history'
 import TeacherAddQuestion from '../components/gameplay/teacher/Teacher_AddQuestion'
 import TeacherEditQuestion from '../components/gameplay/teacher/Teacher_EditQuestion'
+import HeaderSmall from './HeaderSmall'
 
 
 export class AllQuestions extends Component {
@@ -106,6 +107,8 @@ export class AllQuestions extends Component {
 
     return (
       <div>
+        <HeaderSmall />
+        <hr />
         <Container id="all-questions-container">
           <div>
             {this.state.noQuestions ?
