@@ -126,7 +126,9 @@ const findSubjVerb = async (text) => {
 
   try {
     const doc = nlp(text)
-    const person = doc.match('#Person #Verb')
+    const person = doc.match('#Person #Verb (the|a|an) #Noun')
+    const person2 = doc.match('#Person #Verb #Noun')
+
     const pronoun = doc.match('#Pronoun #Verb')
     const newPronoun = pronoun.data()
     const newPerson = person.data()
