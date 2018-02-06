@@ -67,8 +67,12 @@ export class FirebaseAuth extends Component {
     history.push(`/`)
   }
 
-  render(){
+  handleClick(evt) {
+    evt.preventDefault();
+    history.push('/')
+  }
 
+  render(){
 
 
     return (
@@ -82,6 +86,7 @@ export class FirebaseAuth extends Component {
           </div>
           :
           <Form id="student-signup">
+            <h2> Student Login </h2>
             <Form.Field>
               <label className="white-text">Email</label>
               <input onChange={this.inputEmail} type="email" placeholder='email' />
@@ -100,6 +105,11 @@ export class FirebaseAuth extends Component {
             </center>
             <Button color="orange" type="submit" onClick={this.signup}>Sign Up</Button>
             {this.state.loginError && <div>incorrect email or password</div> }
+            <br />
+            <Button
+              color="black"
+              value="back"
+              onClick={this.handleClick}>Back to Home</Button>
           </Form>
         }
     </div>

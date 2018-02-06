@@ -1,5 +1,5 @@
-html{
-  background-color: #114B5F;
+html {
+  background-color: #008080;
 }
 
 
@@ -30,6 +30,7 @@ h1, h2{
   display: flex;
   flex-direction: column;
   background-color: #114B5F;
+  background: linear-gradient(to top, #114B5F, #008080);
   min-height: 100vh;
 }
 
@@ -47,13 +48,20 @@ label {
   justify-content: center;
   width: 100%;
   flex-direction: column;
-  background-color:#008080
-
 }
 
 nav a {
   display: inline-block;
   margin: 1em;
+}
+
+.Nav-style {
+  display: flex;
+  padding-left: 10%;
+  border-top: solid;
+  border-bottom: solid;
+  border-color: white;
+  background: linear-gradient(to right, #114B5F, #008080);
 }
 
 form div {
@@ -80,11 +88,7 @@ form div {
   flex-wrap: wrap;
 }
 
-#all-questions-container{
-  display: flex;
-  flex-direction: column;
-  padding: 3rem 3rem;
-}
+
 
 .game-join-box{
   padding: 5rem 5rem;
@@ -105,6 +109,10 @@ form div {
   font-size: 4rem;
   color: #008080;
   text-align: center;
+}
+
+#backfrom-game-pin{
+  margin-top: 1rem;
 }
 
 #waiting-for-contestants{
@@ -132,26 +140,6 @@ form div {
   margin: 10px 10px !important;
 }
 
-.all-games-second-container{
-  display: flex;
-  flex-direction: row;
-  padding: 3rem 3rem;
-}
-.all-games-container{
-  display: flex;
-  justify-content: space-around;
-  margin: 4rem;
-  padding-left: 15rem;
-  padding-right: 15rem;
-  /* align-items: flex-end; */
-}
-
-#game-name {
-  /* justify-content: space-around; */
-  color: #F3E9D2 !important;
-  font-size: 2rem;
-  text-align: center;
-}
 
 #join-game-container{
   display: flex;
@@ -315,6 +303,7 @@ form div {
 
 #student-signup {
   display: flex;
+  align-items: stretch;
   flex-direction: column;
 }
 
@@ -325,10 +314,23 @@ form div {
   align-items: center;
 }
 
-#teacher-buttons {
+#teacher-login-zone {
   display: flex;
   justify-content: center;
+}
+
+#teacher-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 3rem;
+}
+
+.teacherbuttonselect {
+  margin-bottom: 2rem !important;
+  margin-top: .4rem !important;
+  width: 100%;
 }
 
 #teacher-signup {
@@ -344,14 +346,8 @@ label.white-text{
   color: white !important;
 }
 
-.old-games-button {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 20%;
 
-
-.warning{
+.warning {
   color: #ffa500
 }
 
@@ -401,6 +397,62 @@ label.white-text{
   height: 4rem;
   font-size: 1.5rem;
   color: #008080;
+}
 
+.teacher-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+#all-questions-container{
+  display: flex;
+  flex-direction: column;
+  padding: 3rem 3rem;
+}
+
+#game-name {
+  color: orange !important;
+  font-size: 1.4rem;
+}
+
+.ui.container {
+  display: flex;
+  justify-content: space-between;
+
+}
+
+.ui.grid {
+  display: flex !important;
+  align-items: stretch !important;
+  border-top: solid;
+  border-color: white;
+}
+
+.ui.grid>.row{
+  border-bottom: solid;
+  border-color: lightgray;
+  box-shadow: 0 5px 0px 0 rgba(0, 0, 0, 0.09)
+}
+
+.teacher-menu {
+  padding-bottom: 7em;
+}
+
+#teach-menu-label{
+  width: 100%;
+}
+
+.play-game-button{
+  width: 100%;
+  box-shadow: 3px 6px 0px 0 rgba(0, 0, 0, .14) !important;
+}
+
+#make-quiz-wrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
 }
