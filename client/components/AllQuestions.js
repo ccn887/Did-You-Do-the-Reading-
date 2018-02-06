@@ -17,10 +17,6 @@ export class AllQuestions extends Component {
       quizTitle: '',
       showEditForm: false,
 
-      quizTitle: 'Untitled Game',
-      showEditForm: NaN,
-
-
     }
   }
 
@@ -178,7 +174,7 @@ export class AllQuestions extends Component {
                   }
                   <div className="two-button-flex">
                     <Button color="orange" onClick={this.showAddForm}>Add Another Question</Button>
-                    <Button color="purple" disabled={!this.state.quizTitle} onClick={this.playNow}>Play Now</Button>
+                    <Button color="purple" disabled={!this.state.quizTitle.length} onClick={this.playNow}>Play Now</Button>
                     <Button color="green" disabled={!this.state.quizTitle} onClick={this.saveQuiz}>Save for Later</Button>
                     <Button color="red" onClick={this.showEditForm}>Edit Questions</Button>
                   </div>
