@@ -6,8 +6,8 @@ import { me } from '../../../store';
 import { editQuestionToSetThunk } from '../../../store'
 
 export class TeacherEditQuestion extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
     }
     this.editQuestion = this.editQuestion.bind(this)
@@ -24,6 +24,7 @@ export class TeacherEditQuestion extends Component {
     let questionSetId = this.props.questionSetId
     let questionId = this.props.questionId
     this.props.editQuestionToSetThunk(questionSetId, questionId, newQuestionObj)
+    this.props.closeEditWindow();
   }
 
   render() {
@@ -31,7 +32,7 @@ export class TeacherEditQuestion extends Component {
     let wrongAnswers = this.props.questionObj.answers.filter(item => {
       return item !== rightAnswer
     })
-    console.log("state", this.state)
+    
     return (
       <Container>
         <Message className="Edit-new-question">

@@ -45,20 +45,22 @@ export class MakeQuiz extends Component {
     return (
       <div>
         <Navbar />
+        <div id="make-quiz-wrapper">
           {  this.state.loader === 'false' ?
-            <Container>
-            <h3>enter text to generate quiz questions</h3>
+            <div>
+            <h2>Enter text to generate new quiz questions</h2>
             <Form.TextArea id="enter-text" onChange={this.handleChange}  />
             <Button toggle active={active} onClick={this.handleClick1}> Include Vocabulary Questions </Button>
             <Button toggle active={active2} onClick={this.handleClick2}> Include Quote Attribution Questions </Button>
             <Button type="submit" onClick={this.submit}> Generate Quiz </Button>
-          </Container>
+          </div>
           :
           <Dimmer active>
             <Loader indeterminate>Preparing Your Questions!</Loader>
           </Dimmer>
           }
       </div>
+    </div>
     )
   }
 }

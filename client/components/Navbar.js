@@ -16,10 +16,10 @@ const Navbar = (props) => {
   const {handleClick, isLoggedIn} = props
 
   return (
-    <div>
+    <div className="Nav-style">
       <nav>
         {
-            history.location.pathname === '/home' ?
+            history.location.pathname === '/' || history.location.pathname === '/home' ?
             <a href="#" onClick={handleClick}><Button color="black">Logout</Button></a>
             :
             <div>

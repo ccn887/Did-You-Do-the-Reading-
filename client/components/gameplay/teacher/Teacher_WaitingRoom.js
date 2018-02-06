@@ -10,6 +10,7 @@ import {
   updateGameState
 } from '../../../store'
 import Leaderboard from '../../Leaderboard'
+import { Link } from 'react-router-dom'
 
 
 export class TeacherWaitingRoom extends Component {
@@ -80,6 +81,9 @@ export class TeacherWaitingRoom extends Component {
           )
             }
           <Button className="ui button purple" onClick={this.playGame}>Start the Quiz!</Button>
+          <div>
+            <Link to="/"> <Button id="backfrom-game-pin" color="black">Back</Button> </Link>
+          </div>
         </Container>
       </div>
     )
