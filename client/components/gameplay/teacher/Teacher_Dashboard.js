@@ -40,33 +40,33 @@ export class TeacherDashboard extends Component {
     return (
       <div>
         <Navbar />
-
-        <h1>Welcome, {user.email} </h1>
-        <Container className="all-games-container">
-        <Button className="old-games-button" size="large" color="purple" onClick={this.makeQuiz}>Make a New Game</Button>
-        <Button className="old-games-button" size="large" color="orange" onClick={this.goToGraphs}>Look At Some Graphs</Button>
-        </Container>
-        <h1>Play a Previous Game: </h1>
-        <Container className="all-games-second-container">
-        <Grid>
-          {
-            currentTeacherGames.map(game => {
-              return (
-                <Grid.Row>
-                  <Grid.Column width={12} key={game.pin} id="game-name">
-                  {game.quizTitle}
-                  </Grid.Column>
-                  <Grid.Column width={4}>
-                    <Button value={game.pin} onClick={this.playGame}>Play Game</Button>
-                  </Grid.Column>
-                </Grid.Row>
-              )
-            })
-          }
-
-        </Grid>
-        </Container>
-
+        <div className="teacher-wrapper">
+          <h2 id="welcome-message">Welcome, {user.email} </h2>
+          <div className="teacher-menu">
+            <h2 id="teach-menu-label"> Teacher Menu </h2>
+            <Button className="teacher-menu-button"  color="purple" onClick={this.makeQuiz}>Make a New Game</Button>
+            <Button className="teacher-menu-button"  color="purple" onClick={this.goToGraphs}>View Student Progress Graphs</Button>
+          <h1>Play a Previous Game: </h1>
+          <Container className="all-games-second-container">
+            <Grid>
+              {
+                currentTeacherGames.map(game => {
+                  return (
+                    <Grid.Row>
+                      <Grid.Column width={12} key={game.pin} id="game-name">
+                        {game.quizTitle}
+                      </Grid.Column>
+                      <Grid.Column width={4}>
+                        <Button value={game.pin} className="play-game-button" onClick={this.playGame}>Play Game</Button>
+                      </Grid.Column>
+                    </Grid.Row>
+                  )
+                })
+              }
+            </Grid>
+          </Container>
+          </div>
+        </div>
       </div>
     )
   }
