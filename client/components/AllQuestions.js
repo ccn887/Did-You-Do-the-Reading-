@@ -14,7 +14,7 @@ export class AllQuestions extends Component {
       showAddForm: false,
       noQuestions: true,
       quizTitle: 'Untitled Game',
-      showEditForm: false,
+      showEditForm: NaN,
 
     }
   }
@@ -118,7 +118,7 @@ export class AllQuestions extends Component {
                 </Form>
                 <div>
                   {
-                    questionSet && quizArr.length && quizArr.map((question) => {
+                    questionSet && quizArr.length && quizArr.map((question, idx) => {
                       return (
                         <div key={question}>
                           <Message className='question-edit-box' color='teal'>
@@ -127,6 +127,9 @@ export class AllQuestions extends Component {
 
                               <Button onClick={(e) => { this.deleteQuestion(e, question) }}>
                                 <Icon name="trash"></Icon>
+                              </Button>
+                              <Button value={idx} onClick={this.showEditForm} >
+                                edit
                               </Button>
                             </div>
                             <div>
@@ -149,7 +152,12 @@ export class AllQuestions extends Component {
                                   }
                                 })
                               }
-                              {showEditForm && <TeacherEditQuestion questionId={question} questionObj={questionSet[question]} questionSetId={this.props.match.params.questionSetId} showEditState={this.state.showEditForm} />}
+                              {showEditForm &&
+                                <TeacherEditQuestion
+                                  questionId={question}
+                                  questionObj={questionSet[question]}
+                                  questionSetId={this.props.match.params.questionSetId}
+                                  showEditState={this.state.showEditForm} />}
                             </div>
                           </Message>
 
