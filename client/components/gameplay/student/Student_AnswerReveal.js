@@ -42,7 +42,7 @@ export class StudentAnswerReveal extends Component {
       }
       this.props.resetStudentScore(sId)
       this.props.breakStudentStreak(sId)
-      history.push(`/${gId}/gameOver/${sId}`)
+      history.replace(`/${gId}/gameOver/${sId}`)
     }
   }
 
@@ -58,7 +58,7 @@ export class StudentAnswerReveal extends Component {
     const nextIndex = questionsArr.indexOf(currentQuestionId) + 1
     const nextId = questionsArr[nextIndex]
 
-    history.push(`/${this.state.gameRoomId}/question/${nextId}/${this.state.studentId}`)
+    history.replace(`/${this.state.gameRoomId}/question/${nextId}/${this.state.studentId}`)
 
   }
 

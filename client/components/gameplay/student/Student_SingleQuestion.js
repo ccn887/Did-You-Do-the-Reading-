@@ -32,10 +32,10 @@ export class StudentSingleQuestion extends Component {
     const studentId = this.props.match.params.studentId
 
     if (nextProps.gameState === 'answeringQuestion') {
-      history.push(`/${gameRoomId}/waiting/${questionId}/${studentId}`)
+      history.replace(`/${gameRoomId}/waiting/${questionId}/${studentId}`)
     }
     else if (nextProps.gameState === 'gameOver'){
-      history.push(`/${gameRoomId}/gameOver/${studentId}`)
+      history.replace(`/${gameRoomId}/gameOver/${studentId}`)
     }
   }
 
@@ -60,7 +60,7 @@ export class StudentSingleQuestion extends Component {
       this.props.breakStudentStreak(studentId)
     }
 
-    history.push(`/${gameRoomId}/waiting/${questionId}/${studentId}`)
+    history.replace(`/${gameRoomId}/waiting/${questionId}/${studentId}`)
   }
 
   render() {
