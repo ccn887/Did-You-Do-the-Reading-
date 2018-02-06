@@ -21,24 +21,23 @@ const database = firebase.database()
 /* ------------       THUNK CREATORS     ------------------ */
 
 
-//find all users with a uid
-//store them in an array
-//for each user...
-  //fetch their game history list
-  //make that an array
-  //map that array to...
-    // user.graphData = [{time: ??, score: ??}, {time: ??, score: ??}]
-
-//set new user array with user data on state?
 
 export const fetchAllStudentsWithScoreData = () => dispatch => {
   const allData = {};
 
   database.ref('users')
     .once('value', async idSnap => {
+      //this is an array of all the studentId's in the users table
+
+      const emailArray = Object.values(idSnap.val()).map(userInstance => {
+        return userInstance.email
+      })
+
       const studentIdArray = Object.keys(idSnap.val())
+
       try {
-        await Promise.all(studentIdArray.map(studentId => {
+        // this looks for each of those in game history
+        await Promise.all(studentIdArray.map((studentId, idx) => {
           return database.ref(`gameHistoryList/${studentId}`)
             .once('value')
             .then(historySnap => {
@@ -51,9 +50,11 @@ export const fetchAllStudentsWithScoreData = () => dispatch => {
                     score: gameHistoryInstance.score
                   }
                 })
-                allData[studentId] = dayGameHistoryArray.filter(historyInstance => {
+                allData[studentId] = {}
+                allData[studentId].data = dayGameHistoryArray.filter(historyInstance => {
                   return historyInstance.score && historyInstance.date && true
                 })
+                allData[studentId].email = emailArray[idx]
               }
             })
         }))
