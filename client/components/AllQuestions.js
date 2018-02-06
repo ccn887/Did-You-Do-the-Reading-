@@ -14,7 +14,7 @@ export class AllQuestions extends Component {
       showAddForm: false,
       noQuestions: true,
       quizTitle: 'Untitled Game',
-      showEditForm: false,
+      showEditForm: NaN,
 
     }
   }
@@ -34,7 +34,7 @@ export class AllQuestions extends Component {
   }
 
   componentDidUpdate() {
-    window.scrollTo(0,0);
+    // window.scrollTo(0,0);
   }
 
   deleteQuestion = (e, id) => {
@@ -62,17 +62,10 @@ export class AllQuestions extends Component {
     })
   }
 
-  showEditForm = () => {
-    if (this.state.showEditForm === false) {
-      this.setState({
-        showEditForm: true
-      })
-    }
-    else {
-      this.setState({
-        showEditForm: false
-      })
-    }
+  showEditForm = (evt) => {
+    evt.preventDefault();
+    console.log(typeof evt.target.value)
+    this.setState({showEditForm: +evt.target.value})
   }
 
   handleChange = (e) => {
@@ -87,6 +80,11 @@ export class AllQuestions extends Component {
     history.push(`/make-quiz`)
   }
 
+  setEditingToNaN = () => {
+    console.log("THIS FROM CRAZY FUNCTION: ", this)
+    this.setState({showEditForm: NaN})
+  }
+
   render() {
 
     let quizArr = [];
@@ -96,7 +94,7 @@ export class AllQuestions extends Component {
     }
 
     const showAddForm = this.state.showAddForm;
-    const showEditForm = this.state.showEditForm;
+
 
     return (
       <div>
@@ -118,16 +116,19 @@ export class AllQuestions extends Component {
                 </Form>
                 <div>
                   {
-                    questionSet && quizArr.length && quizArr.map((question) => {
+                    questionSet && quizArr.length && quizArr.map((question, idx) => {
                       return (
                         <div key={question}>
                           <Message className='question-edit-box' color='teal'>
                             <div className='question-edit-flex'>
                               <h3 >{questionSet[question].question} </h3>
-
+                                <Button value={idx} onClick={this.showEditForm} >
+                                  edit
+                                </Button>
                               <Button onClick={(e) => { this.deleteQuestion(e, question) }}>
                                 <Icon name="trash"></Icon>
                               </Button>
+
                             </div>
                             <div>
                               {
@@ -149,7 +150,13 @@ export class AllQuestions extends Component {
                                   }
                                 })
                               }
-                              {showEditForm && <TeacherEditQuestion questionId={question} questionObj={questionSet[question]} questionSetId={this.props.match.params.questionSetId} showEditState={this.state.showEditForm} />}
+                              {this.state.showEditForm === idx &&
+                                <TeacherEditQuestion
+                                  questionId={question}
+                                  questionObj={questionSet[question]}
+                                  questionSetId={this.props.match.params.questionSetId}
+                                  showEditState={this.state.showEditForm}
+                                  closeEditWindow={this.setEditingToNaN}/>}
                             </div>
                           </Message>
 
