@@ -72,6 +72,14 @@ export const addQuestionToSetThunk = (qSetId, question) => dispatch => {
   firebase.database().ref(`questionSets/${qSetId}`).push(question)
 }
 
+export const editQuestionToSetThunk = (qSetId, questionId, question) => dispatch => {
+  console.log("got here thunk")
+  const questionRef = firebase.database().ref(`questionSets/${qSetId}`).child(questionId)
+  questionRef.update(question)
+  .catch((error) => console.error('error editing question: ', error))
+}
+
+
 
 /* ------------       REDUCER     ------------------ */
 
