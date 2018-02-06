@@ -10,35 +10,23 @@ export default function AllStudentsGraph(props){
   const idArray = props.studentIds
 
 
-  const dataOne = bigData[idArray[0]]
-
-  const dataTwo = bigData[idArray[1]]
-
-  const colors = [
-    "#114B5F",
-    "#88D498",
-    "#C6DABF",
-    "#008080",
-    "#F3E9D2",
-    "#FFA500",
-    "#663399"
-  ];
+  console.log("from all student graphs: ", bigData)
 
   return (
     <Container>
     <h1 className="graph-title">All Students Scores </h1>
         <VictoryChart domainPadding={20} theme={VictoryTheme.grayscale}>
           <VictoryAxis label="days"
-            tickValues={[43, 44, 45, 46, 47]} />
+            tickValues={[43, 44, 45, 46, 47, 48, 49, 50]} />
           <VictoryAxis dependentAxis
-            tickValues={[50, 60, 70, 80, 90, 100]} />
+            tickValues={[0, 20, 30, 40, 50, 60, 70, 80, 90, 100]} />
 
           {
             idArray && idArray.map(studentId => {
               return (
                 <VictoryLine
                 key={studentId}
-                data={bigData[studentId]}
+                data={bigData[studentId].data}
                 x="date"
                 y="score"
                 />
@@ -48,59 +36,4 @@ export default function AllStudentsGraph(props){
         </VictoryChart>
     </Container>
   )
-  }
-
-
-  // constructor(props){
-  //   super(props)
-  // }
-  //
-  //
-  //
-  // render(){
-  //
-  //
-  //   const bigData = this.props.data
-  //
-  //   const idArray = this.props.studentIds
-  //
-  //   console.log('data one ', bigData[idArray[0]])
-  //   console.log('data two ', bigData[idArray[1]])
-  //
-  //   const dataOne = bigData[idArray[0]]
-  //
-  //   const dataTwo = bigData[idArray[1]]
-  //
-  //   const colors = [
-  //     "#114B5F",
-  //     "#88D498",
-  //     "#C6DABF",
-  //     "#008080",
-  //     "#F3E9D2",
-  //     "#FFA500",
-  //     "#663399"
-  //   ];
-  //
-  //   return (
-  //     <Container>
-  //     <h1 className="graph-title">All Students Scores </h1>
-  //         <VictoryChart
-  //         domainPadding={20}
-  //         theme={VictoryTheme.grayscale}
-  //         >
-  //           <VictoryAxis label="Time (ms)" />
-  //           <VictoryAxis dependentAxis/>
-  //           <VictoryLine
-  //           data={dataOne}
-  //           x="time"
-  //           y="score"
-  //           />
-  //           <VictoryLine
-  //           data={dataTwo}
-  //           x="time"
-  //           y="score"
-  //           />
-  //         </VictoryChart>
-  //     </Container>
-  //   )
-  // }
+}

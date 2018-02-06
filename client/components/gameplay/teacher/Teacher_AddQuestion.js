@@ -22,6 +22,7 @@ export class TeacherAddQuestion extends Component {
       answers: [e.target.solution.value, e.target.wrongOne.value, e.target.wrongTwo.value, e.target.wrongThree.value]
     }
     this.props.addQuestionToSetThunk(this.props.match.params.questionSetId, newQuestionObj)
+    this.props.closeAddWindow();
   }
 
   render() {

@@ -38,11 +38,11 @@ export class StudentAnswerReveal extends Component {
       const gId = this.state.gameRoomId
       const score =  Math.floor((+this.props.singleStudent.score / +this.props.totalQuestions) * 100)
       if (score >= 0 && score <= 100){
-        this.props.storeStudentGameHistory(sId, gId, score)
+        this.props.storeStudentGameHistory(sId, gId, score, this.props.email)
       }
       this.props.resetStudentScore(sId)
       this.props.breakStudentStreak(sId)
-      history.push(`/${gId}/gameOver/${sId}`)
+      history.replace(`/${gId}/gameOver/${sId}`)
     }
   }
 
@@ -58,7 +58,7 @@ export class StudentAnswerReveal extends Component {
     const nextIndex = questionsArr.indexOf(currentQuestionId) + 1
     const nextId = questionsArr[nextIndex]
 
-    history.push(`/${this.state.gameRoomId}/question/${nextId}/${this.state.studentId}`)
+    history.replace(`/${this.state.gameRoomId}/question/${nextId}/${this.state.studentId}`)
 
   }
 
@@ -84,7 +84,8 @@ const mapState = state => {
     currentQuestion: state.currentQuestion,
     gameState: state.gameState,
     singleStudent: state.singleStudent,
-    totalQuestions: state.totalQuestions
+    totalQuestions: state.totalQuestions,
+    email: state.firebaseUser.email
   }
 }
 const mapDispatch = {
