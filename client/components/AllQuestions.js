@@ -13,7 +13,7 @@ export class AllQuestions extends Component {
     this.state = {
       showAddForm: false,
       noQuestions: true,
-      quizTitle: 'Untitled Game',
+      quizTitle: '',
       showEditForm: false,
 
     }
@@ -44,7 +44,7 @@ export class AllQuestions extends Component {
 
 
 
-  saveQuiz = (e) => {
+  playNow = (e) => {
     const pin = Math.floor(Math.random() * 90000) + 10000;
     const title = this.state.quizTitle;
     e.preventDefault();
@@ -52,6 +52,13 @@ export class AllQuestions extends Component {
     history.push(`/teacher-waiting-room/${pin}`)
   }
 
+  saveQuiz = (e) => {
+    const pin = Math.floor(Math.random() * 90000) + 10000;
+    const title = this.state.quizTitle;
+    e.preventDefault();
+    this.props.buildNewGameRoomThunk(this.props.questionSet, this.props.user.id, pin, title)
+    history.push(`/`)
+  }
   // updateQuestion = (e, id) => {
   //   e.preventDefault()
   //   this.
@@ -111,9 +118,9 @@ export class AllQuestions extends Component {
               <div>
                 <h2>edit your quiz below</h2>
                 <Form>
-                  <Form.Field>
+                  <Form.Field required>
                     <label>Quiz Title</label>
-                    <input name="quizTitle" onChange={this.handleChange} />
+                    <input placeholder = "Enter Quiz Title" name="quizTitle" onChange={this.handleChange} />
                   </Form.Field>
                 </Form>
                 <div>
@@ -159,7 +166,8 @@ export class AllQuestions extends Component {
                   }
                   <div className="two-button-flex">
                     <Button color="orange" onClick={this.showAddForm}>Add Another Question</Button>
-                    <Button color="purple" onClick={this.saveQuiz}>Generate Quiz</Button>
+                    <Button color="purple" disabled={!this.state.quizTitle} onClick={this.playNow}>Play Now</Button>
+                    <Button color="green" disabled={!this.state.quizTitle} onClick={this.saveQuiz}>Save for Later</Button>
                     <Button color="red" onClick={this.showEditForm}>Edit Questions</Button>
                   </div>
                   {showAddForm && <TeacherAddQuestion match={this.props.match} />}
