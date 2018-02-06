@@ -14,8 +14,8 @@ const textapi = new AYLIENTextAPI({
 const findSummary = async (text) => {
   const parameters = {
     text: `${text}`,
-    title: 'Wuthering Heights',
-    sentences_number: 10
+    title: 'Summary',
+    sentences_number: 5
   }
 
   function summaryAsync(param) {
@@ -100,7 +100,40 @@ const findSentiment = async (text) => {
     console.log(err)
   }
 }
+const namesInSentences = async (peopleObjArr, sentenceArr) => {
+  try {
+    let namesOnlyArr = []
+    let sentenceObjArr = []
+    let noRepeats = []
+    for (let i = 0; i < peopleObjArr.length; i++) {
+      if (peopleObjArr[i].name.charCodeAt(0) < 97) {
+        namesOnlyArr.push(peopleObjArr[i].name)
+      }
+    }
+    const filteredSentences = sentenceArr.filter(sentence => {
+      return sentence.length < 300 && sentence.charCodeAt(0) < 97 && ((sentence.indexOf('.') > 32) || (sentence.indexOf('!') > 32) || (sentence.indexOf('?') > 32) || (sentence.indexOf(',') > 32))
+    })
 
+    for (let i = 0; i < filteredSentences.length; i++) {
+      for (let j = 0; j < namesOnlyArr.length; j++) {
+        if (filteredSentences[i].includes(namesOnlyArr[j]) && !noRepeats.includes(filteredSentences[i])) {
+          noRepeats.push(filteredSentences[i])
+          sentenceObjArr.push({
+            sentence: filteredSentences[i],
+            name: namesOnlyArr[j],
+            answers: ['true', 'false']
+          })
+        }
+      }
+    }
+    console.log('SOA', sentenceObjArr)
+    const question = await makeTrueFalse(sentenceObjArr, namesOnlyArr)
+    return question
+  }
+  catch (err) {
+    console.log(err)
+  }
+}
 const findPeople = async (text) => {
 
   const document = {
@@ -144,36 +177,51 @@ const findSyntax = async (text) => {
     console.error('ERROR:', err);
   }
 }
-const findDirectWithPreposition = async (text) => {
-  try {
-    const doc = nlp(text)
-    const directObjWPrep1 = doc.match('#Person #Verb (the|a|an) #Noun (to|at|above|across|behind|below|beside|in|into|on|onto|toward|towards|under|underneath|up|within)')
-    const directObjWPrep2 = doc.match('#Person #Verb #Noun (to|at|above|across|behind|below|beside|in|into|on|onto|toward|towards|under|underneath|up|within)')
-    const doWithPrep1 = directObjWPrep1.data()
-    const doWithPrep2 = directObjWPrep2.data()
 
-    return (doWithPrep1.concat(doWithPrep2))
-  }
-  catch (err) {
-    console.error('ERROR:', err);
-  }
+const makeTrueFalse = (sentenceObjArr, namesOnlyArr) => {
+  let finalQ = sentenceObjArr.map(obj => {
+    if (obj.name === ('Mrs.' || 'Mr.' || 'Miss' || 'Dr.' || 'Ms.' || 'Professor')) {
+
+      let newSentence = obj.sentence.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim()
+      let wordtoken = newSentence.split(' ')
+      let wordTokenIdx = wordtoken.indexOf(obj.name) + 1
+      let newName = wordtoken[wordTokenIdx]
+      obj.sentence = newSentence
+      obj.name = (obj.name + ' ' + newName)
+    } return obj
+  })
+  let count = 0
+  let question = sentenceObjArr.map(obj2 => {
+    count++
+    if (!count % 2) {
+      obj2.question = obj2.sentence
+      obj2.rightAnswer = 'true'
+    } else {
+      let startIdx = obj2.sentence.indexOf(obj2.name)
+      let endIdx = obj2.name.length + startIdx
+      let tempSentence = obj2.sentence.slice(0, startIdx) + obj2.sentence.slice(endIdx)
+      let shuffledAnswers = shuffle(namesOnlyArr)
+      let idx = 0
+      if (shuffledAnswers[idx] !== obj2.name) {
+        let falsyName = shuffledAnswers[idx]
+        let tempSentence = obj2.sentence.slice(0, startIdx) + falsyName + obj2.sentence.slice(endIdx)
+        obj2.question = tempSentence
+
+
+        obj2.rightAnswer = 'false'
+      } else if (shuffledAnswers[idx] === obj2.name){
+        obj2.question = obj2.sentence
+        obj2.rightAnswer = 'true'
+      }
+    }
+    delete obj2.sentence
+    delete obj2.name
+    return obj2
+  })
+  return question
 }
-const findDirectObject = async (text) => {
-  try {
-    const doc = nlp(text)
-    const directObj1 = doc.match('#Person #Verb (the|a|an) #Noun')
-    const directObj12 = doc.match('#Person #Verb #Noun')
-    const directObject1 = directObj1.data()
-    const directObj2 = directObj12.data()
 
 
-    return directObject1.concat(directObj2)
-  }
-  catch (err) {
-    console.error('ERROR:', err);
-  }
-
-}
 const findPlaces = (quoteStr) => {
   const doc = nlp(quoteStr)
   const places = doc.places()
@@ -182,7 +230,6 @@ const findPlaces = (quoteStr) => {
   return placesArr
 }
 const findSubjVerb = async (text) => {
-
   try {
     const doc = nlp(text)
     const person = doc.match('#Person #Verb')
@@ -197,8 +244,6 @@ const findSubjVerb = async (text) => {
       } return personage
     })
 
-    // const place = doc.match('#Place')
-
     return goodNouns
 
   }
@@ -206,16 +251,6 @@ const findSubjVerb = async (text) => {
     console.error('ERROR:', err);
   }
 
-}
-const findSimiles = (text) => {
-  const doc = nlp(text)
-  const similesLike = doc.match('like (a|an|the) #Noun')
-  const similesAs = doc.match('as (a|an|the) #Noun')
-
-  const like = similesLike.data()
-  const asSim = similesAs.data()
-  const simArr = asSim.concat(like)
-  return simArr
 }
 
 const findQuotations = (quoteStr) => {
@@ -226,4 +261,4 @@ const findQuotations = (quoteStr) => {
 }
 
 
-module.exports = { findSentiment, findPlaces, findPeople, findQuotations, findSimiles, quoteQuestions, findSyntax, findSubjVerb, findDirectObject, findDirectWithPreposition, findSummary }
+module.exports = { findSentiment, findPlaces, findPeople, findQuotations, quoteQuestions, findSyntax, findSubjVerb, namesInSentences, findSummary, makeTrueFalse }
