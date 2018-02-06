@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {findNonPeopleKeywords} = require('./keywordUtils')
+const { findNonPeopleKeywords } = require('./keywordUtils')
 const NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js')
 const natural_language_understanding = new NaturalLanguageUnderstandingV1({
   'username': process.env.WATSON_UN,

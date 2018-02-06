@@ -36,9 +36,12 @@ export const generateQuestionSetThunk = (text) => async dispatch => {
   let res3 = await axios.post('/api/quoteText/whoDidItQuestion', { content: text });
   let questionArray3 = res3.data
   let res4 = await axios.post('/api/keywordText/keywordQuestion', { content: text });
+  let res5 = await axios.post('/api/plotText/plotQuestion', { content: text });
   let questionArray4 = res4.data
+  let questionArray5 = res5.data
 
-  let finalQuestionArray = questionArray.concat(questionArray2, questionArray3, questionArray4)
+
+  let finalQuestionArray = questionArray.concat(questionArray2, questionArray3, questionArray4, questionArray5)
   const questionSetRef = firebase.database().ref('questionSets');
   let newQuestionSetRef = questionSetRef.push({})
   finalQuestionArray.forEach(questionObj => {
@@ -74,6 +77,14 @@ export const deleteQuestionFromSetThunk = (qSetId, qestionId) => async dispatch 
 export const addQuestionToSetThunk = (qSetId, question) => dispatch => {
   firebase.database().ref(`questionSets/${qSetId}`).push(question)
 }
+
+export const editQuestionToSetThunk = (qSetId, questionId, question) => dispatch => {
+  console.log("got here thunk")
+  const questionRef = firebase.database().ref(`questionSets/${qSetId}`).child(questionId)
+  questionRef.update(question)
+  .catch((error) => console.error('error editing question: ', error))
+}
+
 
 
 /* ------------       REDUCER     ------------------ */
