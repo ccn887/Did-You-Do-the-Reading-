@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import { addStudentToGameThunk } from '../../../store'
 import firebase from '../../../../server/firebase'
 import history from '../../../history'
+import Header  from '../../Header'
+import { Link } from 'react-router-dom'
 
 
 export class StudentJoinGame extends Component {
@@ -66,6 +68,10 @@ export class StudentJoinGame extends Component {
     console.log('Firebase User from FB: ', firebase.auth().currentUser)
     console.log('firebase user from store', this.props.firebaseUser)
     return (
+      <div>
+      <center>
+        <Header />
+      </center>
       <div id="join-game-container">
         {
           this.state.activeUser
@@ -84,6 +90,7 @@ export class StudentJoinGame extends Component {
             <div id="join-logout-button-wrapper">
               <Button id="join-logout-button" inverted color="orange" onClick={this.logout}>Log Out</Button>
             </div>
+            <Link id="back-for-students" to="/"> <Button color="black">Back</Button></Link>
           </Form>
           :
           <div>
@@ -91,6 +98,7 @@ export class StudentJoinGame extends Component {
             <Button onClick={this.goToLogin}>Go To Login</Button>
           </div>
         }
+      </div>
       </div>
     )
   }

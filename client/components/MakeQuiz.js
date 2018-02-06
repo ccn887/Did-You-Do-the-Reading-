@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { generateQuestionSetThunk } from '../store'
 import Navbar from './Navbar'
 import { Dimmer, Loader, Image, Segment } from 'semantic-ui-react'
+import  HeaderSmall  from './HeaderSmall'
 
 
 export class MakeQuiz extends Component {
@@ -44,21 +45,31 @@ export class MakeQuiz extends Component {
 
     return (
       <div>
+        <center>
+          <HeaderSmall />
+        </center>
         <Navbar />
         <div id="make-quiz-wrapper">
+          <h2>Enter text to generate new quiz questions</h2>
+          <div id='question-generate'>
           {  this.state.loader === 'false' ?
             <div>
-            <h2>Enter text to generate new quiz questions</h2>
             <Form.TextArea id="enter-text" onChange={this.handleChange}  />
-            <Button toggle active={active} onClick={this.handleClick1}> Include Vocabulary Questions </Button>
-            <Button toggle active={active2} onClick={this.handleClick2}> Include Quote Attribution Questions </Button>
-            <Button type="submit" onClick={this.submit}> Generate Quiz </Button>
+            <h4> Select Options: </h4>
+            <div id="option-select">
+              <Button toggle active={active} onClick={this.handleClick1}> Include Vocabulary Questions </Button>
+              <br />
+              <Button toggle active={active2} onClick={this.handleClick2}> Include Quote Attribution Questions </Button>
+              <br />
+              <Button color="purple" type="submit" onClick={this.submit}> Generate Quiz </Button>
+            </div>
           </div>
           :
           <Dimmer active>
             <Loader indeterminate>Preparing Your Questions!</Loader>
           </Dimmer>
           }
+        </div>
       </div>
     </div>
     )

@@ -17,9 +17,6 @@ const Main = (props) => {
   return (
     <div id="main-wrapper">
       <div id="app-header">
-        <center>
-          <Header />
-        </center>
       </div>
     <div id="children-wrapper">
       {children}

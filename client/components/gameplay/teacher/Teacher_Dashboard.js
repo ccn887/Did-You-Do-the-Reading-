@@ -6,6 +6,7 @@ import history from '../../../history'
 import { setGameOnStateThunk, buildNewGameRoomThunk, getCurrentTeacherGames } from '../../../store'
 import MakeQuiz from '../../MakeQuiz'
 import Navbar from '../../Navbar'
+import HeaderSmall  from '../../HeaderSmall'
 
 export class TeacherDashboard extends Component {
   constructor() {
@@ -39,6 +40,7 @@ export class TeacherDashboard extends Component {
 
     return (
       <div>
+        <HeaderSmall />
         <Navbar />
         <div className="teacher-wrapper">
           <h2 id="welcome-message">Welcome, {user.email} </h2>

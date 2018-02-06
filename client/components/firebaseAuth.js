@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import { logInStudentThunk, signUpStudentThunk, resetStudentScore, breakStudentStreak} from '../store'
 import firebase from '../../server/firebase'
 import history from '../history'
+import Header from './Header'
+import { Link } from 'react-router-dom'
 
 
 export class FirebaseAuth extends Component {
@@ -76,13 +78,21 @@ export class FirebaseAuth extends Component {
 
 
     return (
+      <div>
+      <center>
+        <Header />
+      </center>
       <div id="student-portal">
         {
           this.props.firebaseUser.uid
           ?
-          <div>
-            <Button onClick={() => history.push(`/join`)}>Join A Game</Button>
-            <Button onClick={this.logout}>Log Out</Button>
+          <div id="student-portal-logged-in">
+            <h4> You're already logged in as {this.props.firebaseUser.email} !</h4>
+            <Button color="orange" onClick={() => history.push(`/join`)}>Join A Game</Button>
+            <br />
+            <Button color="purple" onClick={this.logout}>Log Out</Button>
+            <br />
+            <Link id="back-for-students" to="/"> <Button color="black">Back</Button></Link>
           </div>
           :
           <Form id="student-signup">
@@ -113,6 +123,7 @@ export class FirebaseAuth extends Component {
           </Form>
         }
     </div>
+  </div>
     )
   }
 
