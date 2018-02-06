@@ -145,13 +145,20 @@ form div {
 
 .two-button-flex{
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
+  position: fixed;
+  top: 200px;
+  left: 0;
+  height: 200px;
+  width: 135px;
+  z-index: 9;
 }
 
-.add-new-question{
-  margin: 10px 10px !important;
-}
 
+#question-edit-button{
+  margin-left: auto;
+}
 
 #join-game-container{
   display: flex;
@@ -535,4 +542,8 @@ label.white-text{
   color: purple;
   font-weight: bold;
 
+}
+
+#all-questions-flex{
+  display: flex;
 }
