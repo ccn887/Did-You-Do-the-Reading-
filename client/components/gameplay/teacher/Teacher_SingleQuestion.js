@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card } from 'semantic-ui-react'
+import { Card, Message } from 'semantic-ui-react'
 import history from '../../../history'
 import { setGameOnStateThunk, setCurrentQuestionThunk, updateGameState, fetchTotalQuestions, determineQuestionNumber } from '../../../store'
 import { connect } from 'react-redux'
@@ -11,7 +11,7 @@ export class TeacherSingleQuestion extends Component {
     super();
     this.state = {
       timer: null,
-      counter: 20,
+      counter: 10,
       nextQuestionId: null
     }
   }
@@ -31,12 +31,12 @@ export class TeacherSingleQuestion extends Component {
 
   componentWillUnmount() {
     clearInterval(this.timer)
-    this.setState({counter: 20, nextQuestionId: null})
+    this.setState({counter: 10, nextQuestionId: null})
   }
 
   tick = () => {
     if (this.state.counter === 0) {
-      this.setState({ counter: 20 })
+      this.setState({ counter: 10 })
     } else {
       this.setState({ counter: this.state.counter - 1 });
     }
@@ -67,18 +67,25 @@ export class TeacherSingleQuestion extends Component {
           <div>
             <div>
               <h2>Question {this.props.questionCounter}/{this.props.totalQuestions}</h2>
-              <Card>
+              <Message id='question-box' color='teal'>
                 <h1 id="teacher-single-question">{currentQuestion && currentQuestion.question}</h1>
-              </Card>
-              <Card.Group itemsPerRow={2}>
-                <Card className="teacher-single-answer">{answerArray.length && answerArray[0]}</Card>
-                <Card className="teacher-single-answer">{answerArray.length && answerArray[1]}</Card>
-                <Card className="teacher-single-answer">{answerArray.length && answerArray[2]}</Card>
-                <Card className="teacher-single-answer">{answerArray.length && answerArray[3]}</Card>
-              </Card.Group>
+              </Message >
+              <div className="answer-box">
+                <div className="teacher-single-answer">{answerArray.length && answerArray[0]}</div>
+                <div className="teacher-single-answer">{answerArray.length && answerArray[1]}</div>
+              </div>
+              <div className="answer-box">
+                <div className="teacher-single-answer">{answerArray.length && answerArray[2]}</div>
+                <div className="teacher-single-answer">{answerArray.length && answerArray[3]}</div>
+              </div>
             </div>
             <div>
-              <div>Time Remaining: {this.state.counter}</div>
+              <div>
+                <h2 id="time-remaining">Time Remaining: </h2>
+              </div>
+              <div id="timer-box">
+                <h1 id="timer">{this.state.counter}</h1>
+              </div>
             </div>
           </div>
         </div>

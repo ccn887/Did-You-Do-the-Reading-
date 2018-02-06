@@ -13,7 +13,9 @@ export class FirebaseAuth extends Component {
     this.state = {
       email: '',
       password: '',
-      loginError: false
+      loginError: false,
+      pwdWaring: false,
+      emailWarning: false
     }
   }
 
@@ -41,8 +43,17 @@ export class FirebaseAuth extends Component {
 
   signup = (evt) => {
     evt.preventDefault();
-    console.log('you clicked signup!')
-    this.props.signUpStudentThunk(this.state.email, this.state.password);
+    if (this.state.password.length < 9 ){
+      this.setState({pwdWarning: true})
+    }
+    if (!this.state.email.includes('@') || !this.state.email.includes('.')){
+      this.setState({emailWarning: true})
+    }
+    else {
+      console.log('you clicked signup!')
+      this.props.signUpStudentThunk(this.state.email, this.state.password);
+    }
+
   }
 
   logout = (evt) => {
@@ -58,6 +69,8 @@ export class FirebaseAuth extends Component {
 
   render(){
 
+
+
     return (
       <div id="student-portal">
         {
@@ -71,19 +84,21 @@ export class FirebaseAuth extends Component {
           <Form id="student-signup">
             <Form.Field>
               <label className="white-text">Email</label>
-              <input onChange={this.inputEmail} placeholder='email' />
+              <input onChange={this.inputEmail} type="email" placeholder='email' />
             </Form.Field>
+            {this.state.emailWarning && <div className="warning">please enter a valid email address</div>}
             <Form.Field>
               <label className="white-text" >Password</label>
               <input onChange={this.inputPassword} type="password" placeholder='password' />
             </Form.Field>
+            {this.state.pwdWarning && <div className="warning">password must be at least 9 characters</div>}
             <Button color="purple" onClick={this.login}>Log In</Button>
             <center>
               <div className="white-text">
                 - or -
               </div>
             </center>
-            <Button color="orange" onClick={this.signup}>Sign Up</Button>
+            <Button color="orange" type="submit" onClick={this.signup}>Sign Up</Button>
             {this.state.loginError && <div>incorrect email or password</div> }
           </Form>
         }
