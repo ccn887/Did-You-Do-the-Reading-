@@ -33,25 +33,20 @@ export class AllQuestions extends Component {
     this.props.stopFetchingQuestionSetsThunk(this.props.match.params.questionSetId)
   }
 
+  componentDidUpdate() {
+    window.scrollTo(0,0);
+  }
+
   deleteQuestion = (e, id) => {
     e.preventDefault()
     this.props.deleteQuestionFromSetThunk(this.props.match.params.questionSetId, id)
   }
 
-  editQuestion = (e, id) => {
-    e.preventDefault()
-    const newQuestionObj = {
-      question: e.target.question.value,
-      rightAnswer: e.target.solution.value,
-      answers: [e.target.solution.value, e.target.wrongOne.value, e.target.wrongTwo.value, e.target.wrongThree.value]
-    }
-    this.props.editQuestionToSetThunk(this.props.match.params.questionSetId, id, newQuestionObj)
-  }
+
 
   saveQuiz = (e) => {
     const pin = Math.floor(Math.random() * 90000) + 10000;
     const title = this.state.quizTitle;
-    console.log('title:', title)
     e.preventDefault();
     this.props.buildNewGameRoomThunk(this.props.questionSet, this.props.user.id, pin, title)
     history.push(`/teacher-waiting-room/${pin}`)
@@ -68,9 +63,16 @@ export class AllQuestions extends Component {
   }
 
   showEditForm = () => {
-    this.setState({
-      showEditForm: true
-    })
+    if (this.state.showEditForm === false) {
+      this.setState({
+        showEditForm: true
+      })
+    }
+    else {
+      this.setState({
+        showEditForm: false
+      })
+    }
   }
 
   handleChange = (e) => {
@@ -95,6 +97,7 @@ export class AllQuestions extends Component {
 
     const showAddForm = this.state.showAddForm;
     const showEditForm = this.state.showEditForm;
+
     return (
       <div>
         <Container id="all-questions-container">
@@ -114,52 +117,50 @@ export class AllQuestions extends Component {
                   </Form.Field>
                 </Form>
                 <div>
-                {
-                  questionSet && quizArr.length && quizArr.map((question) => {
-                    return (
-                      <div key={question}>
-                        <Message className='question-edit-box' color='teal'>
-                          <div className='question-edit-flex'>
-                            <h3 >{questionSet[question].question} </h3>
-                            {console.log("QWESTION",question)}
-                            <Button onClick={(e) => { this.deleteQuestion(e, question) }}>
-                              <Icon name="trash"></Icon>
-                            </Button>
-                
-                            <Button onClick={(e) => {this.showEditForm(e, question)}}> <Icon name="edit"> </Icon>
-                            </Button>
-                            {showEditForm && <TeacherEditQuestion question={question} />}
-                          </div>
-                        <div>
-                        {
-                          questionSet[question].answers.map(answer => {
-                            if (answer === questionSet[question].rightAnswer){
-                              return (
-                                <div className='right-answer-flex' key={answer}>
-                                  <div>{answer}</div>
-                                  <Icon color="olive" name="checkmark" />
-                                </div>
-                              )
-                            }
-                            else {
-                              return (
-                                <div key={answer}>
-                                  <div>{answer}</div>
-                                </div>
-                                )
+                  {
+                    questionSet && quizArr.length && quizArr.map((question) => {
+                      return (
+                        <div key={question}>
+                          <Message className='question-edit-box' color='teal'>
+                            <div className='question-edit-flex'>
+                              <h3 >{questionSet[question].question} </h3>
+
+                              <Button onClick={(e) => { this.deleteQuestion(e, question) }}>
+                                <Icon name="trash"></Icon>
+                              </Button>
+                            </div>
+                            <div>
+                              {
+                                questionSet[question].answers.map(answer => {
+                                  if (answer === questionSet[question].rightAnswer) {
+                                    return (
+                                      <div className='right-answer-flex' key={answer}>
+                                        <div>{answer}</div>
+                                        <Icon color="olive" name="checkmark" />
+                                      </div>
+                                    )
+                                  }
+                                  else {
+                                    return (
+                                      <div key={answer}>
+                                        <div>{answer}</div>
+                                      </div>
+                                    )
+                                  }
+                                })
                               }
-                            })
-                          }
+                              {showEditForm && <TeacherEditQuestion questionId={question} questionObj={questionSet[question]} questionSetId={this.props.match.params.questionSetId} showEditState={this.state.showEditForm} />}
+                            </div>
+                          </Message>
+
                         </div>
-                      </Message>
-                  
-                    </div>
                       )
                     })
                   }
                   <div className="two-button-flex">
                     <Button color="orange" onClick={this.showAddForm}>Add Another Question</Button>
                     <Button color="purple" onClick={this.saveQuiz}>Generate Quiz</Button>
+                    <Button color="red" onClick={this.showEditForm}>Edit Questions</Button>
                   </div>
                   {showAddForm && <TeacherAddQuestion match={this.props.match} />}
                 </div>
@@ -171,7 +172,6 @@ export class AllQuestions extends Component {
     )
   }
 }
-
 
 const mapState = state => {
   return {
