@@ -4,6 +4,36 @@ const nlp = require('compromise')
 const language = require('@google-cloud/language')
 const client = new language.LanguageServiceClient();
 const { shuffle } = require('./utils')
+const AYLIENTextAPI = require('aylien_textapi');
+
+const textapi = new AYLIENTextAPI({
+  application_id: process.env.SUMMARY_ID,
+  application_key: process.env.SUMMARY_KEY
+});
+
+const findSummary = async (text) => {
+  const parameters = {
+    text: `${text}`,
+    title: 'Wuthering Heights',
+    sentences_number: 10
+  }
+
+  function summaryAsync(param) {
+    return new Promise(function (resolve, reject) {
+      textapi.summarize(param, function (error, response) {
+        if (error) return reject(error);
+        resolve(response);
+      })
+    })
+  }
+  try {
+    const summary = await summaryAsync(parameters)
+    return summary.sentences
+  }
+  catch (err) {
+    console.log('ERROR:', err)
+  }
+}
 
 
 
@@ -31,7 +61,7 @@ function quoteQuestions(txt, quote, people) {
   })
 
   if (peopleFiltered.length === 1) {
-    let question = `Who said, ` + quote.slice(0,-2) + `"?`
+    let question = `Who said, ` + quote.slice(0, -2) + `"?`
     let rightAnswer = peopleFiltered[0]
     sendQuoteObj.question = question
     sendQuoteObj.rightAnswer = rightAnswer.name
@@ -114,7 +144,36 @@ const findSyntax = async (text) => {
     console.error('ERROR:', err);
   }
 }
+const findDirectWithPreposition = async (text) => {
+  try {
+    const doc = nlp(text)
+    const directObjWPrep1 = doc.match('#Person #Verb (the|a|an) #Noun (to|at|above|across|behind|below|beside|in|into|on|onto|toward|towards|under|underneath|up|within)')
+    const directObjWPrep2 = doc.match('#Person #Verb #Noun (to|at|above|across|behind|below|beside|in|into|on|onto|toward|towards|under|underneath|up|within)')
+    const doWithPrep1 = directObjWPrep1.data()
+    const doWithPrep2 = directObjWPrep2.data()
 
+    return (doWithPrep1.concat(doWithPrep2))
+  }
+  catch (err) {
+    console.error('ERROR:', err);
+  }
+}
+const findDirectObject = async (text) => {
+  try {
+    const doc = nlp(text)
+    const directObj1 = doc.match('#Person #Verb (the|a|an) #Noun')
+    const directObj12 = doc.match('#Person #Verb #Noun')
+    const directObject1 = directObj1.data()
+    const directObj2 = directObj12.data()
+
+
+    return directObject1.concat(directObj2)
+  }
+  catch (err) {
+    console.error('ERROR:', err);
+  }
+
+}
 const findPlaces = (quoteStr) => {
   const doc = nlp(quoteStr)
   const places = doc.places()
@@ -126,8 +185,7 @@ const findSubjVerb = async (text) => {
 
   try {
     const doc = nlp(text)
-    const person = doc.match('#Person #Verb (the|a|an) #Noun')
-    const person2 = doc.match('#Person #Verb #Noun')
+    const person = doc.match('#Person #Verb')
 
     const pronoun = doc.match('#Pronoun #Verb')
     const newPronoun = pronoun.data()
@@ -168,4 +226,4 @@ const findQuotations = (quoteStr) => {
 }
 
 
-module.exports = { findSentiment, findPlaces, findPeople, findQuotations, findSimiles, quoteQuestions, findSyntax, findSubjVerb }
+module.exports = { findSentiment, findPlaces, findPeople, findQuotations, findSimiles, quoteQuestions, findSyntax, findSubjVerb, findDirectObject, findDirectWithPreposition, findSummary }
