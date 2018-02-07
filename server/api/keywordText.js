@@ -24,7 +24,7 @@ router.post('/keywordQuestion', async (req, res, next) => {
 function natLangAsync(param){
       return new Promise(function(resolve,reject){
         natural_language_understanding.analyze(param,function(err,data){
-               if(err) return reject(err);
+               if(err)  return reject(err)
                resolve(data);
            });
       });
@@ -33,12 +33,15 @@ function natLangAsync(param){
   try {
 
   const keywords = await natLangAsync(parameters)
+  if(keywords){
   const questions = await findNonPeopleKeywords(keywords, text)
-
   res.send(questions)
-
+  } else {
+    res.send('no questions')
+  }
   }
   catch(err) {
-    console.log('ERROR:', err)
+    console.error('ERROR:', err)
+    res.send([])
   }
 })
