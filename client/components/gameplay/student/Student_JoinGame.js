@@ -36,7 +36,6 @@ export class StudentJoinGame extends Component {
     const currentGame = this.state.pin
     const name = this.state.name
     const uid = this.props.firebaseUser.uid
-    console.log("user joining game: ", name, uid)
 
     firebase.database().ref(`gameRooms/${currentGame}`)
       .once('value', gamePinSnap => {
@@ -63,8 +62,6 @@ export class StudentJoinGame extends Component {
 
 
   render() {
-    console.log('Firebase User from FB: ', firebase.auth().currentUser)
-    console.log('firebase user from store', this.props.firebaseUser)
     return (
       <div id="join-game-container">
         {

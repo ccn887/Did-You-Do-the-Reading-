@@ -38,7 +38,6 @@ export class StudentWaitingRoom extends Component {
   }
 
   render() {
-    console.log('current students.....',this.props.currentStudents )
     const userNameArray = this.props.currentStudents.map(studentObj => {
       return studentObj.name
     })
