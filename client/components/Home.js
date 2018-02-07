@@ -5,8 +5,6 @@ import axios from 'axios'
 import Header from './Header'
 
 export default class Home extends Component {
-
-
     constructor() {
     super();
     this.state = {
@@ -14,27 +12,6 @@ export default class Home extends Component {
       context: {}
     }
   }
-
-// componentDidMount (){
-//   var dogBarkingBuffer = null;
-//   // Fix up prefixing
-//   window.AudioContext = window.AudioContext || window.webkitAudioContext;
-//   var context = new AudioContext();
-//
-//   function loadDogSound('/audio/click.mp3') {
-//     var request = new XMLHttpRequest();
-//     request.open('GET', url, true);
-//     request.responseType = 'arraybuffer';
-//
-//     // Decode asynchronously
-//     request.onload = function() {
-//       context.decodeAudioData(request.response, function(buffer) {
-//         dogBarkingBuffer = buffer;
-//       }, onError);
-//     }
-//     request.send();
-//   }
-// }
 
   /*
   componentDidMount (){
@@ -67,7 +44,13 @@ export default class Home extends Component {
     history.push('/student/login')
   }
 
+consoley(){
+  console.log('hey')
+}
+
   render(){
+
+    // Fix up prefixing
 
     return (
       <div id="homeview">
@@ -76,7 +59,7 @@ export default class Home extends Component {
         </center>
       <div className="userSelectMenu">
         <div className="studentButton">
-            <img onClick={this.pushJoin} id="student_icon" src="/images/student_icon.png" />
+            <img onClick={this.pushJoin} onMouseOver={this.consoley} id="student_icon" src="/images/student_icon.png" />
           <Button color="orange" value="student" onClick={this.navigate}>I'm a Student!</Button>
         </div>
         <div className="studentButton">
