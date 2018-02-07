@@ -196,7 +196,7 @@ const makeTrueFalse = (sentenceObjArr, namesOnlyArr) => {
   let question = sentenceObjArr.map(obj2 => {
     count++
     if (!count % 2) {
-      obj2.question = obj2.sentence
+      obj2.question = 'True or False: ' + obj2.sentence
       obj2.rightAnswer = 'true'
     } else {
       let startIdx = obj2.sentence.indexOf(obj2.name)
@@ -212,7 +212,7 @@ const makeTrueFalse = (sentenceObjArr, namesOnlyArr) => {
 
         obj2.rightAnswer = 'false'
       } else if (shuffledAnswers[idx] === obj2.name){
-        obj2.question = obj2.sentence
+        obj2.question = 'True or False: ' + obj2.sentence
         obj2.rightAnswer = 'true'
       }
     }
