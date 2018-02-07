@@ -27,7 +27,9 @@ export class MakeQuiz extends Component {
 
   handleClick1 = () => this.setState({ active: !this.state.active })
   handleClick2 = () => this.setState({ active2: !this.state.active2 })
-
+  handleClick3 = () => this.setState({ active3: !this.state.active3 })
+  handleClick4 = () => this.setState({ active4: !this.state.active4 })
+  handleClick5 = () => this.setState({ active5: !this.state.active5 })
 
   submit(e) {
     e.preventDefault();
@@ -41,6 +43,9 @@ export class MakeQuiz extends Component {
   render() {
     const active = this.state.active
     const active2 = this.state.active2
+    const active3 = this.state.active3
+    const active4 = this.state.active4
+    const active5 = this.state.active5
 
 
     return (
@@ -60,6 +65,12 @@ export class MakeQuiz extends Component {
               <Button toggle active={active} onClick={this.handleClick1}> Include Vocabulary Questions </Button>
               <br />
               <Button toggle active={active2} onClick={this.handleClick2}> Include Quote Attribution Questions </Button>
+              <br />
+              <Button toggle active={active3} onClick={this.handleClick3}> Include Fill-in-the-Blank Plot Questions </Button>
+              <br />
+              <Button toggle active={active4} onClick={this.handleClick4}> Include Character Questions </Button>
+              <br />
+              <Button toggle active={active5} onClick={this.handleClick5}> Include True/False Questions </Button>
               <br />
               <Button color="purple" type="submit" onClick={this.submit}> Generate Quiz </Button>
             </div>
