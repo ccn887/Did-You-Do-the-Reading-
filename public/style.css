@@ -531,6 +531,11 @@ label.white-text{
   font-weight: bold;
 }
 
+.edit-delete-question{
+  height: 35px;
+  width: 40px;
+}
+
 #answer-display{
   display: flex;
   justify-content: space-between;
