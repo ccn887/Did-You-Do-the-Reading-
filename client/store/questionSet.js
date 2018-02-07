@@ -28,7 +28,6 @@ const activeListeners = {}
 
 
 export const generateQuestionSetThunk = (text) => async dispatch => {
-  console.log('generating question set!')
   let res = await axios.post('/api/text/vocab', tokenize(text));
   let questionArray = res.data;
   let res2 = await axios.post('/api/quoteText/quoteQuestion', { content: text });
@@ -38,10 +37,26 @@ export const generateQuestionSetThunk = (text) => async dispatch => {
   let res4 = await axios.post('/api/keywordText/keywordQuestion', { content: text });
   let res5 = await axios.post('/api/plotText/plotQuestion', { content: text });
   let questionArray4 = res4.data
+
+  function shuffle(originalArray) {
+    var array = [].concat(originalArray);
+    var currentIndex = array.length, temporaryValue, randomIndex;
+    while (0 !== currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+    return array;
+  }
+  let finalQuestionArray = shuffle(questionArray.concat(questionArray2, questionArray3, questionArray4))
+
   let questionArray5 = res5.data
 
 
   let finalQuestionArray = questionArray.concat(questionArray2, questionArray3, questionArray4, questionArray5)
+
   const questionSetRef = firebase.database().ref('questionSets');
   let newQuestionSetRef = questionSetRef.push({})
   finalQuestionArray.forEach(questionObj => {
@@ -79,7 +94,6 @@ export const addQuestionToSetThunk = (qSetId, question) => dispatch => {
 }
 
 export const editQuestionToSetThunk = (qSetId, questionId, question) => dispatch => {
-  console.log("got here thunk")
   const questionRef = firebase.database().ref(`questionSets/${qSetId}`).child(questionId)
   questionRef.update(question)
   .catch((error) => console.error('error editing question: ', error))

@@ -38,7 +38,9 @@ export class StudentJoinGame extends Component {
     const currentGame = this.state.pin
     const name = this.state.name
     const uid = this.props.firebaseUser.uid
+
     const email = this.props.firebaseUser.email
+
 
     firebase.database().ref(`gameRooms/${currentGame}`)
       .once('value', gamePinSnap => {

@@ -52,7 +52,6 @@ export class FirebaseAuth extends Component {
       this.setState({emailWarning: true})
     }
     else {
-      console.log('you clicked signup!')
       this.props.signUpStudentThunk(this.state.email, this.state.password);
     }
 

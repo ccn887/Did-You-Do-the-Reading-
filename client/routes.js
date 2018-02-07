@@ -47,7 +47,6 @@ class Routes extends Component {
       else {
         //do something else
         this.props.removeFbUser();
-        console.log('YOURE NOT LOGGED IN FOOL')
       }
     })
   }
