@@ -27,7 +27,22 @@ export class Leaderboard extends Component {
     this.props.stopListeningForNewStudents(gameId);
   }
 
+  getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+
+
   render() {
+
+    let characterArray = [
+      '/images/characters/char1.png',
+      '/images/characters/char2.png',
+      '/images/characters/char3.png',
+      '/images/characters/char4.png',
+      '/images/characters/char5.png',
+      '/images/characters/char6.png',
+      '/images/characters/char7.png'
+    ]
 
     const currentStudents = this.props.currentStudents
 
@@ -50,7 +65,7 @@ export class Leaderboard extends Component {
                             <Table.Row>
                               <Table.Cell>
                                 <Header as='h4' image>
-                                  <Image src='/assets/images/avatar/small/lena.png' rounded size='mini' />
+                                  <Image src={characterArray[this.getRandomInt(7)]} rounded size='mini' />
                                   <Header.Content id="leaderboard-username">
                                       {user.name}
                                   </Header.Content>

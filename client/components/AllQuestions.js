@@ -146,10 +146,10 @@ export class AllQuestions extends Component {
                             <div className='question-edit-flex'>
                               <h3 >{questionSet[question].question} </h3>
                                 <Button id="question-edit-button" value={idx} onClick={this.showEditForm} >
-                                <Icon name="edit"></Icon>
+                                  <Icon name="edit" />
                                 </Button>
                               <Button onClick={(e) => { this.deleteQuestion(e, question) }}>
-                                <Icon name="trash"></Icon>
+                                <Icon name="trash" />
                               </Button>
 
                             </div>
