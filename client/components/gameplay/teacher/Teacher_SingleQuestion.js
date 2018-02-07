@@ -12,7 +12,7 @@ export class TeacherSingleQuestion extends Component {
     super();
     this.state = {
       timer: null,
-      counter: 10,
+      counter: 15,
       nextQuestionId: null
     }
   }
@@ -20,19 +20,16 @@ export class TeacherSingleQuestion extends Component {
   componentDidMount() {
     const gameRoomId = this.props.match.params.pin;
     const questionId = this.props.match.params.questionId;
-
     this.props.determineQuestionNumber(questionId, this.props.currentGame)
-
     this.props.setGameOnStateThunk(gameRoomId)
     this.props.setCurrentQuestionThunk(questionId, gameRoomId)
     this.props.fetchTotalQuestions(gameRoomId)
-
     this.timer = setInterval(this.tick, 1000);
   }
 
   componentWillUnmount() {
     clearInterval(this.timer)
-    this.setState({ counter: 10, nextQuestionId: null })
+    this.setState({ counter: 15, nextQuestionId: null })
   }
 
   tick = () => {
@@ -50,6 +47,7 @@ export class TeacherSingleQuestion extends Component {
     history.push(`/teacher/${gameRoomId}/answer/${questionId}`)
   }
 
+
   render() {
 
     const counter = this.state.counter;
@@ -65,6 +63,13 @@ export class TeacherSingleQuestion extends Component {
 
       return (
         <div>
+
+            {
+              this.state.counter <= 5 ?
+                  document.getElementsByClassName('timer pulse')[0].classList.add('redzone')
+                  :
+                  null
+            }
           <HeaderSmall />
           <hr />
           <div>
@@ -72,25 +77,26 @@ export class TeacherSingleQuestion extends Component {
               <div id="current-teacher-question-counter">Question {this.props.questionCounter}/{this.props.totalQuestions}</div>
 
               <div id="teacher-single-question">{currentQuestion && currentQuestion.question}</div>
-              <div className="answer-box">
+              <div id="answer-display">
+              {
+                answerArray.length === 4 ?
+                <div className="answer-box">
                 <div className="teacher-single-answer">{answerArray.length && answerArray[0]}</div>
                 <div className="teacher-single-answer">{answerArray.length && answerArray[1]}</div>
-              </div>
-              {
-                answerArray.length === 4 &&
-                <div className="answer-box">
                   <div className="teacher-single-answer">{answerArray.length && answerArray[2]}</div>
                   <div className="teacher-single-answer">{answerArray.length && answerArray[3]}</div>
                 </div>
+                  :
+                  <div className="answer-box">
+                  <div className="teacher-single-answer">{answerArray.length && answerArray[0]}</div>
+                  <div className="teacher-single-answer">{answerArray.length && answerArray[1]}</div>
+                  </div>
               }
-            </div>
-            <div>
-              <div className="timer-container">
-                <h2 id="time-remaining">Time Remaining: </h2>
-                </div>
                 <div className="timer-container">
-                <div id="timer-box">
-                  <h1 id="timer">{this.state.counter}</h1>
+                  <h2 id="time-remaining">Time Remaining: </h2>
+                  <div id="timer-box">
+                    <h1 className="timer pulse">{this.state.counter}</h1>
+                  </div>
                 </div>
               </div>
             </div>
