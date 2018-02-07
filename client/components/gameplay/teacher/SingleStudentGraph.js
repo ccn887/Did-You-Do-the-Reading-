@@ -5,14 +5,16 @@ import { Container } from 'semantic-ui-react'
 
 
 export default function SingleStudentGraph(props){
-  const data = props.data
+  const data = props.data.data
+
+  console.log(data)
 
   const studentId = props.studentId
 
 
   return (
     <Container>
-    <h1 className="graph-title">Scores for Student #{studentId}</h1>
+    <h1 className="graph-title">Scores for {props.data.email}</h1>
       {
         data.length > 1 ?
         <VictoryChart
@@ -20,9 +22,9 @@ export default function SingleStudentGraph(props){
         theme={VictoryTheme.grayscale}
         >
           <VictoryAxis label="days"
-            tickValues={[43, 44, 45, 46, 47]}/>
+            tickValues={[43, 44, 45, 46, 47, 48, 49, 50]}/>
           <VictoryAxis dependentAxis
-            tickValues={[50, 60, 70, 80, 90, 100]} />
+          tickValues={[0, 20, 30, 40, 50, 60, 70, 80, 90, 100]}/>
           <VictoryLine
           data={data}
           x="date"

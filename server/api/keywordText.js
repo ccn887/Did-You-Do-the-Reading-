@@ -42,4 +42,3 @@ function natLangAsync(param){
     console.log('ERROR:', err)
   }
 })
- 4

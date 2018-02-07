@@ -15,16 +15,9 @@ body {
   color: #F3E9D2;
 }
 
-h1, h2{
+h1, h2, h4{
   color: #F3E9D2;
 }
-
-
-#enter-text{
-  width: 40vw;
-  height: 15vh;
-}
-
 
 #main-wrapper{
   display: flex;
@@ -43,11 +36,32 @@ label {
   display: block;
 }
 
+#back-for-students {
+  display: flex;
+  justify-content: center;
+}
+
 #app-header{
   display: flex;
   justify-content: center;
   width: 100%;
   flex-direction: column;
+}
+
+/* #homeview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+} */
+
+.headerwithlogo{
+  cursor:pointer;
+}
+
+.headerwithlogo-small-version {
+  display: flex;
+  justify-content: flex-start;
+  cursor:pointer;
 }
 
 nav a {
@@ -57,7 +71,7 @@ nav a {
 
 .Nav-style {
   display: flex;
-  padding-left: 10%;
+  padding-left: 4rem;
   border-top: solid;
   border-bottom: solid;
   border-color: white;
@@ -69,9 +83,7 @@ form div {
   display: inline-block;
 }
 
-.teacher-single-answer{
-  width: 10rem !important;
-}
+
 
 .question-edit-box{
   width: 75vw;
@@ -88,13 +100,17 @@ form div {
   flex-wrap: wrap;
 }
 
-
-
 .game-join-box{
-  padding: 5rem 5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  margin-top: 2rem;
+}
+
+.ui.container {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center;
 }
 
 #game-pin-box{
@@ -103,6 +119,7 @@ form div {
   width: 25vw;
   align-self: center;
   border-radius: 10px;
+  margin-bottom: 2rem;
 }
 
 #game-pin{
@@ -133,13 +150,21 @@ form div {
 
 .two-button-flex{
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
+  position: fixed;
+  top: 200px;
+  left: 0;
+  height: 200px;
+  width: 135px;
+  z-index: 9;
 }
 
-.add-new-question{
-  margin: 10px 10px !important;
-}
 
+
+#question-edit-button{
+  margin-left: auto;
+}
 
 #join-game-container{
   display: flex;
@@ -213,23 +238,31 @@ form div {
 .userSelectMenu {
   display: flex;
   justify-content: space-around;
-  margin: 4rem;
+  align-items: flex-end;
+  margin-top: 5rem;
   padding-left: 10rem;
   padding-right: 10rem;
-  align-items: flex-end;
 }
 
 .studentButton {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 20%;
+  width: 17%;
 }
 
-
 #logo {
-  width: 40%;
+  width: 30%;
   padding: 1rem;
+  padding-top: 3rem;
+  max-width: 30%;
+}
+
+#logo-small {
+  width: 19%;
+  height: 19%;
+  padding: 1rem;
+  padding-left: 5rem;
 }
 
 #student_icon {
@@ -346,7 +379,11 @@ label.white-text{
   color: white !important;
 }
 
-
+.timer-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 .warning {
   color: #ffa500
 }
@@ -362,7 +399,10 @@ label.white-text{
 }
 
 #time-remaining{
-  color: #C6DABF
+  font-size: 2em;
+  color: white;
+  text-shadow: 0px 5px rgba(0, 0, 0, .14);
+  font-weight: bold;
 }
 
 #timer{
@@ -373,30 +413,48 @@ label.white-text{
 }
 
 #question-box{
-  width: 45rem;
+  display:flex;
+  width: 90%;
+  height: 16em;
+  align-content: space-around;
+  justify-content: center;
 }
 
 #teacher-single-question{
-  color: #008080;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 4rem;
+  font-size: 45px;
+  color: white;
+  text-shadow: 0px 5px rgba(0, 0, 0, .14);
+  font-weight: bold;
 }
 
-.teacher-single-answer{
-  border-color: #008080;
-  background: #F3E9D2;
-}
+
 
 .answer-box{
-  display: flex;
+  /* display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-  padding: 1rem 1rem;
+  padding: 1rem 1rem; */
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+  padding: 2rem;
+  font-size: 3em;
+  color: purple;
+  font-weight: bold;
 }
 
+
 .teacher-single-answer{
-  width: 20rem !important;
-  height: 4rem;
-  font-size: 1.5rem;
-  color: #008080;
+  margin: 2rem;
+  padding: 2rem;
+  color: purple;
+  font-weight: bold;
+  justify-content: space-between;
+  background-color: orange;
+
 }
 
 .teacher-wrapper {
@@ -454,5 +512,179 @@ label.white-text{
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
 
+#question-generate{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 5rem;
+}
+
+#enter-text{
+  width: 550px;
+  height: 25vh;
+  resize: none;
+}
+
+#option-select{
+  display: flex;
+  flex-direction: column;
+}
+
+#welcome-message {
+  padding-top: 3rem;
+}
+
+#student-portal-logged-in{
+  display: flex;
+  flex-direction: column;
+  padding-top: 3rem;
+}
+
+/* ==== ANSWER REVEAL ==== */
+
+.answer-reveal-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 5rem;
+}
+.teacher-single-question-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-content: stretch;
+  align-items: center;
+  padding-bottom: 5rem;
+}
+
+#current-question {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 4rem;
+  font-size: 5em;
+  color: white;
+  text-shadow: 0px 5px rgba(0, 0, 0, .14);
+  font-weight: bold;
+}
+#current-teacher-question-counter {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 2rem;
+  font-size: 2em;
+  color: white;
+  text-shadow: 0px 5px rgba(0, 0, 0, .14);
+  font-weight: bold;
+}
+
+#current-answer{
+  display: flex;
+  flex-wrap: wrap;
+  background-color: orange;
+  margin-bottom: 3rem;
+  padding: 2rem;
+  font-size: 3em;
+  color: purple;
+  font-weight: bold;
+
+}
+
+#all-questions-flex {
+  display: flex;
+
+}
+
+
+
+@media only screen and (max-width: 890px) {
+
+  #logo {
+    width: 80%;
+    padding: 1rem;
+    padding-top: 3rem;
+    max-width: 80%;
+  }
+
+  #logo-small {
+    width: 40%;
+    height: 40%;
+    padding: 1rem;
+    padding-left: 1rem;
+  }
+
+  #homeview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .userSelectMenu {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    margin: 2rem;
+    padding: 0;
+    width: 80%;
+    max-width: 80%;
+  }
+
+  #teacher_icon {
+    width: 50px;
+  }
+
+  #student_icon {
+    width: 50px;
+  }
+
+  .studentButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+  }
+
+  #main-wrapper{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #114B5F;
+    background: linear-gradient(to top, #114B5F, #008080);
+    min-height: 100;
+  }
+
+  .Nav-style {
+    display: flex;
+    padding-left: 1rem;
+    border-bottom: solid;
+    border-color: black;
+    background: linear-gradient(to right, #114B5F, #008080);
+    margin-bottom: 1rem;
+  }
+
+  #game-pin-box{
+    background: #C6DABF;
+    padding: 1rem 1rem;
+    width: 50%;
+    align-self: center;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+  }
+
+  #game-pin{
+    font-size: 4rem;
+    color: #008080;
+    text-align: center;
+  }
+
+  .contestant-table{
+    background-color: #F3E9D2 !important;
+    width: 80% !important;
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+  }
+  
 }

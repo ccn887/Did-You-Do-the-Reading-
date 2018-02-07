@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import { addStudentToGameThunk } from '../../../store'
 import firebase from '../../../../server/firebase'
 import history from '../../../history'
+import Header  from '../../Header'
+import { Link } from 'react-router-dom'
 
 
 export class StudentJoinGame extends Component {
@@ -37,6 +39,9 @@ export class StudentJoinGame extends Component {
     const name = this.state.name
     const uid = this.props.firebaseUser.uid
 
+    const email = this.props.firebaseUser.email
+
+
     firebase.database().ref(`gameRooms/${currentGame}`)
       .once('value', gamePinSnap => {
         if (!gamePinSnap.val()){
@@ -44,7 +49,7 @@ export class StudentJoinGame extends Component {
           this.setState({wrongPin: true})
         }
         else {
-          this.props.addStudentToGameThunk(name, currentGame, uid);
+          this.props.addStudentToGameThunk(name, currentGame, uid, email);
         }
       })
   }
@@ -62,7 +67,12 @@ export class StudentJoinGame extends Component {
 
 
   render() {
+
     return (
+      <div>
+      <center>
+        <Header />
+      </center>
       <div id="join-game-container">
         {
           this.state.activeUser
@@ -81,6 +91,7 @@ export class StudentJoinGame extends Component {
             <div id="join-logout-button-wrapper">
               <Button id="join-logout-button" inverted color="orange" onClick={this.logout}>Log Out</Button>
             </div>
+            <Link id="back-for-students" to="/"> <Button color="black">Back</Button></Link>
           </Form>
           :
           <div>
@@ -88,6 +99,7 @@ export class StudentJoinGame extends Component {
             <Button onClick={this.goToLogin}>Go To Login</Button>
           </div>
         }
+      </div>
       </div>
     )
   }

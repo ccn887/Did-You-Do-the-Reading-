@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import history from '../history'
 import TeacherAddQuestion from '../components/gameplay/teacher/Teacher_AddQuestion'
 import TeacherEditQuestion from '../components/gameplay/teacher/Teacher_EditQuestion'
+import HeaderSmall from './HeaderSmall'
 
 
 export class AllQuestions extends Component {
@@ -96,6 +97,10 @@ export class AllQuestions extends Component {
     this.setState({showEditForm: NaN})
   }
 
+  setShowAddFormToFalse = () => {
+    this.setState({showAddForm: false})
+  }
+
   render() {
     let quizArr = [];
     const questionSet = this.props.questionSet
@@ -108,6 +113,14 @@ export class AllQuestions extends Component {
 
     return (
       <div>
+        <HeaderSmall />
+        <hr />
+        <Container id="all-questions-flex">
+          <div className="two-button-flex">
+            <Button color="purple" disabled={!this.state.quizTitle.length} onClick={this.playNow}>Play Now</Button>
+            <Button color="green" disabled={!this.state.quizTitle} onClick={this.saveQuiz}>Save for Later</Button>
+            <Button color="orange" onClick={this.showAddForm}>Add Another Question</Button>
+          </div>
         <Container id="all-questions-container">
           <div>
             {this.state.noQuestions ?
@@ -132,7 +145,7 @@ export class AllQuestions extends Component {
                           <Message className='question-edit-box' color='teal'>
                             <div className='question-edit-flex'>
                               <h3 >{questionSet[question].question} </h3>
-                                <Button value={idx} onClick={this.showEditForm} >
+                                <Button id="question-edit-button" value={idx} onClick={this.showEditForm} >
                                   edit
                                 </Button>
                               <Button onClick={(e) => { this.deleteQuestion(e, question) }}>
@@ -174,17 +187,13 @@ export class AllQuestions extends Component {
                       )
                     })
                   }
-                  <div className="two-button-flex">
-                    <Button color="orange" onClick={this.showAddForm}>Add Another Question</Button>
-                    <Button color="purple" disabled={!this.state.quizTitle.length} onClick={this.playNow}>Play Now</Button>
-                    <Button color="green" disabled={!this.state.quizTitle} onClick={this.saveQuiz}>Save for Later</Button>
-                    <Button color="red" onClick={this.showEditForm}>Edit Questions</Button>
-                  </div>
-                  {showAddForm && <TeacherAddQuestion match={this.props.match} />}
+
+                  {showAddForm && <TeacherAddQuestion match={this.props.match} closeAddWindow={this.setShowAddFormToFalse}/>}
                 </div>
               </div>
             }
           </div>
+        </Container>
         </Container>
       </div>
     )

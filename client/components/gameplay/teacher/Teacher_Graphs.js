@@ -7,6 +7,7 @@ import AllStudentsGraph from './AllStudentsGraph'
 import SingleStudentGraph from './SingleStudentGraph'
 import { fetchAllStudentsWithScoreData } from '../../../store'
 import Navbar from '../../Navbar'
+import  HeaderSmall  from '../../HeaderSmall'
 
 
 export class TeacherGraphs extends Component {
@@ -43,10 +44,16 @@ export class TeacherGraphs extends Component {
   render(){
     const ids = this.state.studentIds
     const data = this.props.allStudentsGraphData
+    const emails = Object.values(data).map(dataInstance => {
+      return dataInstance.email
+    })
     const graphToRender = this.state.graphToRender
+
+    console.log('emails', emails)
 
     return (
       <div>
+        <HeaderSmall />
       <div className="Teacher-Navbar">
         <Navbar />
       </div>
@@ -69,13 +76,13 @@ export class TeacherGraphs extends Component {
           </Button>
           <h2>Individual Student Graphs:</h2>
           {
-            ids && ids.length && ids.map(id => {
+            ids && ids.length && ids.map((id, index) => {
               return (
                 <Button
                   onClick={this.switchGraph}
                   key={id} value={id}
                   active={graphToRender === id}>
-                  {id}
+                  {emails[index]}
                 </Button>
               )
             })

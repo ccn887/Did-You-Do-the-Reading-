@@ -11,6 +11,7 @@ import {
 } from '../../../store'
 import Leaderboard from '../../Leaderboard'
 import { Link } from 'react-router-dom'
+import Header  from '../../Header'
 
 
 export class TeacherWaitingRoom extends Component {
@@ -50,13 +51,15 @@ export class TeacherWaitingRoom extends Component {
 
     return (
       <div>
+        <center>
+          <Header />
+        </center>
         <Container className="game-join-box">
           <h1>Enter the Pin to Join the Game!</h1>
           <div id="game-pin-box">
             <h1 id="game-pin">{gamePin}</h1>
           </div>
           {currentStudents.length ?
-            <div>
             <Table className="contestant-table">
               <th className="table-header">
                 contestants:
@@ -75,7 +78,6 @@ export class TeacherWaitingRoom extends Component {
                   }
                 </Table.Body>
               </Table>
-            </div>
           : (
             <div id="waiting-for-contestants">Waiting for contestants...</div>
           )

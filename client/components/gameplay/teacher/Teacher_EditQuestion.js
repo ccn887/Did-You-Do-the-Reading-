@@ -32,7 +32,7 @@ export class TeacherEditQuestion extends Component {
     let wrongAnswers = this.props.questionObj.answers.filter(item => {
       return item !== rightAnswer
     })
-    
+
     return (
       <Container>
         <Message className="Edit-new-question">
@@ -50,10 +50,10 @@ export class TeacherEditQuestion extends Component {
                       <Input defaultValue={wrongAnswers[0]} required type="text" name="wrongOne" />
               </label>
               <label> Wrong Answer 2
-                      <Input defaultValue={wrongAnswers[1]} required type="text" name="wrongTwo" />
+                      <Input defaultValue={wrongAnswers[1]} type="text" name="wrongTwo" />
               </label>
               <label> Wrong Answer 3
-                      <Input defaultValue={wrongAnswers[2]} required type="text" name="wrongThree" />
+                      <Input defaultValue={wrongAnswers[2]} type="text" name="wrongThree" />
               </label>
             </div>
             <Button type="Submit" value="submit"> Update Question </Button>
