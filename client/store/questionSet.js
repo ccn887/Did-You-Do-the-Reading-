@@ -55,8 +55,6 @@ export const generateQuestionSetThunk = (text) => async dispatch => {
   let questionArray5 = res5.data
 
 
-  let finalQuestionArray = questionArray.concat(questionArray2, questionArray3, questionArray4, questionArray5)
-
   const questionSetRef = firebase.database().ref('questionSets');
   let newQuestionSetRef = questionSetRef.push({})
   finalQuestionArray.forEach(questionObj => {
