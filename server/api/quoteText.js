@@ -70,7 +70,10 @@ router.post('/whoDidItQuestion', async (req, res, next) => {
       }
     }
     const filteredSentences = sentencesArr.filter(sentence => {
-      return sentence.length > 40 && sentence.charCodeAt(0) < 97 && ((sentence.indexOf('.' ) > 32) ||(sentence.indexOf('!') > 32) || (sentence.indexOf('?') > 32) || (sentence.indexOf(',') > 32))
+      return sentence.length > 40 && sentence.charCodeAt(0) < 97 && ((sentence.slice(-7, -1).includes('.')) ||
+      (sentence.slice(-7, -1).includes('!')) ||
+      (sentence.slice(-7, -1).includes('?')) ||
+      (sentence.slice(-7, -1).includes(',')))
     })
     let sentenceObjArr = []
     for (let i = 0; i < filteredSentences.length; i++) {
