@@ -17,7 +17,7 @@ router.post('/plotQuestion', async (req, res, next) => {
   res.send(question)
   }
   catch (err) {
-    console.error('COULD NOT GET DO', err)
+    console.error(err)
   }
 
 })
