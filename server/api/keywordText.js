@@ -36,8 +36,6 @@ function natLangAsync(param){
   if(keywords){
   const questions = await findNonPeopleKeywords(keywords, text)
   res.send(questions)
-  } else {
-    res.send('no questions')
   }
   }
   catch(err) {
