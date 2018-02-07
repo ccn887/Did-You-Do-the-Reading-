@@ -75,9 +75,14 @@ export class TeacherSingleQuestion extends Component {
               <div className="answer-box">
                 <div className="teacher-single-answer">{answerArray.length && answerArray[0]}</div>
                 <div className="teacher-single-answer">{answerArray.length && answerArray[1]}</div>
-                <div className="teacher-single-answer">{answerArray.length && answerArray[2]}</div>
-                <div className="teacher-single-answer">{answerArray.length && answerArray[3]}</div>
               </div>
+              {
+                answerArray.length === 4 &&
+                <div className="answer-box">
+                  <div className="teacher-single-answer">{answerArray.length && answerArray[2]}</div>
+                  <div className="teacher-single-answer">{answerArray.length && answerArray[3]}</div>
+                </div>
+              }
             </div>
             <div>
               <div className="timer-container">
