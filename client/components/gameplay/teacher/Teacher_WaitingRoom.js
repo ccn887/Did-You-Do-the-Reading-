@@ -17,7 +17,9 @@ import Header  from '../../Header'
 export class TeacherWaitingRoom extends Component {
   constructor() {
     super();
-    this.playGame = this.playGame.bind(this)
+    this.state = {
+      currentStudents: []
+    }
   }
 
   componentDidMount() {
@@ -26,12 +28,18 @@ export class TeacherWaitingRoom extends Component {
     this.props.listenForNewStudents(gameId);
   }
 
+  componentWillReceiveProps(nextProps){
+    if (nextProps.currentStudents){
+      this.setState({currentStudents: nextProps.currentStudents})
+    }
+  }
+
   componentWillUnmount() {
     const gameId = this.props.match.params.pin;
     this.props.stopListeningForNewStudents(gameId);
   }
 
-  playGame(e) {
+  playGame = (e) => {
     e.preventDefault();
     const currentGame = this.props.currentGame
     const gameRoomId = this.props.match.params.pin;
@@ -46,7 +54,7 @@ export class TeacherWaitingRoom extends Component {
 
   render() {
 
-    const currentStudents = this.props.currentStudents
+    const currentStudents = this.state.currentStudents
     const gamePin = this.props.match.params.pin
 
     return (
@@ -93,7 +101,12 @@ export class TeacherWaitingRoom extends Component {
 }
 
 const mapState = state => {
-  return { student: state.student, currentGame: state.currentGame, currentStudents: state.currentStudents, gameState: state.gameState }
+  return {
+    student: state.student,
+    currentGame: state.currentGame,
+    currentStudents: state.currentStudents,
+    gameState: state.gameState
+  }
 }
 
 const mapDispatch = { getSingleStudentOnce, setGameOnStateThunk, listenForNewStudents, stopListeningForNewStudents, updateGameState }

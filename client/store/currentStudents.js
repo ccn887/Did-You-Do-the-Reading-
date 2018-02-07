@@ -19,16 +19,18 @@ const database = firebase.database()
 const activeListeners = {}
 
 
-  /*Thunks*/
+/* Thunks */
 export const listenForNewStudents =  (gameId) => (dispatch) => {
    const path = `gameRooms/${gameId}/users`
    const ref = database.ref(path)
    const listener = (snapshot) => {
-     if (!snapshot.val()) return
+     if (!snapshot.val()) {
+       dispatch(updateStudentList([]))
+     }
      const studentIds = Object.values(snapshot.val())
-    database.ref('users').once('value').then(snapshot2 => {
+
+     database.ref('users').once('value', snapshot2 => {
        let users = snapshot2.val()
-       console.log("Users in thunk", studentIds)
        dispatch(updateStudentList(studentIds.map(id => users[id])))
      })
 
