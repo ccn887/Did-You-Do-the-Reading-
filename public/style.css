@@ -730,7 +730,7 @@ label.white-text{
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 7rem;
+  margin-top: 2rem;
 }
 
 
@@ -848,12 +848,11 @@ label.white-text{
 
   th {
     font-size: 10px;
-    width: 1% !important;
   }
 
-  .ui.table:not(.unstackable) tr {
+  /* .ui.table:not(.unstackable) tr {
     display: flex !important;
-  }
+  } */
 
   #student-single-question {
     display: flex;

@@ -54,8 +54,8 @@ export class Leaderboard extends Component {
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>Contestant</Table.HeaderCell>
-                <Table.HeaderCell>Final Score</Table.HeaderCell>
-                <Table.HeaderCell>Final Streak</Table.HeaderCell>
+                <Table.HeaderCell>Score</Table.HeaderCell>
+                <Table.HeaderCell>Current Streak</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
               {
