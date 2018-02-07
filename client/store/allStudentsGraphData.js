@@ -46,7 +46,8 @@ export const fetchAllStudentsWithScoreData = () => dispatch => {
                 const gameHistoryArray = Object.values(studentGameListObj)
                 const dayGameHistoryArray = gameHistoryArray.map(gameHistoryInstance => {
                   return {
-                    date: (Math.floor(gameHistoryInstance.date / 86400000 - 17520 )),
+                    date: gameHistoryInstance.date,
+                    game: gameHistoryInstance.gamePin,
                     score: gameHistoryInstance.score
                   }
                 })
