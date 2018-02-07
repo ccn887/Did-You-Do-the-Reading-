@@ -27,16 +27,8 @@ const activeListeners = {}
 /* ------------       THUNK CREATORS     ------------------ */
 
 
-export const generateQuestionSetThunk = (text) => async dispatch => {
-  let res = await axios.post('/api/text/vocab', tokenize(text));
-  let questionArray = res.data;
-  let res2 = await axios.post('/api/quoteText/quoteQuestion', { content: text });
-  let questionArray2 = res2.data
-  let res3 = await axios.post('/api/quoteText/whoDidItQuestion', { content: text });
-  let questionArray3 = res3.data
-  let res4 = await axios.post('/api/keywordText/keywordQuestion', { content: text });
-  let res5 = await axios.post('/api/plotText/plotQuestion', { content: text });
-  let questionArray4 = res4.data
+export const generateQuestionSetThunk = (text, activeQs) => async dispatch => {
+  let questionArray = [], questionArray2 = [], questionArray3 = [], questionArray4 = [], questionArray5 = []
 
   function shuffle(originalArray) {
     var array = [].concat(originalArray);
@@ -50,10 +42,30 @@ export const generateQuestionSetThunk = (text) => async dispatch => {
     }
     return array;
   }
-  let finalQuestionArray = shuffle(questionArray.concat(questionArray2, questionArray3, questionArray4))
 
-  let questionArray5 = res5.data
+try{
+  if(activeQs.includes('1')){
+  let res = await axios.post('/api/text/vocab', tokenize(text));
+  questionArray = res.data
+  }
+  if(activeQs.includes('2')){
+  let res2 = await axios.post('/api/quoteText/quoteQuestion', { content: text });
+  questionArray2 = res2.data
+  }
+  if(activeQs.includes('3')){
+  let res3 = await axios.post('/api/quoteText/whoDidItQuestion', { content: text })
+  questionArray3 = res3.data
+  }
+  if(activeQs.includes('4')){
+  let res4 = await axios.post('/api/keywordText/keywordQuestion', { content: text });
+  questionArray4 = res4.data
+  }
+  if(activeQs.includes('5')){
+  let res5 = await axios.post('/api/plotText/plotQuestion', { content: text });
+  questionArray5 = res5.data
+  }
 
+  let finalQuestionArray = shuffle(questionArray.concat(questionArray2, questionArray3, questionArray4, questionArray5))
 
   const questionSetRef = firebase.database().ref('questionSets');
   let newQuestionSetRef = questionSetRef.push({})
@@ -62,6 +74,10 @@ export const generateQuestionSetThunk = (text) => async dispatch => {
       .push(questionObj)
   })
   history.push(`/${newQuestionSetRef.key}/all-questions`)
+}
+catch(err){
+  next(err)
+}
 }
 
 export const fetchQuestionSetThunk = (qSetId) => dispatch => {
