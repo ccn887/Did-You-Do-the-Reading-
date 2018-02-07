@@ -33,6 +33,7 @@ router.post('/quoteQuestion', async (req, res, next) => {
   }
   catch (err) {
     console.log(err)
+    res.send([])
   }
 
 
@@ -146,28 +147,30 @@ router.post('/whoDidItQuestion', async (req, res, next) => {
   }
   catch (err) {
     console.log(err)
+    res.send([])
   }
 
 
 })
 
-router.post('/simileQuestion', async (req, res, next) => {
+// router.post('/simileQuestion', async (req, res, next) => {
 
-  const text = req.body.text
-
-
-  try {
-
-    const similes = await findSimiles(text)
-    //Good for fill-in-the-blanks until the end of the clause
-    res.send(similes)
-  }
-  catch (err) {
-    console.log(err)
-  }
+//   const text = req.body.text
 
 
-})
+//   try {
+
+//     const similes = await findSimiles(text)
+//     //Good for fill-in-the-blanks until the end of the clause
+//     res.send(similes)
+//   }
+//   catch (err) {
+//     console.log(err)
+
+//   }
+
+
+// })
 
 // router.post('/modifierQuestion', async (req, res, next) => {
 

@@ -27,8 +27,10 @@ const findSummary = async (text) => {
     })
   }
   try {
+    if(text.length){
     const summary = await summaryAsync(parameters)
     return summary.sentences
+    }
   }
   catch (err) {
     console.log('ERROR:', err)
