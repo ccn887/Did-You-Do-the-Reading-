@@ -18241,9 +18241,9 @@ ol.ui.list li[value]:before {
   .ui.table:not(.unstackable) {
     padding: 0
   }
-  .ui.table:not(.unstackable) thead {
+  /* .ui.table:not(.unstackable) thead {
     display: block
-  }
+  } */
   .ui.table:not(.unstackable) tfoot {
     display: block
   }
