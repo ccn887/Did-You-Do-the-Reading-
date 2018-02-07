@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
-import { setGameOnStateThunk, listenForGameStateChange, storeStudentGameHistory,
+import { setGameOnStateThunk, listenForNewStudents, listenForGameStateChange, storeStudentGameHistory,
   stopListeningForGameState, getSingleStudentListener, stopListeningForSingleStudent,
   resetStudentScore, fetchTotalQuestions, breakStudentStreak } from '../../../store'
 import { connect } from 'react-redux'
 import history from '../../../history'
+import Leaderboard from '../../Leaderboard'
+import { Link } from 'react-router-dom'
+import { Button } from 'semantic-ui-react'
 
 
 export class StudentAnswerReveal extends Component {
@@ -21,6 +24,7 @@ export class StudentAnswerReveal extends Component {
     this.props.setGameOnStateThunk(this.props.match.params.pin)
     this.props.listenForGameStateChange(this.props.match.params.pin);
     this.props.fetchTotalQuestions(this.props.match.params.pin)
+    this.props.listenForNewStudents(this.props.match.params.pin);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -66,12 +70,20 @@ export class StudentAnswerReveal extends Component {
     const currentStudent = this.props.singleStudent
     return (
       <div>
+      <div id="student-answer-wrapper">
+        <h1>The answer was <u><i>{this.props.currentQuestion.rightAnswer}</i></u></h1>
         <h1> Waiting for Next Question...</h1>
         <h2>Your Score:  {currentStudent.score}</h2>
         {
           currentStudent.streak > 2 &&
           <h2>You're on Fire! You've correctly answered {currentStudent.streak} questions in a row!</h2>
         }
+        <Leaderboard />
+        <div id="exit-out">
+          <h5>Need to leave the game?</h5>
+          <Link to="/"> <Button id="game-quick-exit-button" color="red">Exit</Button></Link>
+        </div>
+      </div>
       </div>
     )
   }
@@ -97,7 +109,8 @@ const mapDispatch = {
   storeStudentGameHistory,
   resetStudentScore,
   fetchTotalQuestions,
-  breakStudentStreak
+  breakStudentStreak,
+  listenForNewStudents
 }
 
 export default connect(mapState, mapDispatch)(StudentAnswerReveal)

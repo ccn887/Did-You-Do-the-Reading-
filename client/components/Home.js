@@ -15,6 +15,27 @@ export default class Home extends Component {
     }
   }
 
+// componentDidMount (){
+//   var dogBarkingBuffer = null;
+//   // Fix up prefixing
+//   window.AudioContext = window.AudioContext || window.webkitAudioContext;
+//   var context = new AudioContext();
+//
+//   function loadDogSound('/audio/click.mp3') {
+//     var request = new XMLHttpRequest();
+//     request.open('GET', url, true);
+//     request.responseType = 'arraybuffer';
+//
+//     // Decode asynchronously
+//     request.onload = function() {
+//       context.decodeAudioData(request.response, function(buffer) {
+//         dogBarkingBuffer = buffer;
+//       }, onError);
+//     }
+//     request.send();
+//   }
+// }
+
   /*
   componentDidMount (){
     let context = new AudioContext();

@@ -33,7 +33,7 @@ export class Leaderboard extends Component {
 
     if(this.props.currentStudents.length) {
       return (
-        <div>
+        <div id="leaderboard-wrapper">
           <h2>Leaderboard</h2>
           <Table basic="very" celled collapsing id="leaderboard-display">
             <Table.Header>
