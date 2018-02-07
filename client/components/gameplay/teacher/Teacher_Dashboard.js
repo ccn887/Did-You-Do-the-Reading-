@@ -48,7 +48,7 @@ export class TeacherDashboard extends Component {
             <h2 id="teach-menu-label"> Teacher Menu </h2>
             <Button className="teacher-menu-button"  color="purple" onClick={this.makeQuiz}>Make a New Game</Button>
             <Button className="teacher-menu-button"  color="purple" onClick={this.goToGraphs}>View Student Progress Graphs</Button>
-          <h1>Play a Previous Game: </h1>
+          <h1 id="play-prev-game">Play a Previous Game: </h1>
           <Container className="all-games-second-container">
             <Grid>
               {

@@ -160,7 +160,9 @@ form div {
   z-index: 9;
 }
 
-
+#play-prev-game {
+  margin-bottom: 2rem;
+}
 
 #question-edit-button{
   margin-left: auto;
@@ -558,10 +560,12 @@ label.white-text{
   align-items: stretch !important;
   border-top: solid;
   border-color: white;
+  width: 100%;
 }
 
-.ui.grid>.row{
+.ui.grid>.row {
   border-bottom: solid;
+  width: 100%;
   border-color: lightgray;
   box-shadow: 0 5px 0px 0 rgba(0, 0, 0, 0.09)
 }
