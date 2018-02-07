@@ -69,31 +69,25 @@ export class StudentSingleQuestion extends Component {
     const answerArray = currentQuestion.answers ? Object.values(currentQuestion.answers) : []
 
     return (
-      <div>
-        <div>
-          <div>
+          <div id="student-question-wrapper">
             <h2>Question {this.props.questionCounter}/{this.props.totalQuestions}</h2>
-            <Card>
               <h1 id="student-single-question">{currentQuestion && currentQuestion.question}</h1>
-            </Card>
             {
               answerArray.length === 2
               ?
-              <Container>
-                <Button value={answerArray[0]} onClick={this.submitAnswer} className="student-single-answer">{answerArray.length && answerArray[0]}</Button>
-                <Button value={answerArray[1]} onClick={this.submitAnswer} className="student-single-answer">{answerArray.length && answerArray[1]}</Button>
-              </Container>
+              <div className="student-single-answer">
+                <Button color="orange" value={answerArray[0]} onClick={this.submitAnswer} className="student-single-answer">{answerArray.length && answerArray[0]}</Button>
+                <Button color="orange" value={answerArray[1]} onClick={this.submitAnswer} className="student-single-answer">{answerArray.length && answerArray[1]}</Button>
+              </div>
               :
-              <Container>
-                <Button value={answerArray[0]} onClick={this.submitAnswer} className="student-single-answer">{answerArray.length && answerArray[0]}</Button>
-                <Button value={answerArray[1]} onClick={this.submitAnswer} className="student-single-answer">{answerArray.length && answerArray[1]}</Button>
-                <Button value={answerArray[2]} onClick={this.submitAnswer} className="student-single-answer">{answerArray.length && answerArray[2]}</Button>
-                <Button value={answerArray[3]} onClick={this.submitAnswer} className="student-single-answer">{answerArray.length && answerArray[3]}</Button>
-              </Container>
+              <div className="student-single-answer">
+                <Button color="orange" value={answerArray[0]} onClick={this.submitAnswer} className="student-single-answer">{answerArray.length && answerArray[0]}</Button>
+                <Button color="orange" value={answerArray[1]} onClick={this.submitAnswer} className="student-single-answer">{answerArray.length && answerArray[1]}</Button>
+                <Button color="orange" value={answerArray[2]} onClick={this.submitAnswer} className="student-single-answer">{answerArray.length && answerArray[2]}</Button>
+                <Button color="orange" value={answerArray[3]} onClick={this.submitAnswer} className="student-single-answer">{answerArray.length && answerArray[3]}</Button>
+              </div>
             }
           </div>
-        </div>
-      </div >
     )
   }
 }

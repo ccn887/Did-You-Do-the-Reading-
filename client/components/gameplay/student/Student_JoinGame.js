@@ -85,14 +85,14 @@ export class StudentJoinGame extends Component {
               <input className="join-game-input" id="join-name" name="name" maxLength="20" onChange={this.handleChange} />
             </Form.Field>
             {this.state.wrongPin && <h2>Invalid Game Pin</h2>}
-          <Button color="purple" inverted id="join-game-button" onClick={this.join}>Join the Game!</Button>
+          <Button color="purple" id="join-game-button" onClick={this.join}>Join the Game!</Button>
             <div id="join-logout-button-wrapper">
-              <Button id="join-logout-button" inverted color="orange" onClick={this.logout}>Log Out</Button>
+              <Button id="join-logout-button" color="orange" onClick={this.logout}>Log Out</Button>
             </div>
             <Link id="back-for-students" to="/"> <Button color="black">Back</Button></Link>
           </Form>
           :
-          <div>
+          <div className="student-join-box">
             <h2>You must log in to join a game!</h2>
             <Button onClick={this.goToLogin}>Go To Login</Button>
           </div>
