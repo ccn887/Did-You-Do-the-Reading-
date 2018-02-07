@@ -83,9 +83,7 @@ form div {
   display: inline-block;
 }
 
-.teacher-single-answer{
-  width: 10rem !important;
-}
+
 
 .question-edit-box{
   width: 75vw;
@@ -381,7 +379,11 @@ label.white-text{
   color: white !important;
 }
 
-
+.timer-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 .warning {
   color: #ffa500
 }
@@ -397,7 +399,10 @@ label.white-text{
 }
 
 #time-remaining{
-  color: #C6DABF
+  font-size: 2em;
+  color: white;
+  text-shadow: 0px 5px rgba(0, 0, 0, .14);
+  font-weight: bold;
 }
 
 #timer{
@@ -408,30 +413,48 @@ label.white-text{
 }
 
 #question-box{
-  width: 45rem;
+  display:flex;
+  width: 90%;
+  height: 16em;
+  align-content: space-around;
+  justify-content: center;
 }
 
 #teacher-single-question{
-  color: #008080;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 4rem;
+  font-size: 45px;
+  color: white;
+  text-shadow: 0px 5px rgba(0, 0, 0, .14);
+  font-weight: bold;
 }
 
-.teacher-single-answer{
-  border-color: #008080;
-  background: #F3E9D2;
-}
+
 
 .answer-box{
-  display: flex;
+  /* display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-  padding: 1rem 1rem;
+  padding: 1rem 1rem; */
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+  padding: 2rem;
+  font-size: 3em;
+  color: purple;
+  font-weight: bold;
 }
 
+
 .teacher-single-answer{
-  width: 20rem !important;
-  height: 4rem;
-  font-size: 1.5rem;
-  color: #008080;
+  margin: 2rem;
+  padding: 2rem;
+  color: purple;
+  font-weight: bold;
+  justify-content: space-between;
+  background-color: orange;
+
 }
 
 .teacher-wrapper {
@@ -529,12 +552,29 @@ label.white-text{
   align-items: center;
   padding-bottom: 5rem;
 }
+.teacher-single-question-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-content: stretch;
+  align-items: center;
+  padding-bottom: 5rem;
+}
 
 #current-question {
   display: flex;
   flex-wrap: wrap;
   padding: 4rem;
   font-size: 5em;
+  color: white;
+  text-shadow: 0px 5px rgba(0, 0, 0, .14);
+  font-weight: bold;
+}
+#current-teacher-question-counter {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 2rem;
+  font-size: 2em;
   color: white;
   text-shadow: 0px 5px rgba(0, 0, 0, .14);
   font-weight: bold;
