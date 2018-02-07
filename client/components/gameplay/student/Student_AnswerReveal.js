@@ -81,8 +81,11 @@ export class StudentAnswerReveal extends Component {
         <h2>Your Score:  {currentStudent.score}</h2>
         {
           currentStudent.streak > 2 &&
+          <center>
           <h2>You're on Fire! You've correctly answered {currentStudent.streak} questions in a row!</h2>
+          </center>
         }
+        <br />
         <Leaderboard />
         <div id="exit-out">
           <h5>Need to leave the game?</h5>

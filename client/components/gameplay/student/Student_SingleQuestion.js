@@ -76,15 +76,15 @@ export class StudentSingleQuestion extends Component {
               answerArray.length === 2
               ?
               <div className="student-single-answer">
-                <Button color="orange" value={answerArray[0]} onClick={this.submitAnswer} className="student-single-answer">{answerArray.length && answerArray[0]}</Button>
-                <Button color="orange" value={answerArray[1]} onClick={this.submitAnswer} className="student-single-answer">{answerArray.length && answerArray[1]}</Button>
+                <Button  color="orange" value={answerArray[0]} onClick={this.submitAnswer} className="answer-button">{answerArray.length && answerArray[0]}</Button>
+                <Button color="orange" value={answerArray[1]} onClick={this.submitAnswer} className="answer-button">{answerArray.length && answerArray[1]}</Button>
               </div>
               :
               <div className="student-single-answer">
-                <Button color="orange" value={answerArray[0]} onClick={this.submitAnswer} className="student-single-answer">{answerArray.length && answerArray[0]}</Button>
-                <Button color="orange" value={answerArray[1]} onClick={this.submitAnswer} className="student-single-answer">{answerArray.length && answerArray[1]}</Button>
-                <Button color="orange" value={answerArray[2]} onClick={this.submitAnswer} className="student-single-answer">{answerArray.length && answerArray[2]}</Button>
-                <Button color="orange" value={answerArray[3]} onClick={this.submitAnswer} className="student-single-answer">{answerArray.length && answerArray[3]}</Button>
+                <Button color="orange" value={answerArray[0]} onClick={this.submitAnswer} className="answer-button">{answerArray.length && answerArray[0]}</Button>
+                <Button color="orange" value={answerArray[1]} onClick={this.submitAnswer} className="answer-button">{answerArray.length && answerArray[1]}</Button>
+                <Button color="orange" value={answerArray[2]} onClick={this.submitAnswer} className="answer-button">{answerArray.length && answerArray[2]}</Button>
+                <Button color="orange" value={answerArray[3]} onClick={this.submitAnswer} className="answer-button">{answerArray.length && answerArray[3]}</Button>
               </div>
             }
           </div>
