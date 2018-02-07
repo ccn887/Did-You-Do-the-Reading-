@@ -121,7 +121,7 @@ export class AllQuestions extends Component {
           <div>
             {this.state.noQuestions ?
               <div>
-                <h3> that text passage generated no qu estions</h3>
+                <h3> that text passage generated no questions</h3>
                 <Button color="teal" onClick={this.goBack}>Generate Quiz With New Text</Button>
               </div>
               :
