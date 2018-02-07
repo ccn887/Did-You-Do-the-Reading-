@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { findDirectObject, findDirectWithPreposition, findSummary, namesInSentences, findPeople, makeTrueFalse } = require('./quoteUtils')
+const { findSummary, namesInSentences, findPeople} = require('./quoteUtils')
 
 module.exports = router
 
@@ -17,7 +17,8 @@ router.post('/plotQuestion', async (req, res, next) => {
   res.send(question)
   }
   catch (err) {
-    console.error('COULD NOT GET DO', err)
+    console.error('COULD NOT GET PLOT Q', err)
+    res.send([])
   }
 
 })
