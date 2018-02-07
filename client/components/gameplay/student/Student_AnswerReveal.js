@@ -66,6 +66,11 @@ export class StudentAnswerReveal extends Component {
 
   }
 
+  exitStudent = () => {
+    this.props.resetStudentScore(this.state.studentId)
+    this.props.breakStudentStreak(this.state.studentId)
+  }
+
   render() {
     const currentStudent = this.props.singleStudent
     return (
@@ -81,7 +86,9 @@ export class StudentAnswerReveal extends Component {
         <Leaderboard />
         <div id="exit-out">
           <h5>Need to leave the game?</h5>
-          <Link to="/"> <Button id="game-quick-exit-button" color="red">Exit</Button></Link>
+          <Link to="/">
+            <Button onClick={this.exitStudent}id="game-quick-exit-button" color="red">Exit</Button>
+          </Link>
         </div>
       </div>
       </div>
