@@ -8,26 +8,29 @@ export default function AllStudentsGraph(props){
   const bigData = props.data
 
   const idArray = props.studentIds
+  let counter = 0;
 
 
   console.log("from all student graphs: ", bigData)
 
   return (
-    <Container>
+    <Container className="inner-graph-container">
     <h1 className="graph-title">All Students Scores </h1>
         <VictoryChart domainPadding={20} theme={VictoryTheme.grayscale}>
-          <VictoryAxis label="days"
-            tickValues={[43, 44, 45, 46, 47, 48, 49, 50]} />
+          <VictoryAxis label="time"
+            tickFormat={(t) => ``}/>
           <VictoryAxis dependentAxis
-            tickValues={[0, 20, 30, 40, 50, 60, 70, 80, 90, 100]} />
+            tickValues={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]} />
 
           {
             idArray && idArray.map(studentId => {
               return (
                 <VictoryLine
                 key={studentId}
-                data={bigData[studentId].data}
-                x="date"
+                data={bigData[studentId].data.sort((a, b) => {
+                  return a.date < b.date ? -1 : 1
+                })}
+                x="game"
                 y="score"
                 />
               )
