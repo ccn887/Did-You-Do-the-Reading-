@@ -69,24 +69,30 @@ export class TeacherGraphs extends Component {
         </Container>
         <div id="graph-menu">
           <Button
+            className="student-graph-button"
+            color='purple'
             onClick={this.switchGraph}
             active={graphToRender === 'all'}
             value="all">
             All Students
           </Button>
           <h2>Individual Student Graphs:</h2>
+          <Container id="student-graph-button-container">
           {
             ids && ids.length && ids.map((id, index) => {
               return (
-                <Button
-                  onClick={this.switchGraph}
-                  key={id} value={id}
-                  active={graphToRender === id}>
-                  {emails[index]}
-                </Button>
+                  <Button
+                    color='teal'
+                    className="student-graph-button"
+                    onClick={this.switchGraph}
+                    key={id} value={id}
+                    active={graphToRender === id}>
+                    {emails[index]}
+                  </Button>
               )
             })
           }
+          </Container>
         </div>
       </Container>
       </div>

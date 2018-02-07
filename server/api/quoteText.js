@@ -33,6 +33,7 @@ router.post('/quoteQuestion', async (req, res, next) => {
   }
   catch (err) {
     console.log(err)
+    res.send([])
   }
 
 
@@ -69,7 +70,10 @@ router.post('/whoDidItQuestion', async (req, res, next) => {
       }
     }
     const filteredSentences = sentencesArr.filter(sentence => {
-      return sentence.length > 40 && sentence.charCodeAt(0) < 97 && ((sentence.indexOf('.' ) > 32) ||(sentence.indexOf('!') > 32) || (sentence.indexOf('?') > 32) || (sentence.indexOf(',') > 32))
+      return sentence.length > 40 && sentence.charCodeAt(0) < 97 && ((sentence.slice(-7, -1).includes('.')) ||
+      (sentence.slice(-7, -1).includes('!')) ||
+      (sentence.slice(-7, -1).includes('?')) ||
+      (sentence.slice(-7, -1).includes(',')))
     })
     let sentenceObjArr = []
     for (let i = 0; i < filteredSentences.length; i++) {
@@ -146,28 +150,30 @@ router.post('/whoDidItQuestion', async (req, res, next) => {
   }
   catch (err) {
     console.log(err)
+    res.send([])
   }
 
 
 })
 
-router.post('/simileQuestion', async (req, res, next) => {
+// router.post('/simileQuestion', async (req, res, next) => {
 
-  const text = req.body.text
-
-
-  try {
-
-    const similes = await findSimiles(text)
-    //Good for fill-in-the-blanks until the end of the clause
-    res.send(similes)
-  }
-  catch (err) {
-    console.log(err)
-  }
+//   const text = req.body.text
 
 
-})
+//   try {
+
+//     const similes = await findSimiles(text)
+//     //Good for fill-in-the-blanks until the end of the clause
+//     res.send(similes)
+//   }
+//   catch (err) {
+//     console.log(err)
+
+//   }
+
+
+// })
 
 // router.post('/modifierQuestion', async (req, res, next) => {
 

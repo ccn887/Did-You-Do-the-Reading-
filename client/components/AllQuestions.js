@@ -14,11 +14,15 @@ export class AllQuestions extends Component {
     this.state = {
       showAddForm: false,
       noQuestions: true,
-
       quizTitle: '',
       showEditForm: false,
 
     }
+  }
+
+  componentWillMount() {
+
+
   }
 
   componentDidMount() {
@@ -45,7 +49,6 @@ export class AllQuestions extends Component {
   }
 
 
-
   playNow = (e) => {
     const pin = Math.floor(Math.random() * 90000) + 10000;
     const title = this.state.quizTitle;
@@ -53,6 +56,7 @@ export class AllQuestions extends Component {
     this.props.buildNewGameRoomThunk(this.props.questionSet, this.props.user.id, pin, title)
     history.push(`/teacher-waiting-room/${pin}`)
   }
+  
 
   saveQuiz = (e) => {
     const pin = Math.floor(Math.random() * 90000) + 10000;
@@ -71,9 +75,9 @@ export class AllQuestions extends Component {
     })
   }
 
+
   showEditForm = (evt) => {
     evt.preventDefault();
-    console.log(typeof evt.target.value)
     this.setState({showEditForm: +evt.target.value})
   }
 
@@ -90,7 +94,6 @@ export class AllQuestions extends Component {
   }
 
   setEditingToNaN = () => {
-    console.log("THIS FROM CRAZY FUNCTION: ", this)
     this.setState({showEditForm: NaN})
   }
 
@@ -99,14 +102,13 @@ export class AllQuestions extends Component {
   }
 
   render() {
-
     let quizArr = [];
     const questionSet = this.props.questionSet
     if (questionSet) {
       quizArr = Object.keys(questionSet)
     }
-
     const showAddForm = this.state.showAddForm;
+
 
 
     return (
@@ -123,7 +125,7 @@ export class AllQuestions extends Component {
           <div>
             {this.state.noQuestions ?
               <div>
-                <h3> that text passage generated no questions</h3>
+                <h3> that text passage generated no qu estions</h3>
                 <Button color="teal" onClick={this.goBack}>Generate Quiz With New Text</Button>
               </div>
               :

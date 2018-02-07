@@ -37,6 +37,7 @@ export class TeacherDashboard extends Component {
   render() {
     const user = this.props.user
     const currentTeacherGames = this.props.currentTeacherGames
+    console.log( this.props.currentTeacherGames)
 
     return (
       <div>

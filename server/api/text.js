@@ -2,7 +2,7 @@ const router = require('express').Router();
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const { WordList } = require('../db/models');
-const { lookup, getRandomIndex, getRandomWords, shuffle, pullFromDb } = require('./utils');
+const { lookup, getRandomIndex, getRandomWords, shuffle, pullFromDb, notAllowedWords} = require('./utils');
 
 
 module.exports = router;
@@ -10,7 +10,6 @@ module.exports = router;
 router.post('/vocab', async (req, res, next) => {
   const textArray = req.body;
 
-  const notAllowedWords = ['jew', 'jews', 'nazi', 'jackass', 'shit', 'faggot', 'balls', 'jesus']
 
   try {
     const response = await WordList.findAll({

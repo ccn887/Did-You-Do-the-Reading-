@@ -137,6 +137,9 @@ const shuffle = (originalArray) =>{
   return array;
 }
 
+const notAllowedWords = ['jew', 'jews', 'nazi', 'jackass', 'shit', 'faggot', 'balls', 'jesus', 'hitler', 'ethnic', 'cleansing', 'fuck', 'ass', 'bonk', 'bitch', 'cock', 'cunt', 'damn', 'dick']
+
+
 
 
 //
@@ -154,4 +157,4 @@ const shuffle = (originalArray) =>{
 // }
 
 
-module.exports = {lookup, getRandomIndex, getRandomWords, shuffle, pullFromDb }
+module.exports = {lookup, getRandomIndex, getRandomWords, shuffle, pullFromDb, notAllowedWords }

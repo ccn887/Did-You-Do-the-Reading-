@@ -27,8 +27,10 @@ const findSummary = async (text) => {
     })
   }
   try {
+    if(text.length){
     const summary = await summaryAsync(parameters)
     return summary.sentences
+    }
   }
   catch (err) {
     console.log('ERROR:', err)
@@ -194,7 +196,7 @@ const makeTrueFalse = (sentenceObjArr, namesOnlyArr) => {
   let question = sentenceObjArr.map(obj2 => {
     count++
     if (!count % 2) {
-      obj2.question = obj2.sentence
+      obj2.question = 'True or False? ' + obj2.sentence
       obj2.rightAnswer = 'true'
     } else {
       let startIdx = obj2.sentence.indexOf(obj2.name)
@@ -205,12 +207,12 @@ const makeTrueFalse = (sentenceObjArr, namesOnlyArr) => {
       if (shuffledAnswers[idx] !== obj2.name) {
         let falsyName = shuffledAnswers[idx]
         let tempSentence = obj2.sentence.slice(0, startIdx) + falsyName + obj2.sentence.slice(endIdx)
-        obj2.question = tempSentence
+        obj2.question = 'True or False? ' + tempSentence
 
 
         obj2.rightAnswer = 'false'
       } else if (shuffledAnswers[idx] === obj2.name){
-        obj2.question = obj2.sentence
+        obj2.question = 'True or False? ' + obj2.sentence
         obj2.rightAnswer = 'true'
       }
     }

@@ -27,21 +27,46 @@ const activeListeners = {}
 /* ------------       THUNK CREATORS     ------------------ */
 
 
-export const generateQuestionSetThunk = (text) => async dispatch => {
-  console.log('generating question set!')
+export const generateQuestionSetThunk = (text, activeQs) => async dispatch => {
+  let questionArray = [], questionArray2 = [], questionArray3 = [], questionArray4 = [], questionArray5 = []
+
+  function shuffle(originalArray) {
+    var array = [].concat(originalArray);
+    var currentIndex = array.length, temporaryValue, randomIndex;
+    while (0 !== currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+    return array;
+  }
+
+try{
+  if(activeQs.includes('1')){
   let res = await axios.post('/api/text/vocab', tokenize(text));
-  let questionArray = res.data;
+  questionArray = res.data
+  }
+  if(activeQs.includes('2')){
   let res2 = await axios.post('/api/quoteText/quoteQuestion', { content: text });
-  let questionArray2 = res2.data
-  let res3 = await axios.post('/api/quoteText/whoDidItQuestion', { content: text });
-  let questionArray3 = res3.data
+  questionArray2 = res2.data
+  }
+  if(activeQs.includes('3')){
+  let res3 = await axios.post('/api/quoteText/whoDidItQuestion', { content: text })
+  questionArray3 = res3.data
+  }
+  if(activeQs.includes('4')){
   let res4 = await axios.post('/api/keywordText/keywordQuestion', { content: text });
+  questionArray4 = res4.data
+  }
+  if(activeQs.includes('5')){
   let res5 = await axios.post('/api/plotText/plotQuestion', { content: text });
-  let questionArray4 = res4.data
-  let questionArray5 = res5.data
+  questionArray5 = res5.data
+  }
 
+  let finalQuestionArray = shuffle(questionArray.concat(questionArray2, questionArray3, questionArray4, questionArray5))
 
-  let finalQuestionArray = questionArray.concat(questionArray2, questionArray3, questionArray4, questionArray5)
   const questionSetRef = firebase.database().ref('questionSets');
   let newQuestionSetRef = questionSetRef.push({})
   finalQuestionArray.forEach(questionObj => {
@@ -49,6 +74,10 @@ export const generateQuestionSetThunk = (text) => async dispatch => {
       .push(questionObj)
   })
   history.push(`/${newQuestionSetRef.key}/all-questions`)
+}
+catch(err){
+  next(err)
+}
 }
 
 export const fetchQuestionSetThunk = (qSetId) => dispatch => {
@@ -79,7 +108,6 @@ export const addQuestionToSetThunk = (qSetId, question) => dispatch => {
 }
 
 export const editQuestionToSetThunk = (qSetId, questionId, question) => dispatch => {
-  console.log("got here thunk")
   const questionRef = firebase.database().ref(`questionSets/${qSetId}`).child(questionId)
   questionRef.update(question)
   .catch((error) => console.error('error editing question: ', error))
