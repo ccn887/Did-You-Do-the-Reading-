@@ -20,10 +20,6 @@ export class AllQuestions extends Component {
     }
   }
 
-  componentWillMount() {
-
-
-  }
 
   componentDidMount() {
     this.props.fetchQuestionSetThunk(this.props.match.params.questionSetId)
@@ -56,7 +52,7 @@ export class AllQuestions extends Component {
     this.props.buildNewGameRoomThunk(this.props.questionSet, this.props.user.id, pin, title)
     history.push(`/teacher-waiting-room/${pin}`)
   }
-  
+
 
   saveQuiz = (e) => {
     const pin = Math.floor(Math.random() * 90000) + 10000;
@@ -145,10 +141,10 @@ export class AllQuestions extends Component {
                           <Message className='question-edit-box' color='teal'>
                             <div className='question-edit-flex'>
                               <h3 >{questionSet[question].question} </h3>
-                                <Button id="question-edit-button" value={idx} onClick={this.showEditForm} >
+                                <Button className ="edit-delete-question" id="question-edit-button" value={idx} onClick={this.showEditForm} >
                                   <Icon name="edit" />
                                 </Button>
-                              <Button onClick={(e) => { this.deleteQuestion(e, question) }}>
+                              <Button className ="edit-delete-question" onClick={(e) => { this.deleteQuestion(e, question) }}>
                                 <Icon name="trash" />
                               </Button>
 
