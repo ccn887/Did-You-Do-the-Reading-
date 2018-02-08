@@ -18,12 +18,9 @@ export class StudentSingleQuestion extends Component {
     const gameRoomId = this.props.match.params.pin;
     const questionId = this.props.match.params.questionId;
 
-
     this.props.setGameOnStateThunk(gameRoomId)
     this.props.setCurrentQuestionThunk(questionId, gameRoomId)
     this.props.listenForGameStateChange(gameRoomId)
-
-    this.props.determineQuestionNumber(questionId, this.props.currentGame)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -70,7 +67,6 @@ export class StudentSingleQuestion extends Component {
 
     return (
           <div id="student-question-wrapper">
-            <h2>Question {this.props.questionCounter}/{this.props.totalQuestions}</h2>
               <h1 id="student-single-question">{currentQuestion && currentQuestion.question}</h1>
             {
               answerArray.length === 2
@@ -97,9 +93,7 @@ const mapState = state => {
     currentGame: state.currentGame,
     currentQuestion: state.currentQuestion,
     currentStudent: state.currentStudent,
-    gameState: state.gameState,
-    questionCounter: state.questionCounter,
-    totalQuestions: state.totalQuestions
+    gameState: state.gameState
   }
 }
 
