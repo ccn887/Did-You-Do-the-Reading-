@@ -64,9 +64,9 @@ const makeQuestionObj = async (arr, text) => {
   try {
     const sentences = await findSyntax(text)
     const filteredSentences = sentences.filter(sentence => {
-      return sentence.text.length > 40 && sentence.text.length < 140 && sentence.text.charCodeAt(0) < 97 && ((sentence.text.slice(-7, -1).includes('.')) ||
-        (sentence.text.slice(-7, -1).includes('!')) ||
-        (sentence.text.slice(-7, -1).includes('?')))
+      return sentence.text.length > 40 && sentence.text.length < 140 && sentence.text.charCodeAt(0) < 97 && ((sentence.text.slice(-7).includes('.')) ||
+        (sentence.text.slice(-7).includes('!')) ||
+        (sentence.text.slice(-7).includes('?')))
     })
 
     const properArr = arr.filter(keywordObj => {

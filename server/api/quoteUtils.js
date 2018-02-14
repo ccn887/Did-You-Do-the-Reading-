@@ -128,7 +128,6 @@ const namesInSentences = async (peopleObjArr, sentenceArr) => {
         }
       }
     }
-    console.log('SOA', sentenceObjArr)
     const question = await makeTrueFalse(sentenceObjArr, namesOnlyArr)
     return question
   }
