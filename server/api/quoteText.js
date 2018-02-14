@@ -42,12 +42,14 @@ router.post('/quoteQuestion', async (req, res, next) => {
 router.post('/whoDidItQuestion', async (req, res, next) => {
 
   const text = req.body.content
-
   try {
     //would work well for a trivia-style fill-in-the-blank question on character or setting.
     const syntaxResult = await findSyntax(text)
+    console.log('SYNTAXRES', syntaxResult)
+
     let sentenceArr = []
     let namesOnly = []
+
     const peopleResult = await findPeople(text)
     for (let i = 0; i < peopleResult.length; i++) {
       if (peopleResult[i].name.charCodeAt(0) < 97) {
@@ -56,11 +58,14 @@ router.post('/whoDidItQuestion', async (req, res, next) => {
     }
 
 
+
+
     let sentencesArr = []
     const subjVerb = await findSubjVerb(text)
     const subjVerbArr = subjVerb.map(obj => {
       return obj.text
     })
+
     for (let i = 0; i < syntaxResult.length; i++) {
       for (let j = 0; j < subjVerb.length; j++) {
         if (syntaxResult[i].text.includes(subjVerb[j].text)) {
@@ -70,11 +75,12 @@ router.post('/whoDidItQuestion', async (req, res, next) => {
       }
     }
     const filteredSentences = sentencesArr.filter(sentence => {
-      return sentence.length > 40 && sentence.charCodeAt(0) < 97 && ((sentence.slice(-7, -1).includes('.')) ||
-      (sentence.slice(-7, -1).includes('!')) ||
-      (sentence.slice(-7, -1).includes('?')) ||
-      (sentence.slice(-7, -1).includes(',')))
+      return sentence.length > 40 && sentence.charCodeAt(0) < 97 && ((sentence.slice(-7).includes('.')) ||
+      (sentence.slice(-7).includes('!')) ||
+      (sentence.slice(-7).includes('?')) ||
+      (sentence.slice(-7).includes(',')))
     })
+
     let sentenceObjArr = []
     for (let i = 0; i < filteredSentences.length; i++) {
       for (let j = 0; j < subjVerbArr.length; j++) {
@@ -87,6 +93,7 @@ router.post('/whoDidItQuestion', async (req, res, next) => {
       }
     }
 
+
     let newQuestion = []
     const question = sentenceObjArr.map(obj => {
       let startLetter = obj.subjectVerb
@@ -95,9 +102,7 @@ router.post('/whoDidItQuestion', async (req, res, next) => {
       let finalPart = obj.sentence.slice(endIdx)
       let verbArr = obj.subjectVerb.trim().split(' ')
       let verb = verbArr[1]
-      // if(finalPart.includes('me' || 'I' || 'my' || 'you' || 'your' || 'mine' || 'we' || 'us')){
-      //   return null
-      // }
+
       if(startIdx === 0){
       obj.question = `Who ` + verb + ' ' + finalPart.trim().slice(0,-1) + `?`
       if (!newQuestion.includes(obj.question)) {
@@ -117,6 +122,7 @@ router.post('/whoDidItQuestion', async (req, res, next) => {
       return obj
       } else return obj
     })
+
     const wrongAnswerArr = rightAnswerArr.map(obj => {
       let wrongs = namesOnly.filter(name => {
         if(obj.rightAnswer){
@@ -129,8 +135,10 @@ router.post('/whoDidItQuestion', async (req, res, next) => {
       obj.rightAnswer ? (obj.answers = wrongs.slice(0, 3).concat(obj.rightAnswer)) : obj.answers = null
 
       obj.answers ? (obj.answers = obj.answers.map(name => {
+
        let n = name.trim()
-        newName = n[0].toUpperCase() + n.slice(1)
+
+       let newName = n[0].toUpperCase() + n.slice(1)
         return newName
       })) : obj.answers = null
 
@@ -156,42 +164,7 @@ router.post('/whoDidItQuestion', async (req, res, next) => {
 
 })
 
-// router.post('/simileQuestion', async (req, res, next) => {
 
-//   const text = req.body.text
-
-
-//   try {
-
-//     const similes = await findSimiles(text)
-//     //Good for fill-in-the-blanks until the end of the clause
-//     res.send(similes)
-//   }
-//   catch (err) {
-//     console.log(err)
-
-//   }
-
-
-// })
-
-// router.post('/modifierQuestion', async (req, res, next) => {
-
-
-
-
-//   try {
-
-//     const modifiers = await findSyntax(text)
-
-//     res.send(peopleResult)
-//   }
-//   catch (err) {
-//     console.log(err)
-//   }
-
-
-// })
 
 
 
